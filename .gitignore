@@ -1,0 +1,7 @@
+.vscode/
+cross/
+tools/build
+tools/tarballs
+*.c.o
+*.S.o
+*.bin
