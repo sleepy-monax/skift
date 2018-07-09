@@ -9,6 +9,11 @@ void install_console();
 void kprint();
 void kprintf();
 
+void __assert(string file, int line ,bool sucess, string assert);
+void __log(u8 level, string function, string message, ...);
+void __dump_register(registry_t * reg);
+void __panic(string file,  string function,  int line, string message, ...);
+
 /* --- Clock ---------------------------------------------------------------- */
 
 void install_clock();

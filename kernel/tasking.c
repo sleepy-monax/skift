@@ -69,6 +69,7 @@ tid_t task_start(entry_t entry, string name)
 
     task->regs.cs = 0x8;
 
+    task->regs.ebp = (u32) task->stack;
     task->regs.esp = (u32) task->stack + TASK_STACK_SIZE;
 
     INFO("Task %d'%s' - eip=%x and esp=%x.", task->id, name, task->regs.eip, task->regs.esp);
