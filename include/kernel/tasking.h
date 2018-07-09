@@ -20,7 +20,18 @@ typedef struct
     tid_t id;
     char name[TASK_NAME_SIZE];
     task_state_t state;
-    registry_t   regs;
+
+    u32 eip;
+
+    u32 esp;
+	u32 eax;
+	u32 ecx;
+	u32 edx;
+	u32 ebx;
+	u32 ebp;
+	u32 esi;
+	u32 edi;
+
     u8 stack[TASK_STACK_SIZE];
 } task_t;
 

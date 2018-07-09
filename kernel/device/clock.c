@@ -4,7 +4,7 @@
 #include "kernel/x86.h"
 
 u32 clock_tick = 0;
-u32 frequency = 1000;
+u32 frequency = 500;
 bool install_clock()
 {
     add_interrupts_handler(32, &clock_interrupt);

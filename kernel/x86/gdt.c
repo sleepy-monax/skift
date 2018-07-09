@@ -23,9 +23,9 @@ bool install_gdt()
     init_gdt_entry(&gdt[2], 0, 0xffffffff, 0x93, 0x0D); // data
     init_gdt_entry(&gdt[3], 0, 0xffffffff, 0x97, 0x0D); // stack
 
-    init_gdt_entry(&gdt[4], 0x30000, 0xffffffff, 0xFF, 0x0D); // ucode
-    init_gdt_entry(&gdt[5], 0x30000, 0xffffffff, 0xF3, 0x0D); // udata
-    init_gdt_entry(&gdt[6], 0x30000, 0xffffffff, 0xF7, 0x0D); // ustack
+    init_gdt_entry(&gdt[4], 0, 0xffffffff, 0xFF, 0x0D); // ucode
+    init_gdt_entry(&gdt[5], 0, 0xffffffff, 0xF3, 0x0D); // udata
+    init_gdt_entry(&gdt[6], 0, 0xffffffff, 0xF7, 0x0D); // ustack
 
     init_gdt_entry(&gdt[7], (u32)&default_tss, sizeof(tss_t), 0xE9, 0x00); //tss
 

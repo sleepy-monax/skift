@@ -51,6 +51,7 @@ bool install_tasking()
 
 tid_t task_start(entry_t entry, string name)
 {
+    cli();
     task_t * task = get_free_task();
     
     // copy the name of the task.
@@ -59,38 +60,60 @@ tid_t task_start(entry_t entry, string name)
     
     task->state = STATE_RUNNING;
 
-    task->regs.eip = (u32)entry;
-    task->regs.eflags = get_eflags();
-    //task->regs.cr3 = get_cr3();
-    task->regs.ds = 0x10;
-    task->regs.es = 0x10;
-    task->regs.fs = 0x10;
-    task->regs.gs = 0x10;
+    task->eip = (u32)entry;
 
-    task->regs.cs = 0x8;
+	task->eax = 0;
+	task->ecx = 0;
+	task->edx = 0;
+	task->ebx = 0;
 
-    task->regs.ebp = (u32) task->stack;
-    task->regs.esp = (u32) task->stack + TASK_STACK_SIZE;
+    task->esp = (u32) task->stack + TASK_STACK_SIZE;
+	task->ebp = (u32) task->stack;
+	
+    task->esi = 0;
+	task->edi = 0;
 
-    INFO("Task %d'%s' - eip=%x and esp=%x.", task->id, name, task->regs.eip, task->regs.esp);
 
+    INFO("Task %d'%s' - eip=%x and esp=%x.", task->id, name, task->eip, task->esp);
+    sti();
     return task->id;
 }
 
-void schedule(registry_t * reg)
+void schedule(registry_t * regs)
 {
-    UNUSED(reg);
+    cli();
     tid_t next_task = get_next_task(current_task);
 
     // save the current task
-    memcpy((u8*)&task_table[current_task].regs, (u8*)reg, sizeof(registry_t));
+    task_table[current_task].eip = regs->eip;
 
-    INFO("Switching from %d to %d.", current_task, next_task);
+	task_table[current_task].eax = regs->eax;
+	task_table[current_task].ecx = regs->ecx;
+	task_table[current_task].edx = regs->edx;
+	task_table[current_task].ebx = regs->ebx;
 
-    if (next_task != current_task)
-    {
-        memcpy((u8*)reg, (u8*)&task_table[next_task].regs, sizeof(registry_t));
-    }
+    task_table[current_task].esp = regs->esp;
+	task_table[current_task].ebp = regs->ebp;
+	
+    task_table[current_task].esi = regs->esi;
+	task_table[current_task].edi = regs->edi;
+
+    //INFO("Switching from %d to %d.", current_task, next_task);
+
+    regs->eip = task_table[next_task].eip;
+
+    regs->eax = task_table[next_task].eax;
+    regs->ecx = task_table[next_task].ecx;
+    regs->edx = task_table[next_task].edx;
+    regs->ebx = task_table[next_task].ebx;
+
+    regs->esp = task_table[next_task].esp;
+    regs->ebp = task_table[next_task].ebp;
+    
+    regs->esi = task_table[next_task].esi;
+    regs->edi = task_table[next_task].edi;
+    
 
     current_task = next_task;
+    sti();
 }

@@ -48,20 +48,24 @@ void main(multiboot_info_t * info)
     INSTALL(keyboard);
     INSTALL(syscall);
     INSTALL(tasking);
+    INSTALL(clock);
+
     task_start(taskA, "taskA");
     task_start(taskB, "taskB");
-
-    INSTALL(clock);
     
     INFO("Interrupt enabled!"); sti();
 
     INFO("&fcore&9ONE &7v0.0.1 - \"Everything went well.\"");
     INFO("Entering user mode...");
     
+    while(true)
+    {
+        kprint("C");
+    }
 
     //asm("mov $0x01, %eax; int $0x30");
 
-    memcpy((u8*)0x30000, (u8*)&task1, 100);
+    /*memcpy((u8*)0x30000, (u8*)&task1, 100);
 
     asm("  movw %%ss, %0 \n \
       movl %%esp, %1" : "=m" (default_tss.ss0), "=m" (default_tss.esp0) : );
@@ -79,7 +83,7 @@ void main(multiboot_info_t * info)
             movl $0x20000, %0 \n \
             movw $0x2B, %%ax \n \
             movw %%ax, %%ds \n \
-            iret" : "=m" (default_tss.esp0) : );
+            iret" : "=m" (default_tss.esp0) : );*/
 
     PANIC("The end of the main function has been reached.");
 }

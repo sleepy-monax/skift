@@ -125,8 +125,6 @@ bool install_interrupts()
     
     asm("lidtl (registry)");
 
-    sti();
-
     return true;
 }
 

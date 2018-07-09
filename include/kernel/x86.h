@@ -109,7 +109,7 @@ extern tss_t default_tss;
 typedef struct __attribute__((packed))
 {
     u32 int_no; u32 err_code; // Interrupt number and error code (if applicable)
-    u32 es, fs, gs, ds;       
+    u16 es, fs, gs, ds;       
     u32 edi, esi, ebp, esp, ebx, edx, ecx, eax;              // Pushed by pusha.
     u32 eip, cs, eflags, useresp, ss;  // Pushed by the processor automatically.
 } registry_t;
