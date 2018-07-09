@@ -6,7 +6,8 @@
 #include "kernel/x86.h"
 
 void __assert(const string file, const int line ,bool sucess, string assert);
-void   __log(u8 level,          string function,                 string message, ...);
+void __log(u8 level,          string function,                 string message, ...);
+void __dump_register(registry_t * reg);
 void __panic(registry_t * reg, string file,  string function,  int line, string message, ...);
 
 #define TIME kprintf("&3%d:%d:%d ", time_get(TIME_HOUR), time_get(TIME_MINUTE), time_get(TIME_SECOND));
@@ -33,4 +34,5 @@ void __panic(registry_t * reg, string file,  string function,  int line, string 
 
 #define ASSERT(a) __assert(__FILE__, __LINE__, a, #a)
 #define PANIC(a...) __panic(NULL, __FILE__, (string)__FUNCTION__, __LINE__, a) 
+#define PANIC_REG_PTR(reg, a...) __panic(reg, __FILE__, (string)__FUNCTION__, __LINE__, a) 
 #define PANIC_REG(reg, a...) __panic(&reg, __FILE__, (string)__FUNCTION__, __LINE__, a)  

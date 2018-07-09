@@ -12,7 +12,7 @@ CFLAGS  = -I ./include -ffreestanding -nostdlib -O3 -std=gnu11 -Wall -Wextra -We
 LDFLAGS = -I ./include -ffreestanding -nostdlib -O3 -lgcc -ggdb
 ASFLAGS = -felf32
 
-QEMUFLAGS = -M accel=kvm:tcg -m 256M  -display sdl -serial mon:stdio -kernel kernel.bin
+QEMUFLAGS = -m 256M  -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg
 
 # --- Commands --------------------------------------------------------------- #
 .PHONY: build rebuild run run-nox debug clean crosscompiler

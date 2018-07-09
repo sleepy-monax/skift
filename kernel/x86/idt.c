@@ -80,7 +80,7 @@ void init_idt_entry(idt_entry_t * entry, u16 selector, u32 offset, u16 type)
 
 void interrupt_handler(registry_t reg)
 {
-    INFO("interrupt %d!", reg.int_no);
+    // INFO("interrupt %d!", reg.int_no);
 
     if (handlers[reg.int_no] != NULL)
     {
@@ -88,11 +88,11 @@ void interrupt_handler(registry_t reg)
     }
     else if (reg.int_no < 32)
     {
+		//WARN("&5Exception (%d) : %s!&f", reg.int_no, exception_messages[reg.int_no]);
         PANIC_REG(reg, "&5Exception (%d) : %s!&f", reg.int_no, exception_messages[reg.int_no]);
     }
     else
     {
-        
         WARN("Unhandeled interrupt %d!", reg.int_no);
     }
 
@@ -105,12 +105,12 @@ bool install_interrupts()
 {
     setup_pic();
 
-    memset((void *)&handlers, 0, IDTSIZE * sizeof(interrupt_handler_t));
-    memset((void *)&entries, 0, IDTSIZE * sizeof(idt_entry_t));
+    memset(&handlers, 0, IDTSIZE * sizeof(interrupt_handler_t));
+    memset(&entries, 0, IDTSIZE * sizeof(idt_entry_t));
 
     for(u32 i = 0; i < IDTSIZE; i++)
     {
-        if (i == 30)
+        if (i == 48)
         {
             init_idt_entry(&entries[i], 0x08, int_handlers[i], 0xEF00);
         }

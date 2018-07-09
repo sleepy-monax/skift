@@ -1,5 +1,7 @@
 #include "valist.h"
 
+#include "convert.h"
+
 #include "device/clock.h"
 #include "kernel/kernel.h"
 #include "kernel/logging.h"
@@ -18,7 +20,7 @@ const char * const witty_comments[] =
     "...",
 };
 
-const char * const log_level[] = { "&9info", "&ewarning", "&4error" };
+const char * const log_level[] = { "&9info", "&ewarn", "&4error" };
 
 void __log(u8 level, const string function, string message, ...)
 {
@@ -69,9 +71,8 @@ void __panic(registry_t * reg, const string file, const string function, const i
 
     if (reg != NULL)
     {
-        kprintf("\n\tint_no=%x(%u), err_code=%x(%u)", reg->int_no, reg->int_no, reg->err_code, reg->err_code);
-        kprintf("\n\teax=%x, ecx=%x, edx=%x, ebx=%x\n\tesp=%x, ebp=%x, esi=%x, edi=%x", reg->eax, reg->ecx, reg->edx, reg->ebx, reg->esp, reg->ebp, reg->esi, reg->edi);
-        kprintf("\n\n\n\n");
+        __dump_register(reg);
+        kprintf("\n\n");
     }
     else
     {
@@ -86,4 +87,19 @@ void __panic(registry_t * reg, const string file, const string function, const i
     kprintf("\n&8------------------------------------------------------------ core one v0.0.1 ---");
 
     for(;;){hlt();}
+}
+
+void __dump_register(registry_t * reg)
+{
+    kprintf("\n\tint_no=%x(%u), err_code=%x(%u)", reg->int_no, reg->int_no, reg->err_code, reg->err_code);
+    kprintf("\n\teax=%x, ecx=%x, edx=%x, ebx=%x", reg->eax, reg->ecx, reg->edx, reg->ebx);
+    kprintf("\n\tesp=%x, ebp=%x, esi=%x, edi=%x", reg->esp, reg->ebp, reg->esi, reg->edi);
+    
+    kprintf("\n\n\teip=%x, cs=%x, ef=%x, uesp=%x, ss=%x", reg->eip, reg->cs, reg->eflags, reg->useresp, reg->ss);
+}
+
+int __raise_divide_by_zero() 
+{
+    int dummy = 256 / string_to_uint("0", 10);
+    return dummy;
 }

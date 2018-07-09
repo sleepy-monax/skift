@@ -1,6 +1,6 @@
 #include "memory.h"
 
-void memcpy(u8 *dest, u8 *src, u32 len)
+void memcpy(u8* dest, u8* src, u32 len)
 {
     u32 i;
     for (i = 0; i < len; i++) {
@@ -8,8 +8,8 @@ void memcpy(u8 *dest, u8 *src, u32 len)
     }
 }
 
-void memset(u8 *dest, u8  val, u32 len)
+void memset(void * dest, int val, u32 len)
 {
-    u8 *temp = (u8 *)dest;
+    u8* temp = (u8*)dest;
     for ( ; len != 0; len--) *temp++ = val;
 }

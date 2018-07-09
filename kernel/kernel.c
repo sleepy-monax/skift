@@ -1,5 +1,6 @@
 #include "types.h"
 #include "memory.h"
+#include "convert.h"
 
 #include "device/clock.h"
 #include "device/keyboard.h"
@@ -10,15 +11,31 @@
 #include "kernel/multiboot.h"
 #include "kernel/syscall.h"
 #include "kernel/x86.h"
+#include "kernel/tasking.h"
 
 void task1(void)
 {
-    asm("mov $0x01, %eax; int $0x30");
+    asm("mov $0x01, %eax;\
+         int $0x30");
     while(1);
     return; /* never go there */
 }
 
+void taskA(void)
+{
+    while(true)
+    {
+        kprint("A");
+    }
+}
 
+void taskB(void)
+{
+    while(true)
+    {
+        kprint("B");
+    }
+}
 
 void main(multiboot_info_t * info)
 {
@@ -28,25 +45,23 @@ void main(multiboot_info_t * info)
     INSTALL(uart);
     INSTALL(gdt);
     INSTALL(interrupts);
-    INSTALL(clock);
     INSTALL(keyboard);
     INSTALL(syscall);
+    INSTALL(tasking);
+    task_start(taskA, "taskA");
+    task_start(taskB, "taskB");
+
+    INSTALL(clock);
     
     INFO("Interrupt enabled!"); sti();
 
     INFO("&fcore&9ONE &7v0.0.1 - \"Everything went well.\"");
-
-    // for(u32 i = 0; ; i++)
-    // {
-    //     /* code */
-    //     kprintf("working %x...\r", i);
-    // }
-
     INFO("Entering user mode...");
+    
 
-    asm("mov $0x01, %eax; int $0x30");
+    //asm("mov $0x01, %eax; int $0x30");
 
-    /*memcpy((u8*)0x30000, (u8*)&task1, 100);
+    memcpy((u8*)0x30000, (u8*)&task1, 100);
 
     asm("  movw %%ss, %0 \n \
       movl %%esp, %1" : "=m" (default_tss.ss0), "=m" (default_tss.esp0) : );
@@ -64,9 +79,7 @@ void main(multiboot_info_t * info)
             movl $0x20000, %0 \n \
             movw $0x2B, %%ax \n \
             movw %%ax, %%ds \n \
-            iret" : "=m" (default_tss.esp0) : );*/
+            iret" : "=m" (default_tss.esp0) : );
 
-
-    // for(;;){}    
     PANIC("The end of the main function has been reached.");
 }

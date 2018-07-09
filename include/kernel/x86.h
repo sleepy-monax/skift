@@ -6,29 +6,50 @@
 
 static inline u8 inb(u16 port)
 {
-  u8 data;
-  asm volatile("in %1,%0" : "=a" (data) : "d" (port));
-  return data;
+    u8 data;
+    asm volatile("in %1,%0" : "=a" (data) : "d" (port));
+    return data;
 }
 
 static inline void outb(u16 port, u8 data)
 {
-  asm volatile("out %0,%1" : : "a" (data), "d" (port));
+    asm volatile("out %0,%1" : : "a" (data), "d" (port));
 }
 
 static inline void sti(void)
 {
-  asm volatile("sti");
+    asm volatile("sti");
 }
 
 static inline void cli(void)
 {
-  asm volatile("cli");
+    asm volatile("cli");
 }
 
 static inline void hlt(void)
 {
-  asm volatile("hlt");
+    asm volatile("hlt");
+}
+
+static inline u32 get_cr2()
+{
+    u32 r;
+    asm volatile("mov %%cr2, %0" : "=r" (r));
+    return r;
+}
+
+static inline u32 get_cr3()
+{
+    u32 r;
+    asm volatile("mov %%cr3, %0" : "=r" (r));
+    return r;
+}
+
+static inline u32 get_eflags()
+{
+    u32 r;
+    asm volatile("pushfl; movl (%%esp), %%eax; movl %%eax, %0; popfl;":"=m"(r)::"%eax");
+    return r;
 }
 
 /* --- Global Descriptor Table ---------------------------------------------- */
@@ -87,10 +108,10 @@ extern tss_t default_tss;
 
 typedef struct __attribute__((packed))
 {
-    u32 int_no;
-    u32 err_code;
-    u32 es, fs, gs, ds;
+    u32 int_no; u32 err_code; // Interrupt number and error code (if applicable)
+    u32 es, fs, gs, ds;       
     u32 edi, esi, ebp, esp, ebx, edx, ecx, eax;              // Pushed by pusha.
+    u32 eip, cs, eflags, useresp, ss;  // Pushed by the processor automatically.
 } registry_t;
 
 extern u32 int_handlers[];
@@ -114,12 +135,12 @@ bool install_interrupts();
 void add_interrupts_handler(int interrupt, interrupt_handler_t handler);
 
 #define PIC_WAIT() \
-	do { \
-		asm volatile("jmp 1f\n\t" \
-		             "1:\n\t" \
-		             "    jmp 2f\n\t" \
-		             "2:"); \
-	} while (0)
+    do { \
+      asm volatile("jmp 1f\n\t" \
+                  "1:\n\t" \
+                  "    jmp 2f\n\t" \
+                  "2:"); \
+    } while (0)
 
 
 void setup_pic();

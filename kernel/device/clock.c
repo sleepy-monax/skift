@@ -1,5 +1,6 @@
 #include "device/clock.h"
 #include "kernel/kernel.h"
+#include "kernel/tasking.h"
 #include "kernel/x86.h"
 
 u32 clock_tick = 0;
@@ -21,16 +22,15 @@ bool install_clock()
 void clock_interrupt(registry_t* reg)
 {
     UNUSED(reg);
+    schedule(reg);
     clock_tick++;
 
-
-
-    if (clock_tick % 1000 == 0)
-    {
-        kprintf("&4tack\t&f");
-    }
-    else if (clock_tick % 500 == 0)
-    {
-        kprintf("&2tick\t&f");
-    }
+    // if (clock_tick % 1000 == 0)
+    // {
+    //     kprintf("&4tack\t&f");
+    // }
+    // else if (clock_tick % 500 == 0)
+    // {
+    //     kprintf("&2tick\t&f");
+    // }
 }
