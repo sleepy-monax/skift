@@ -1,42 +1,35 @@
 #pragma once
-
 #include "types.h"
 
 #define vga_screen_width 80
 #define vga_screen_height 25
 
-#define vga_Black         0x0
-#define vga_Blue          0x1
-#define vga_Green         0x2
-#define vga_Cyan          0x3
-#define vga_Red           0x4
-#define vga_Magenta       0x5
-#define vga_Brown         0x6
-#define vga_Light_Gray    0x7
-#define vga_Gray          0x8
-#define vga_Light_Blue    0x9
-#define vga_Light_Green   0xA
-#define vga_Light_Cyan    0xB
-#define vga_Light_Red     0xC
-#define vga_Light_Magenta 0xD
-#define vga_Light_Yellow  0xE
-#define vga_White         0xF
-
-#define vga_bgcolor(bg) (bg << 4)
-#define vga_fgcolor(fg) (fg)
-#define vga_color(bg, fg) (bg << 4 | fg)
-#define vga_default vga_bgcolor(vga_Black, vga_Light_Gray)
+#define vga_black         0x0
+#define vga_blue          0x1
+#define vga_green         0x2
+#define vga_cyan          0x3
+#define vga_red           0x4
+#define vga_magenta       0x5
+#define vga_brown         0x6
+#define vga_light_gray    0x7
+#define vga_gray          0x8
+#define vga_light_blue    0x9
+#define vga_light_green   0xA
+#define vga_light_cyan    0xB
+#define vga_light_red     0xC
+#define vga_light_magenta 0xD
+#define vga_light_yellow  0xE
+#define vga_white         0xF
 
 #define vga_frame_buffer 0xB8000
+#define vga_color(fg, bg) (bg << 4 | fg)
+#define vga_entry(c, fg, bg) ((bg << 4 | fg) << 8 | c)
 
-extern u32 vga_cursor_x;
-extern u32 vga_cursor_y;
+typedef uchar vga_color_t;
+typedef ushort vga_entry_t;
 
-bool install_vga(void);
-
-void vga_clear(u8 clear_color);
-void vga_scroll(void);
-
-void vga_set_cell (u32 x, u32 y, char c,     u8 color);
-void vga_set_cells(u32 x, u32 y, string str, u8 color);
-void vga_set_cursor(u32 x, u32 y);
+void vga_setup();
+void vga_clear(vga_color_t fg, vga_color_t bg);
+void vga_scroll(vga_color_t bg);
+void vga_cell(u32 x, u32 y, vga_entry_t entry);
+void vga_cursor(u32 x, u32 y);

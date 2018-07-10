@@ -1,10 +1,9 @@
-#include "convert.h"
-#include "string.h"
+#include "libc.h"
 
 string basechar     = "0123456789abcdefghijklmnopqrstuvwxyz";
 string basechar_maj = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-u32 string_to_uint(string str, u8 base)
+u32 stoi(string str, u8 base)
 {
     u32 i = 0;
     u32 value = 0;
@@ -27,7 +26,7 @@ u32 string_to_uint(string str, u8 base)
     return value;
 }
 
-void uint_to_string(u32 value, string buffer, u8 base)
+void itos(u32 value, string buffer, u8 base)
 {
     buffer[0] = '\0';   
     if (value == 0){ strapd(buffer, '0'); return; }
