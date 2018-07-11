@@ -48,9 +48,13 @@ void idt_setup()
 
 void idt_entry(u8 index, u32 offset, u16 selector, u16 type)
 {
+    UNUSED(index + offset + selector + type);
+    return;
     idt_entry_t * entry = &idt.entries[index];
 
     entry->zero = 0;
     entry->offset0_15 = offset & 0xffff;
     entry->offset16_31 = (offset>>16) & 0xffff;
 }
+
+void interrupt_handler(void){}

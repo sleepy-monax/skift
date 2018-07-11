@@ -23,7 +23,5 @@ void main(multiboot_info_t * info)
 
     print_sysinfo(info);
 
-    while(1){}
-
     panic("The end of the main function has been reached.");
 }

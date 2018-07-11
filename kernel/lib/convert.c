@@ -3,6 +3,8 @@
 string basechar     = "0123456789abcdefghijklmnopqrstuvwxyz";
 string basechar_maj = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+// string to s
+
 u32 stoi(string str, u8 base)
 {
     u32 i = 0;
@@ -26,6 +28,7 @@ u32 stoi(string str, u8 base)
     return value;
 }
 
+// int to string
 void itos(u32 value, string buffer, u8 base)
 {
     buffer[0] = '\0';   

@@ -33,12 +33,13 @@ debug: build
 	@qemu-system-i386 $(QEMUFLAGS) -s -S
 
 clean:
-	@echo "\n\033[1;37mSource tree cleaned up!\033[0m\n"
+	@echo -n "\n\033[1;37mCleaning up Source tree...\033[0m"
 	@find -name "*.o" -delete
 	@find -name "*.c.o" -delete
 	@find -name "*.S.o" -delete
 	@find -name "*.bin" -delete
 	@find -name "*.asm" -delete
+	@echo "\033[1;37m DONE\033[0m\n"
 
 crosscompiler:
 	./buildtoolchain.sh
@@ -52,12 +53,14 @@ kernel.bin: $(KERNEL_OBJS)
 	@echo "\033[1;37m DONE\033[0m"
 
 %.S.o: %.S
-	@echo "\033[1;34m  AS\033[0m  $@ -> $^"
+	@echo -n "\033[1;34m .. AS \033[0m$^ => $@"
 	@$(AS) $(ASFLAGS) $^ -o $@
+	@echo "\r\033[1;37m OK \033[0m"
 
 %.c.o: %.c
-	@echo "\033[1;32m  CC\033[0m  $@ -> $^"
+	@echo -n "\033[1;32m .. CC \033[0m$^ => $@"
 	@$(CC) $(CFLAGS) -c -o $@ $^
+	@echo "\r\033[1;37m OK \033[0m"
 
 # --- Makefile debug --------------------------------------------------------- #
 
