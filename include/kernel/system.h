@@ -1,7 +1,10 @@
 #pragma once
 #include "types.h"
 
-
+#define system_name "core"
+#define version_major 0
+#define version_minor 0
+#define version_patch 1
 
 void system_setup();
 
@@ -18,8 +21,8 @@ typedef enum
 
 #define major(x...) __log(LOG_MAJOR, x)
 #define info(x...) __log(LOG_INFO, x)
-#define warn(x...) __log(LOG_INFO, x)
-#define error(x...) __log(LOG_INFO, x)
+#define warn(x...) __log(LOG_WARNING, x)
+#define error(x...) __log(LOG_ERROR, x)
 #define panic(x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, x) 
 
 #define setup(x) { info("Setting up " #x "..."); x##_setup(); }

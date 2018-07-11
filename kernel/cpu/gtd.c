@@ -66,7 +66,6 @@ void gdt_tss_entry(int index, u16 ss0, u32 esp0)
 	tss->es = 0x13;
 	tss->fs = 0x13;
 	tss->gs = 0x13;
-
 }
 
 void set_kernel_stack(u32 stack)
@@ -77,7 +76,7 @@ void set_kernel_stack(u32 stack)
 void gdt_entry_dump(int index)
 {
     gdt_entry_t * entry = &gdt.entries[index];
-    printf("idt[%d]: base=%x limite=%x access=%x flags=%x\n", 
+    printf("%d: base=%x limite=%x access=%x flags=%x\n", 
         index,
         entry->base0_15 | entry->base16_23 << 16 | entry->base24_31 << 24,
         entry->limit0_15 | entry->limit16_19 << 16,
@@ -109,8 +108,11 @@ void gdt_setup()
 
 void gdt_dump()
 {
+    print("\n&fGlobal descriptor table dump:\n&7");
     for(u32 i = 0; i < 6; i++)
     {
+        print("\t");
         gdt_entry_dump(i);
     }    
+    print("\n&f");
 }

@@ -4,7 +4,7 @@
 #include "ascii.h"
 #include "libc.h"
 
-#define TAB_SIZE 8
+#define TAB_SIZE 4
 
 console_t console;
 
