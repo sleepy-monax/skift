@@ -9,9 +9,13 @@ u8   inb (u16 port);
 void outb(u16 port, u8 data);
 
 void cpu_setup();
+
 void gdt_setup();
+void gdt_entry(int index, u32 base, u32 limit, u8 access, u8 flags);
+void gdt_tss_entry(int index, u16 ss0, u32 esp0);
 
 void gdt_dump();
+void gdt_entry_dump(int index);
 void set_kernel_stack(u32 stack);
 
 typedef struct __attribute__ ((packed))
