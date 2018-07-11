@@ -22,19 +22,23 @@ build: kernel.bin
 rebuild: clean build
 
 run: build
-	qemu-system-i386 $(QEMUFLAGS)
+	@echo "\n\033[1;37mBooting qemu...\033[0m\n"
+	@qemu-system-i386 $(QEMUFLAGS)
 
 run-nox: build
-	qemu-system-i386 $(QEMUFLAGS) -nographic
+	@echo "\033[1;37mBooting qemu...\033[0m"
+	@qemu-system-i386 $(QEMUFLAGS) -nographic
 
 debug: build
-	qemu-system-i386 $(QEMUFLAGS) -s -S
+	@qemu-system-i386 $(QEMUFLAGS) -s -S
 
 clean:
-	@echo "Cleaning up source tree..."
-	find -name "*.o" -delete
-	find -name "*.bin" -delete
-	find -name "*.asm" -delete
+	@echo "\n\033[1;37mSource tree cleaned up!\033[0m\n"
+	@find -name "*.o" -delete
+	@find -name "*.c.o" -delete
+	@find -name "*.S.o" -delete
+	@find -name "*.bin" -delete
+	@find -name "*.asm" -delete
 
 crosscompiler:
 	./buildtoolchain.sh
@@ -42,18 +46,17 @@ crosscompiler:
 # --- Makefile debug --------------------------------------------------------- #
 
 kernel.bin: $(KERNEL_OBJS)
-	$(CC) $(LDFLAGS) -T kernel/kernel.ld -o $@ $^
-	$(OBJDUMP) -S $@ > kernel.asm
-
-%.S: %.pl
-	perl $^ > $@
+	@echo -n "\n\033[1;37mLinking the kernel...\033[0m"
+	@$(CC) $(LDFLAGS) -T kernel/kernel.ld -o $@ $^
+	@$(OBJDUMP) -S $@ > kernel.asm
+	@echo "\033[1;37mDONE\033[0m"
 
 %.S.o: %.S
-	@echo "  AS  $@ -> $^"
+	@echo "\033[1;34m  AS\033[0m  $@ -> $^"
 	@$(AS) $(ASFLAGS) $^ -o $@
 
 %.c.o: %.c
-	@echo "  CC  $@ -> $^"
+	@echo "\033[1;32m  CC\033[0m  $@ -> $^"
 	@$(CC) $(CFLAGS) -c -o $@ $^
 
 # --- Makefile debug --------------------------------------------------------- #

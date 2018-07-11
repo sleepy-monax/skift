@@ -12,13 +12,13 @@
 #define FLAGS      0b1100
 #define TSS_FLAGS  0
 
-typedef struct __attribute__ ((packed)) 
+typedef PACKED(struct)
 {
     u16 size;
     u32 offset;
 } gdt_descriptor_t;
 
-typedef struct __attribute__ ((packed)) 
+typedef PACKED(struct) 
 {
     u16 limit0_15;
     u16 base0_15;

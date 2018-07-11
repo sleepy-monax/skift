@@ -67,7 +67,9 @@ void console_print(string message)
             {
                 char buffer[2] = " ";
                 buffer[0] = c;
-                console.fg = stoi(buffer, 16);
+                console_color_t color = stoi(buffer, 16);
+                console.fg = color;
+                uart_set_color(COM1, color);
             }
 
             wait_for_color_id = false;

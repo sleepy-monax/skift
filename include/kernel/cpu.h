@@ -5,6 +5,11 @@
 #define sti() asm volatile("sti");
 #define hlt() asm volatile("hlt");
 
+typedef PACKED(struct)
+{
+
+} cpu_state_t;
+
 u8   inb (u16 port);
 void outb(u16 port, u8 data);
 
@@ -18,7 +23,7 @@ void gdt_dump();
 void gdt_entry_dump(int index);
 void set_kernel_stack(u32 stack);
 
-typedef struct __attribute__ ((packed))
+typedef PACKED(struct)
 {
 	u32	prev_tss;
 	u32	esp0;

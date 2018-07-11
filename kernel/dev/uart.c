@@ -33,6 +33,34 @@ void uart_put(uart_port_t port, char a)
    outb(port,a);
 }
 
+const char * const color_code[] = 
+{
+    "0;30", // back 
+    "0;34", // blue
+    "0;32", // green
+    "0;36", // cyan
+    "0;31", // red
+    "0;35", // purple
+    "0;33", // brown
+    "0;37", // light gray
+
+    "1;30", // dark gray
+    "1;34", // light blue
+    "1;32", // light green
+    "1;36", // light cyan
+    "1;31", // light red
+    "1;35", // light purple
+    "1;33", // yellow
+    "1;37", // white
+};
+
+void uart_set_color(uart_port_t port, uchar color)
+{
+    uart_print(port, "\033[");
+    uart_print(port, (string)color_code[color]);
+    uart_print(port, "m");
+}
+
 void uart_print(uart_port_t port, string str) 
 {   
     for(u32 i = 0; str[i] != '\0'; i++)

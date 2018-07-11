@@ -5,6 +5,8 @@
 #define true 1
 #define false 0
 
+#define PACKED(x) x __attribute__ ((packed))
+
 #define UNUSED(x) (void)(x)
 
 typedef char * string;

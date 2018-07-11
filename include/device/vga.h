@@ -12,6 +12,7 @@
 #define vga_magenta       0x5
 #define vga_brown         0x6
 #define vga_light_gray    0x7
+
 #define vga_gray          0x8
 #define vga_light_blue    0x9
 #define vga_light_green   0xA

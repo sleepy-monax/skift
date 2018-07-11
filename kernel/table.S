@@ -1,4 +1,5 @@
 section .text
+
 global gdt_flush
 gdt_flush:
     mov eax, [esp + 4]
@@ -10,7 +11,7 @@ gdt_flush:
     mov fs, ax
     mov ss, ax
     mov gs, ax
-    jmp 0x08:.flush
+    jmp 0x08:._gdt_flush
     
-.flush:
+._gdt_flush:
     ret
