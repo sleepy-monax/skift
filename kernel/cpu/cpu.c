@@ -4,6 +4,7 @@
 void cpu_setup()
 {
     setup(gdt);
+    setup(idt);
 }
 
 u8 inb(u16 port)

@@ -5,15 +5,12 @@
 #define sti() asm volatile("sti");
 #define hlt() asm volatile("hlt");
 
-typedef PACKED(struct)
-{
-
-} cpu_state_t;
-
 u8   inb (u16 port);
 void outb(u16 port, u8 data);
 
 void cpu_setup();
+
+/* --- GDT ------------------------------------------------------------------ */
 
 void gdt_setup();
 void gdt_entry(int index, u32 base, u32 limit, u8 access, u8 flags);
@@ -53,3 +50,18 @@ typedef PACKED(struct)
 	u16	trap;
 	u16	iomap_base;
 } tss_t;
+
+/* --- IDT ------------------------------------------------------------------ */
+
+#define INT_GATE 0b110
+#define TRAP_GATE 0b111
+#define TASK_GATE 0b101
+
+typedef PACKED(struct)
+{
+
+} cpu_state_t;
+
+typedef void (*int_handler_t)(cpu_state_t * states);
+
+void idt_setup();

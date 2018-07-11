@@ -12,7 +12,7 @@ CFLAGS  = -I ./include -ffreestanding -nostdlib -O3 -std=gnu11 -Wall -Wextra -We
 LDFLAGS = -I ./include -ffreestanding -nostdlib -O3 -lgcc -ggdb
 ASFLAGS = -felf32
 
-QEMUFLAGS = -m 256M  -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg
+QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=tcg
 
 # --- Commands --------------------------------------------------------------- #
 .PHONY: build rebuild run run-nox debug clean crosscompiler
@@ -23,11 +23,11 @@ rebuild: clean build
 
 run: build
 	@echo "\n\033[1;37mBooting qemu...\033[0m\n"
-	@qemu-system-i386 $(QEMUFLAGS)
-
-run-nox: build
-	@echo "\033[1;37mBooting qemu...\033[0m"
 	@qemu-system-i386 $(QEMUFLAGS) -nographic
+
+run-x: build
+	@echo "\033[1;37mBooting qemu...\033[0m"
+	@qemu-system-i386 $(QEMUFLAGS) 
 
 debug: build
 	@qemu-system-i386 $(QEMUFLAGS) -s -S
@@ -49,7 +49,7 @@ kernel.bin: $(KERNEL_OBJS)
 	@echo -n "\n\033[1;37mLinking the kernel...\033[0m"
 	@$(CC) $(LDFLAGS) -T kernel/kernel.ld -o $@ $^
 	@$(OBJDUMP) -S $@ > kernel.asm
-	@echo "\033[1;37mDONE\033[0m"
+	@echo "\033[1;37m DONE\033[0m"
 
 %.S.o: %.S
 	@echo "\033[1;34m  AS\033[0m  $@ -> $^"

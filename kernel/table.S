@@ -15,3 +15,9 @@ gdt_flush:
     
 ._gdt_flush:
     ret
+
+global gdt_flush
+load_idt:
+    mov eax, [esp + 4]
+    lidt [eax]
+    ret
