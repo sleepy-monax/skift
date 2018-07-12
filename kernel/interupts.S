@@ -1,6 +1,7 @@
 ; http://www.ctyme.com/intr/int.htm
 
 extern interrupt_handler
+extern task_shedule
 
 %macro  SAVE_REGS 0
         pushad 
@@ -38,6 +39,29 @@ int_handler%1:
     
     add esp, 8
     RESTORE_REGS
+    sti
+    iret
+%endmacro
+
+%macro HANDLER_TASK_SWICH 1
+global int_handler%1
+int_handler%1:
+    cli
+    
+    SAVE_REGS
+
+    mov eax, esp    ; stack => eax
+    push eax    ; push eax (esp)
+
+    call task_shedule
+
+    mov esp, eax    ; return value => stack
+
+    mov al, 0x20    ; ack IRQ
+    out 0x20, al
+
+    RESTORE_REGS
+    
     sti
     iret
 %endmacro
@@ -93,7 +117,7 @@ HANDLER 31
 
 ; Hardware interupte (IRQ)
 
-HANDLER 32 ; clock (Need a special handlder for task switching)
+HANDLER_TASK_SWICH 32 ; clock (Need a special handlder for task switching)
 HANDLER 33 ; keyboard
 HANDLER 34
 HANDLER 35 ; COM2-4

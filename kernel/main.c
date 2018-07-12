@@ -11,6 +11,31 @@ void print_sysinfo(multiboot_info_t * info)
     major("core one v0.0.1&7 - %s %dk %dm %s", info->boot_loader_name, info->mem_lower, info->mem_upper / 1024, info->cmdline);
 }
 
+void taskA()
+{
+    while(1)
+    {
+        print("&3Hi I'm A!\n"); 
+        for(u32 i = 0; i < 10000000; i++)
+        {
+            /* code */
+        }       
+    }
+}
+
+void taskB()
+{
+    while(1)
+    {
+        print("&2Hi I'm B :)\n");
+
+        for(u32 i = 0; i < 10000000; i++)
+        {
+            /* code */
+        }
+    }
+}
+
 void main(multiboot_info_t * info)
 {
     console_setup();
@@ -19,14 +44,22 @@ void main(multiboot_info_t * info)
     setup(device);
     setup(system);
 
+    task_start_named((task_entry_t)&taskA, "A");
+    task_start_named((task_entry_t)&taskB, "B");
+
     sti();
     
     major("The kernel has started successfully !");
 
     print_sysinfo(info);
-
-
-
-    while(1) {}
+    
+    while(1) 
+    {
+        print("&4Hi I'am the kenel :D\n");
+        for(u32 i = 0; i < 10000000; i++)
+        {
+            /* code */
+        }  
+    }
     panic("The end of the main function has been reached.");
 }

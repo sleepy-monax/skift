@@ -1,9 +1,10 @@
 #include "kernel/system.h"
+#include "kernel/cpu.h"
 #include "libc.h"
 
 void system_setup()
 {
-
+    setup(task);
 }
 
 const char * const log_level[] = { "&f", "&7", "&e", "&4"};
@@ -34,6 +35,8 @@ const char * const witty_comments[] =
 
 void __panic(const string file, const string function, const int line, string message, ...)
 {
+    cli();
+
     va_list va;
     va_start(va, message);
     
@@ -55,4 +58,6 @@ void __panic(const string file, const string function, const int line, string me
     printf("\n\t&fPress any key to reboot...\n"); 
 
     printf("\n&8------------------------------------------------------------ core one v0.0.1 ---\n");
+
+    while(1);
 }

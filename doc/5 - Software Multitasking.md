@@ -1,9 +1,7 @@
 #summary Adding Multitasking capability to your OS
 #labels Phase-Implementation,Featured
 
-<wiki:gadget url="http://onyxkernel.googlecode.com/svn/wiki/adsense.xml" height="60" width="468"/>
-
-= Introduction =
+# Introduction
 
 *_Suggested Reading:_* [http://osdever.net/bkerndev/Docs/intro.htm Bran's Kernel Development Tutorial]
 
@@ -16,10 +14,10 @@ First off, you need to understand that you cannot really run more than one _thre
 
 If you have read Bran's Kernel Tutorial, or have written a kernel based off of it, then you know a little bit about the Global Descriptor Tables (GDT) and more importantly, the Interrupt Descriptor Table (IDT). The ISR (Interrupt Service Routine)/IDT handler that Bran so kindly provided us with is a small example of what software multi-tasking can do. When an interrupt occurs, we save the current registers and processor state (we're going to call this the _context_) to the stack (ESP). We then `jmp` to our handler and execute the required Interrupt Stub (Timer, floppy, ATA disk, etc), and then we return to our ISR/IDT code (where we saved the context) and restore the context back to the processor. Basically, this allows us to sort of trick the processor into thinking that we never even switched to our handler code. We are going to do the exact same thing now, just with a little more power
 
-= Step 1: Writing a Task Structure =
+## Step 1: Writing a Task Structure
 
 Before we go running off and start switching contexts, we need to make a structure to save our task's state and data in. Here is a basic structure that you can expand to your needs.
-```
+```c
 typedef struct task
 {
 	uint32 pid;       // Process ID
@@ -35,11 +33,11 @@ int pid = -1;             // Current Process ID
 ```
 The main field that we need is the `task_t.stack` field. This is where we will save the context state of the processor and task.
 
-= Step 2: Writing a `CreateTask` Routine =
+## Step 2: Writing a `CreateTask` Routine =
 
 Now that we have a task structure, we need a way to fill out the structure. This is pretty basic, if you understand that the Intel 80x86 family of processors has a stack that _expands downward_.
 
-```
+```c
 void CreateTask(int id, unsigned char name[32], void (*thread)())
 {
 	asm volatile("cli");
@@ -87,11 +85,11 @@ void CreateTask(int id, unsigned char name[32], void (*thread)())
 
 There. Now we can create new tasks easily.
 
-= Step 3: Writing a Task Scheduler =
+## Step 3: Writing a Task Scheduler =
 
 I am going to provide you with just a basic round-robin scheduler, one that can switch between just 2 tasks. If you want more tasks, just take out the switch statement and increment `pid` until it goes above the number of created tasks, and loop back down to zero.
 
-```
+```c
 unsigned int sched(unsigned int context)  // Our assembly code provides us with the context
 {
          tasks[pid].stack = context;      // save the old context into current task
@@ -109,7 +107,7 @@ unsigned int sched(unsigned int context)  // Our assembly code provides us with 
 ```
 Now we have to write a small assembly function to do the actual setup.
 
-= Step 4: Writing a `task switch` Function =
+## Step 4: Writing a `task switch` Function =
 
 Now, we have to write the actual switching function. This doesn't distinguish between tasks, it just retrieves the next task's
 
@@ -150,10 +148,10 @@ irq0:
 
 Just install irq0 into your interrupt request table, and each time that the system timer interrupt (Interrupt Request 0, Int 32) interrupts, you will switch tasks!
 
-= Task Setup =
+## Task Setup
 
 I have prepared a simple task for you. Just remember whenever you create a task to make sure that it loops. Just call `CreateTask(0, "Idle Task", IdleTask);`
-```
+```c
 void IdleTask(void)
 {
 	printf("Idle Task\n");

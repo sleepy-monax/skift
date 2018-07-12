@@ -69,6 +69,12 @@ void idt_entry(u8 index, u32 offset, u16 selector, u16 type)
 
 void interrupt_handler(int intno, int errcode)
 {
+    if (intno < 32)
+    {
+        exeption(intno, errcode);
+    }
+
+    UNUSED(intno + errcode);
     info("Interrupt %d %d!", intno, errcode);
     outb(0x20, 0x20);
 }
