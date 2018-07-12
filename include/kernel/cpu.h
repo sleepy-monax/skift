@@ -53,9 +53,10 @@ typedef PACKED(struct)
 
 /* --- IDT ------------------------------------------------------------------ */
 
-#define INT_GATE 0b110
-#define TRAP_GATE 0b111
-#define TASK_GATE 0b101
+// Gate call protection. 
+// Specifies which privilege Level the calling Descriptor minimum should have. 
+#define DPL_KERNEL 0b00000000 // ring 0
+#define DPL_USER   0b01100000 // ring 1
 
 typedef PACKED(struct)
 {
@@ -64,4 +65,6 @@ typedef PACKED(struct)
 
 typedef void (*int_handler_t)(cpu_state_t * states);
 
+void pic_setup();
 void idt_setup();
+void idt_entry(u8 index, u32 offset, u16 selector, u16 type);

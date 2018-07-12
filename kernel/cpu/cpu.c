@@ -1,12 +1,6 @@
 #include "kernel/cpu.h"
 #include "kernel/system.h"
 
-void cpu_setup()
-{
-    setup(gdt);
-    setup(idt);
-}
-
 u8 inb(u16 port)
 {
     u8 data;
@@ -17,4 +11,11 @@ u8 inb(u16 port)
 void outb(u16 port, u8 data)
 {
     asm volatile("out %0,%1" : : "a" (data), "d" (port));
+}
+
+void cpu_setup()
+{
+    setup(gdt);
+    setup(pic);
+    setup(idt);
 }

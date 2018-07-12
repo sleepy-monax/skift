@@ -50,7 +50,7 @@ kernel.bin: $(KERNEL_OBJS)
 	@echo -n "\n\033[1;37mLinking the kernel...\033[0m"
 	@$(CC) $(LDFLAGS) -T kernel/kernel.ld -o $@ $^
 	@$(OBJDUMP) -S $@ > kernel.asm
-	@echo "\033[1;37m DONE\033[0m"
+	@echo "\033[1;37m DONE\033[0m\n"
 
 %.S.o: %.S
 	@echo -n "\033[1;34m .. AS \033[0m$^ => $@"

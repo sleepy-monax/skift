@@ -37,7 +37,7 @@ void __panic(const string file, const string function, const int line, string me
     va_list va;
     va_start(va, message);
     
-    printf("\n&8--- &4!!!&8 ------------------------------------------------------------------------&f");
+    printf("\n&8--- &4!!!&8 ------------------------------------------------------------------------&f\n");
     
     printf("\n\t&4KERNEL PANIC\n\t&8// %s\n\n\t&f", witty_comments[0 % 8]); 
     
@@ -54,5 +54,5 @@ void __panic(const string file, const string function, const int line, string me
     
     printf("\n\t&fPress any key to reboot...\n"); 
 
-    printf("\n&8------------------------------------------------------------ core one v0.0.1 ---");
+    printf("\n&8------------------------------------------------------------ core one v0.0.1 ---\n");
 }

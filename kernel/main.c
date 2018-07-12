@@ -19,9 +19,14 @@ void main(multiboot_info_t * info)
     setup(device);
     setup(system);
 
+    sti();
+    
     major("The kernel has started successfully !");
 
     print_sysinfo(info);
 
+
+
+    while(1) {}
     panic("The end of the main function has been reached.");
 }
