@@ -1,11 +1,11 @@
 #include "libc.h"
+#include "kernel/cpu.h"
 #include "kernel/system.h"
+#include "kernel/task.h"
 
 void print(string message)
 {
-    cli();
     console_print(message);
-    sti();
 }
 
 void printfva(string format, va_list va)
@@ -96,10 +96,8 @@ void printfva(string format, va_list va)
 
 void printf(string format, ...)
 {
-    cli();
     va_list va;
     va_start(va, format);
 
     printfva(format, va);
-    sti();
 }

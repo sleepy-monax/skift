@@ -1,12 +1,15 @@
 #include "kernel/system.h"
 #include "device/uart.h"
 #include "device/vga.h"
+#include "kernel/task.h"
 #include "ascii.h"
 #include "libc.h"
 
 #define TAB_SIZE 4
 
 console_t console;
+lock_t console_lock;
+bool console_bypass_lock = false;;
 
 void console_setup()
 {
@@ -14,6 +17,8 @@ void console_setup()
     console.cursor.y = 0;
     console.bg = console_defaul_bg;
     console.fg = console_defaul_fg;
+
+    lock_init(&console_lock, "console");
 
     vga_setup();
     uart_setup();
@@ -27,6 +32,9 @@ void console_color(console_color_t fg, console_color_t bg)
 
 void console_put(char c)
 {
+    if (!console_bypass_lock)
+        lock_acquire(&console_lock);
+
     vga_cell(console.cursor.x, console.cursor.y, vga_entry(c, console.bg, console.fg));
     uart_put(COM1, c);
     console.cursor.x++;
@@ -45,10 +53,16 @@ void console_put(char c)
     }
 
     vga_cursor(console.cursor.x, console.cursor.y);
+
+    if (!console_bypass_lock)
+        lock_release(&console_lock);
 }
 
 void console_print(string message)
 {
+    if (!console_bypass_lock)
+        lock_acquire(&console_lock);
+
     bool wait_for_color_id = false;
     
     for(u32 i = 0; message[i]; i++)
@@ -105,7 +119,7 @@ void console_print(string message)
                 uart_put(COM1, c);
         }
 
-        if (console.cursor.x >= vga_screen_width)
+        if (console.cursor.x > vga_screen_width)
         {
             console.cursor.x = 0;
             console.cursor.y++;
@@ -121,6 +135,9 @@ void console_print(string message)
     }
 
     vga_cursor(console.cursor.x, console.cursor.y);
+    
+    if (!console_bypass_lock)
+        lock_release(&console_lock);
 }
 
 void console_read(string buffer, int size)

@@ -1,0 +1,9 @@
+void malloc()
+{
+
+}
+
+void free()
+{
+    
+}

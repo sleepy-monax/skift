@@ -1,9 +1,8 @@
+#include "kernel/system.h"
 #include "kernel/device.h"
-
-#include "device/vga.h"
-#include "device/uart.h"
+#include "device/ide.h"
 
 void device_setup()
 {
-
+    setup(ide);
 }

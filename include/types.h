@@ -26,6 +26,10 @@ typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned long uint;
 
+typedef u8  * buffer8_t;
+typedef u16 * buffer16_t;
+typedef u32 * buffer32_t;
+
 typedef struct 
 {
     s32 x;

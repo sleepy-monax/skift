@@ -1,6 +1,7 @@
 #include "libc.h"
 #include "kernel/cpu.h"
 #include "kernel/system.h"
+#include "kernel/task.h"
 
 tid_t current_task = -1;
 task_t tasks[TASK_MAX_COUNT];
@@ -40,6 +41,13 @@ void stack_push(task_t* task, u32 value)
 
 void task_setup()
 {
+    u32 divisor = 1193180 / 1000;
+    outb(0x43, 0x36);
+    u8 l = (u8)(divisor & 0xFF);
+    u8 h = (u8)( (divisor>>8) & 0xFF );
+    outb(0x40, l);
+    outb(0x40, h);
+
     // clear the task table.
     memset(&tasks, 0, sizeof(task_t) * TASK_MAX_COUNT);
 
@@ -109,10 +117,10 @@ tid_t task_start_named(task_entry_t entry, string name)
     return task->id;
 }
 
-esp_t task_shedule(esp_t old_esp) 
+esp_t task_shedule(esp_t esp) 
 {
     // save the state of the task.
-    tasks[current_task].esp = old_esp;
+    tasks[current_task].esp = esp;
     tid_t next_task = get_next_task_by_state(current_task, TASK_RUNNING);
     //info("swtching from %s to %s.", tasks[current_task].name, tasks[next_task].name);
     current_task = next_task;

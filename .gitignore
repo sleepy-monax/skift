@@ -5,3 +5,4 @@ tools/tarballs
 *.S.o
 *.bin
 *.asm
+*.img

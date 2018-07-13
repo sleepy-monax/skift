@@ -1,6 +1,7 @@
-#include "kernel/system.h"
-#include "kernel/cpu.h"
 #include "libc.h"
+#include "kernel/cpu.h"
+#include "kernel/system.h"
+#include "kernel/task.h"
 
 void system_setup()
 {
@@ -33,8 +34,11 @@ const char * const witty_comments[] =
     "...",
 };
 
+extern bool console_bypass_lock;
+
 void __panic(const string file, const string function, const int line, string message, ...)
 {
+    console_bypass_lock = true;
     cli();
 
     va_list va;
