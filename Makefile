@@ -8,8 +8,8 @@ CC = $(TOOLS_PREFIX)gcc
 AS = nasm
 OBJDUMP = $(TOOLS_PREFIX)objdump
 
-CFLAGS  = -I ./include -ffreestanding -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb
-LDFLAGS = -I ./include -ffreestanding -nostdlib -lgcc -ggdb
+CFLAGS  = -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb
+LDFLAGS = -I ./include -ffreestanding -O3 -nostdlib -lgcc -ggdb
 ASFLAGS = -felf32
 
 QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=tcg

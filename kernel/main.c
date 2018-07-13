@@ -15,7 +15,7 @@ void taskA()
 {
     while(1)
     {
-        print("&3Hi I'm A!\n"); 
+        print("&3Hi I'm task A!\n"); 
         for(u32 i = 0; i < 10000000; i++)
         {
             /* code */
@@ -27,7 +27,7 @@ void taskB()
 {
     while(1)
     {
-        print("&2Hi I'm B :)\n");
+        print("&2Hi I'm task B :)\n");
 
         for(u32 i = 0; i < 10000000; i++)
         {
@@ -55,7 +55,7 @@ void main(multiboot_info_t * info)
     
     while(1) 
     {
-        print("&4Hi I'am the kenel :D\n");
+        print("&4Hi I'am the kernel task :D\n");
         for(u32 i = 0; i < 10000000; i++)
         {
             /* code */
