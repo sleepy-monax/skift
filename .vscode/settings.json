@@ -8,6 +8,8 @@
         "**/*.o": true,
     },
     "files.associations": {
-        "system_error": "c"
+        "system_error": "c",
+        "array": "cpp",
+        "string_view": "cpp"
     }
 }
