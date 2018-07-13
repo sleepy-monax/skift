@@ -95,7 +95,7 @@ tid_t task_start_named(task_entry_t entry, string name)
     stack_push(task, 0); // EDI
     stack_push(task, 0); // ESI
     stack_push(task, 0); // EBP
-    stack_push(task, 0); // ESP - ingored
+    stack_push(task, 0); // ESP - ignored
     stack_push(task, 0); // EBX
     stack_push(task, 0); // EDX
     stack_push(task, 0); // ECX
@@ -110,7 +110,7 @@ tid_t task_start_named(task_entry_t entry, string name)
 
     if (current_task == -1) current_task = free_task;
 
-    info("Task '%s' with tid %d created. (stack %x, entry %x)", task->name, task->id, task->stack, task->entry);
+    info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
 
     sti();
 

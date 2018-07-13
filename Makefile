@@ -49,14 +49,14 @@ crosscompiler:
 # --- file system build ------------------------------------------------------ #
 
 filesystem.img:
-	@echo -n "\033[1;37m .. Generating the file system...\033[0m"
+	@echo -n "\033[1;37m .. Generating the file system.\033[0m"
 	@dd if=/dev/zero of=$@ count=10000 status=none
 	@echo "\r\033[0m ✅\n"
 
 # --- Kernel image build ----------------------------------------------------- #
 
 kernel.bin: $(KERNEL_OBJS)
-	@echo -n "\n\033[1;37m 🔧 Linking the kernel...\033[0m"
+	@echo -n "\n\033[1;37m 🔧 Linking the kernel.\033[0m"
 	@$(CC) $(LDFLAGS) -T kernel/kernel.ld -o $@ $^
 	@$(OBJDUMP) -S $@ > kernel.asm
 	@echo "\r\033[0m ✅ \n"
