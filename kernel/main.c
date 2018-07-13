@@ -57,10 +57,16 @@ void main(multiboot_info_t * info)
     //     for(u32 i = 0; i < 1000; i++);        
     // }
 
-    char buffer[512] = "hello world!\n";
-    ide_write_block(0, 0, 1, (buffer16_t)&buffer);
-    ide_read_block(0, 0, 1, (buffer16_t)&buffer);
-    print(buffer);
+    
+    for(u32 i = 0; i < 100000; i++)
+    {
+        char buffer[512] = "hello world!\n";
+        ide_write_block(0, 0, 1, (buffer16_t)&buffer);
+        ide_read_block(0, 0, 1, (buffer16_t)&buffer);
+        print(buffer);
+        /* code */
+    }
+    
 
     panic("The end of the main function has been reached.");
 }

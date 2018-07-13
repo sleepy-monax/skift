@@ -75,6 +75,7 @@ void interrupt_handler(int intno, int errcode)
     }
 
     UNUSED(intno + errcode);
+    
     info("Interrupt %d %d!", intno, errcode);
     outb(0x20, 0x20);
 }

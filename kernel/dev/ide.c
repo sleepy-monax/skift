@@ -4,6 +4,7 @@
 #include "device/ide.h"
 #include "kernel/cpu.h"
 #include "kernel/task.h"
+#include "kernel/system.h"
 
 #define IDE_SECTOR_SIZE 512
 
@@ -17,7 +18,9 @@ void ide_setup()
 void ide_wait()
 {
     /* Wait for the drive to signal that it's ready: */
+    info("entering!");
     while (!(inb(0x1F7) & 0x08));
+    info("ok!");
 }
 
 void ide_common(u8 device, u32 block, u8 count)
@@ -36,17 +39,15 @@ void ide_read_block(u8 device, u32 block, u8 count, buffer16_t buffer)
 {
     lock_acquire(&ide_lock);
 
-
         ide_common(device, block, count);
         outb(0x1F7, 0x20);
-        ide_wait();
+        while (!(inb(0x1F7) & 0x08));
 
         for (u32 i = 0; i < IDE_SECTOR_SIZE * count; i++) 
         {   
             //printf("Reading word %i\n", i);
             buffer[i] = inw(0x1F0);
         }
-
 
     lock_release(&ide_lock);
 }
@@ -55,17 +56,15 @@ void ide_write_block(u8 device, u32 block, u8 count, buffer16_t buffer)
 {
     lock_acquire(&ide_lock);
 
-
         ide_common(device, block, count);
         outb(0x1F7, 0x30);
-        ide_wait();
+        while (!(inb(0x1F7) & 0x08));
 
         for (u32 i = 0; i < IDE_SECTOR_SIZE * count; i++) 
         {
             //printf("Writing word %i\n", i);
             outw(0x1F0, *(buffer + i));
         }
-
 
     lock_release(&ide_lock);
 }

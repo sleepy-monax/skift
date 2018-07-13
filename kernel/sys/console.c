@@ -9,7 +9,7 @@
 
 console_t console;
 lock_t console_lock;
-bool console_bypass_lock = false;;
+bool console_bypass_lock = false;
 
 void console_setup()
 {
