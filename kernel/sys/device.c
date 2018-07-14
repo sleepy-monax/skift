@@ -1,8 +1,8 @@
 #include "kernel/system.h"
 #include "kernel/device.h"
-#include "device/ide.h"
+#include "device/atapio.h"
 
 void device_setup()
 {
-    setup(ide);
+
 }

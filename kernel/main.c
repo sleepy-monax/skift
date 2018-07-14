@@ -6,7 +6,7 @@
 #include "kernel/system.h"
 #include "kernel/task.h"
 
-#include "device/ide.h"
+#include "kernel/kobject.h"
 
 void print_sysinfo(multiboot_info_t * info)
 {
@@ -37,6 +37,8 @@ void main(multiboot_info_t * info)
     console_setup();
 
     setup(heap);
+    setup(kobject);
+
     setup(cpu);
     setup(device);
     setup(system);
@@ -56,17 +58,6 @@ void main(multiboot_info_t * info)
     //     
     //     for(u32 i = 0; i < 1000; i++);        
     // }
-
-    
-    for(u32 i = 0; i < 100000; i++)
-    {
-        char buffer[512] = "hello world!\n";
-        ide_write_block(0, 0, 1, (buffer16_t)&buffer);
-        ide_read_block(0, 0, 1, (buffer16_t)&buffer);
-        print(buffer);
-        /* code */
-    }
-    
 
     panic("The end of the main function has been reached.");
 }
