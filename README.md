@@ -1,4 +1,3 @@
-<br><br><br><br><br><br><br><br><br><br>
 
 <h1 align="center">
   <br>
@@ -21,5 +20,3 @@
 This project is licensed under the MIT License - see the LICENSE.md for details.
 
 ![logo](doc/capture_2018-07-15_10-58-37.png)
-
-<br><br><br><br><br><br><br><br><br><br>
