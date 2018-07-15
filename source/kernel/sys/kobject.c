@@ -2,17 +2,18 @@
 #include "kernel/kobject.h"
 #include "kernel/task.h"
 
-typedef bool (*kclass_ctor_t)(void * instance, va_list va);
-typedef bool (*kclass_dtor_t)(void * instance);
+#define KOBJ_MAGIC 0xC1C2C3C4
 
 typedef struct 
 {
     string name;
     kclass_ctor_t ctor;
+    kclass_dtor_t dtor;
 } kclass_t;
 
 typedef struct 
 {
+    u32 magic;
     u32 refcount;
     kclass_t * class;
     u32 data;
@@ -37,12 +38,13 @@ void kobject_setup()
 
 /* --- kclasses ------------------------------------------------------------- */
 
-void kclass_register(const string name, kclass_ctor_t ctor)
+void kclass_register(const string name, kclass_ctor_t ctor, kclass_dtor_t dtor)
 {
     info("Class '%s' registered.", name);
     kclass_t * new_class = (kclass_t*)malloc(sizeof(kclass_t));
 
     new_class->ctor = ctor;
+    new_class->dtor = dtor;
 
     lock_acquire(&kclass_list_lock);
     list_append(kclasses, (u32) new_class);
@@ -80,8 +82,9 @@ khandle kobject_new(const string baseclassname, ...)
 
     kobject_t * instance = (kobject_t*)malloc(sizeof(kobject_t));
     instance->class = kclass_get(baseclassname);
+    instance->magic = KOBJ_MAGIC;
     
-    if (instance->class->ctor(instance, va))
+    if (instance->class != NULL && (instance->class->ctor == NULL || instance->class->ctor(instance, va)))
     {
         lock_acquire(&kobj_list_lock);
         list_append(kobjects, (u32)instance);
@@ -89,14 +92,32 @@ khandle kobject_new(const string baseclassname, ...)
     }
     else
     {
+        instance->magic = 0;
         free(instance);
         instance = NULL;
     }
     
+    info("kobject '%s' constructed with handle %x.", baseclassname, instance);
+
     return (khandle)instance;
 }
 
-void kobject_free()
+void kobject_free(khandle handle)
 {
+    kobject_t * instance = (kobject_t *)handle;
 
+    if (instance->magic == KOBJ_MAGIC)
+    {
+        if (instance->class->dtor == NULL || instance->class->dtor(instance))
+        {
+            instance->magic = 0;
+            free(instance);
+        }
+
+        warn("Trying to free a unfreeable object of class '%s'.", instance->class->name);
+    }
+    else
+    {
+        warn("Invalide kobj magic (%x != %x). Are you trying to free a free object.", instance->magic, KOBJ_MAGIC);
+    }
 }
