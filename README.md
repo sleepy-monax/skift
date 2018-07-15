@@ -1,11 +1,13 @@
+<br><br><br><br><br><br><br><br><br><br>
 <p align="center">
 
-![logo](doc/logo_blue256x.png)
-
+<img src="https://github.com/NicolasVanBossuyt/core-one/blob/master/doc/logo_blue256x.png?raw=true">
 <font size="8"><b>Core One</b></font>
 <font size="4">Kernel for the Skift Operating System</font>
 
 </p>
+
+<br><br><br><br><br><br><br><br><br><br>
 
 ## Build the system
  1. First you need to build the crosscompiler using: `make crosscompiler`
@@ -17,4 +19,4 @@ This project is licensed under the MIT License - see the LICENSE.md for details.
 
 ![logo](doc/capture_2018-07-15_10-58-37.png)
 
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br><br><br><br><br><br><br><br><br><br>
