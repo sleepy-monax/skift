@@ -1,7 +1,9 @@
 export PATH := $(shell tools/activate.sh)
 
-KERNEL_OBJS =  $(patsubst %.c,%.c.o,$(shell find ./kernel -name '*.c'))
-KERNEL_OBJS += $(patsubst %.S, %.S.o,$(shell find ./kernel -name '*.S'))
+SOURCE_FOLDER = ./source
+
+KERNEL_OBJS =  $(patsubst %.c,%.c.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.c'))
+KERNEL_OBJS += $(patsubst %.S, %.S.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.S'))
 
 TOOLS_PREFIX = i686-elf-
 CC = $(TOOLS_PREFIX)gcc
@@ -24,6 +26,10 @@ rebuild: clean build
 
 	run: build
 	@echo "\033[1;37mBooting qemu...\033[0m"
+	@qemu-system-i386 $(QEMUFLAGS)
+
+run: build
+	@echo "\n\033[1;37mBooting qemu...\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS)
 
 run-nox: build
@@ -57,7 +63,7 @@ filesystem.img:
 
 kernel.bin: $(KERNEL_OBJS)
 	@echo -n "\n\033[1;37m 🔧 Linking the kernel.\033[0m"
-	@$(CC) $(LDFLAGS) -T kernel/kernel.ld -o $@ $^
+	@$(CC) $(LDFLAGS) -T $(SOURCE_FOLDER)/kernel.ld -o $@ $^
 	@$(OBJDUMP) -S $@ > kernel.asm
 	@echo "\r\033[0m ✅ \n"
 

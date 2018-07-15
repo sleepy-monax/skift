@@ -16,7 +16,9 @@
 <br><br><br><br><br>
 <br><br><br><br><br>
 
-## Build the system
+## Features
+
+## Build the operating system
  1. First you need to build the crosscompiler using: `make crosscompiler`
  - Then build the system using: `make`
  - finaly you can run it using: `make run`
