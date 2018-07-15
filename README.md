@@ -1,5 +1,5 @@
 <br><br><br><br><br><br><br><br><br><br>
-<p align="center">
+<center>
 
 <img src="https://github.com/NicolasVanBossuyt/core-one/blob/master/doc/logo_blue256x.png?raw=true"><br>
 <font size="8"><b>Core One</b></font>
