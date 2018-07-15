@@ -1,7 +1,10 @@
 <p align="center">
+
 ![logo](doc/logo_blue256x.png)
+
 <font size="8"><b>Core One</b></font>
 <font size="4">Kernel for the Skift Operating System</font>
+
 </p>
 
 ## Build the system
