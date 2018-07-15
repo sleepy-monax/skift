@@ -5,13 +5,13 @@ SOURCE_FOLDER = ./source
 TOOLS_PREFIX = i686-elf-
 CC = $(TOOLS_PREFIX)gcc
 AR = $(TOOLS_PREFIX)ar
+LD = $(TOOLS_PREFIX)ld
 AS = nasm
 OBJDUMP = $(TOOLS_PREFIX)objdump
 
 CFLAGS  = -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb
-LDFLAGS = -I ./include -ffreestanding -O3 -nostdlib -lgcc -ggdb
+LDFLAGS =
 ASFLAGS = -felf32
-
 QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=tcg
 QEMUFLAGS += -drive file=filesystem.img,index=0,media=disk,format=raw
 
@@ -22,12 +22,8 @@ build: kernel.bin filesystem.img
 
 rebuild: clean build
 
-	run: build
-	@echo "\033[1;37mBooting qemu...\033[0m"
-	@qemu-system-i386 $(QEMUFLAGS)
-
 run: build
-	@echo "\n\033[1;37mBooting qemu...\033[0m\n"
+	@echo "\033[1;37mBooting qemu...\033[0m"
 	@qemu-system-i386 $(QEMUFLAGS)
 
 run-nox: build
@@ -57,7 +53,7 @@ crosscompiler:
 
 LIBC_OBJS = $(patsubst %.c,%.c.o,$(shell find $(SOURCE_FOLDER)/libc -name '*.c'))
 
-libc.a: $(KERNEL_OBJS)
+libc.a: $(LIBC_OBJS)
 	$(AR) rcs $@ $^
 
 # ============================================================================ #
@@ -77,10 +73,9 @@ filesystem.img:
 KERNEL_OBJS =  $(patsubst %.c,%.c.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.c'))
 KERNEL_OBJS += $(patsubst %.S, %.S.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.S'))
 
-kernel.bin: libc.a $(KERNEL_OBJS)
-	@echo "kernel objects: $^"
+kernel.bin: $(KERNEL_OBJS) libc.a
 	@echo -n "\n\033[1;37m 🔧 Linking the kernel.\033[0m"
-	@$(CC) $(LDFLAGS) -T $(SOURCE_FOLDER)/kernel.ld -o $@ $^
+	@$(LD) $(LDFLAGS) -T $(SOURCE_FOLDER)/kernel.ld -o $@ $^
 	@$(OBJDUMP) -S $@ > kernel.asm
 	@echo "\r\033[0m ✅ \n"
 
