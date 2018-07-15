@@ -1,4 +1,5 @@
 #include "libc.h"
+#include "list.h"
 
 list_t *list_alloc()
 {

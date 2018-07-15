@@ -12,6 +12,7 @@
         "array": "cpp",
         "string_view": "cpp",
         "kobject.h": "c",
-        "ascii.h": "c"
+        "ascii.h": "c",
+        "list": "cpp"
     }
 }
