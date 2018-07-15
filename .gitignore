@@ -6,3 +6,4 @@ tools/tarballs
 *.bin
 *.asm
 *.img
+*.a

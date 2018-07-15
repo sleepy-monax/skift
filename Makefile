@@ -2,11 +2,9 @@ export PATH := $(shell tools/activate.sh)
 
 SOURCE_FOLDER = ./source
 
-KERNEL_OBJS =  $(patsubst %.c,%.c.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.c'))
-KERNEL_OBJS += $(patsubst %.S, %.S.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.S'))
-
 TOOLS_PREFIX = i686-elf-
 CC = $(TOOLS_PREFIX)gcc
+AR = $(TOOLS_PREFIX)ar
 AS = nasm
 OBJDUMP = $(TOOLS_PREFIX)objdump
 
@@ -47,21 +45,40 @@ clean:
 	@find -name "*.bin" -delete
 	@find -name "*.asm" -delete
 	@find -name "*.img" -delete
+	@find -name "*.a" -delete
 	@echo "\r\033[0m ✅\n"
 
 crosscompiler:
 	./tools/buildtoolchain.sh
 
-# --- file system build ------------------------------------------------------ #
+# ============================================================================ #
+# =   Libc                                                                   = #
+# ============================================================================ #
+
+LIBC_OBJS = $(patsubst %.c,%.c.o,$(shell find $(SOURCE_FOLDER)/libc -name '*.c'))
+
+libc.a: $(KERNEL_OBJS)
+	$(AR) rcs $@ $^
+
+# ============================================================================ #
+# =   File system                                                            = #
+# ============================================================================ #
 
 filesystem.img:
 	@echo -n "\033[1;37m .. Generating the file system.\033[0m"
 	@dd if=/dev/zero of=$@ count=10000 status=none
 	@echo "\r\033[0m ✅\n"
 
-# --- Kernel image build ----------------------------------------------------- #
 
-kernel.bin: $(KERNEL_OBJS)
+# ============================================================================ #
+# =   KERNEL                                                                 = #
+# ============================================================================ #
+
+KERNEL_OBJS =  $(patsubst %.c,%.c.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.c'))
+KERNEL_OBJS += $(patsubst %.S, %.S.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.S'))
+
+kernel.bin: libc.a $(KERNEL_OBJS)
+	@echo "kernel objects: $^"
 	@echo -n "\n\033[1;37m 🔧 Linking the kernel.\033[0m"
 	@$(CC) $(LDFLAGS) -T $(SOURCE_FOLDER)/kernel.ld -o $@ $^
 	@$(OBJDUMP) -S $@ > kernel.asm
