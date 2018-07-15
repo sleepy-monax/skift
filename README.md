@@ -1,7 +1,7 @@
 <br><br><br><br><br><br><br><br><br><br>
 <p align="center">
 
-<img src="https://github.com/NicolasVanBossuyt/core-one/blob/master/doc/logo_blue256x.png?raw=true">
+<img src="https://github.com/NicolasVanBossuyt/core-one/blob/master/doc/logo_blue256x.png?raw=true"><br>
 <font size="8"><b>Core One</b></font>
 <font size="4">Kernel for the Skift Operating System</font>
 
