@@ -22,13 +22,13 @@ build: kernel.bin filesystem.img
 
 rebuild: clean build
 
-run: build
+	run: build
+	@echo "\033[1;37mBooting qemu...\033[0m"
+	@qemu-system-i386 $(QEMUFLAGS)
+
+run-nox: build
 	@echo "\n\033[1;37mBooting qemu...\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS) -nographic
-
-run-x: build
-	@echo "\033[1;37mBooting qemu...\033[0m"
-	@qemu-system-i386 $(QEMUFLAGS) 
 
 debug: build
 	@qemu-system-i386 $(QEMUFLAGS) -s -S
@@ -44,7 +44,7 @@ clean:
 	@echo "\r\033[0m ✅\n"
 
 crosscompiler:
-	./buildtoolchain.sh
+	./tools/buildtoolchain.sh
 
 # --- file system build ------------------------------------------------------ #
 

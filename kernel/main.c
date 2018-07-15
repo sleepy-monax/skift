@@ -58,6 +58,6 @@ void main(multiboot_info_t * info)
     //     
     //     for(u32 i = 0; i < 1000; i++);        
     // }
-
+    while(1){}
     panic("The end of the main function has been reached.");
 }
