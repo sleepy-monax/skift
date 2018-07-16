@@ -13,6 +13,14 @@
         "string_view": "cpp",
         "kobject.h": "c",
         "ascii.h": "c",
-        "list": "cpp"
+        "list": "cpp",
+        "complex": "cpp",
+        "istream": "c",
+        "optional": "c",
+        "ostream": "c",
+        "type_traits": "c",
+        "cmath": "c",
+        "cstdlib": "cpp",
+        "io.h": "c"
     }
 }

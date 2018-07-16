@@ -1,16 +1,24 @@
 #pragma once
 
 #define NULL ((void*)0)
+#define offsetof(st, m) ((size_t)&(((st *)0)->m))
+
+typedef unsigned int size_t;
+
+typedef unsigned short wchar_t;
+
+typedef long long ptrdiff_t;
+
 
 #define true 1
 #define false 0
+typedef unsigned char bool;
 
 #define PACKED(x) x __attribute__ ((packed))
 
 #define UNUSED(x) (void)(x)
 
 typedef char * string;
-typedef unsigned char bool;
 
 typedef char s8;
 typedef short s16;

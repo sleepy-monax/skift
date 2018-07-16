@@ -1,6 +1,7 @@
 #include "kernel/system.h"
 #include "kernel/kobject.h"
 #include "kernel/task.h"
+#include "list.h"
 
 #define KOBJ_MAGIC 0xC1C2C3C4
 

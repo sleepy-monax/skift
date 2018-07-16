@@ -1,7 +1,7 @@
-#include "libc.h"
-#include "kernel/cpu.h"
+#include "cpu/cpu.h"
 #include "kernel/system.h"
 #include "kernel/task.h"
+#include "libc.h"
 
 void system_setup()
 {
@@ -61,7 +61,7 @@ void __panic(const string file, const string function, const int line, string me
     
     printf("\n\t&fPress any key to reboot...\n"); 
 
-    printf("\n&8------------------------------------------------------------ core one v0.0.1 ---\n");
+    printf("\n&8--------------------------------------------------------------- kernel 0.0.1 ---\n");
 
     while(1);
 }

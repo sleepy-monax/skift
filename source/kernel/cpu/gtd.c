@@ -1,40 +1,5 @@
-#include "kernel/cpu.h"
+#include "cpu/gdt.h"
 #include "libc.h"
-
-#define GDT_ENTRY_COUNT 6
-
-#define PRESENT    0b10010000 // Present bit. This must be 1 for all valid selectors.
-#define USER       0b01100000 // Privilege, 2 bits. Contains the ring level, 0 = highest (kernel), 3 = lowest (user applications).
-#define EXECUTABLE 0b00001000 // Executable bit. If 1 code in this segment can be executed, ie. a code selector. If 0 it is a data selector.
-#define READWRITE  0b00000010 // Readable bit for code selectors //Writable bit for data selectors
-#define ACCESSED   0b00000001
-
-#define FLAGS      0b1100
-#define TSS_FLAGS  0
-
-typedef PACKED(struct)
-{
-    u16 size;
-    u32 offset;
-} gdt_descriptor_t;
-
-typedef PACKED(struct) 
-{
-    u16 limit0_15;
-    u16 base0_15;
-    u8 base16_23;
-    u8 acces;
-    u8 limit16_19 : 4;
-    u8 flags : 4;
-    u8 base24_31;
-} gdt_entry_t;
-
-typedef struct 
-{
-    gdt_entry_t entries[GDT_ENTRY_COUNT];
-    gdt_descriptor_t descriptor;
-    tss_t tss;
-} gdt_t;
 
 gdt_t gdt;
 

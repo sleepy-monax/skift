@@ -1,6 +1,7 @@
-#include "device/uart.h"
-#include "kernel/cpu.h"
 #include "ascii.h"
+#include "cpu/io.h"
+#include "device/uart.h"
+
 
 void uart_setup()
 {

@@ -1,7 +1,6 @@
-#include "libc.h"
-#include "kernel/cpu.h"
 #include "kernel/system.h"
 #include "kernel/task.h"
+#include "libc.h"
 
 void print(string message)
 {

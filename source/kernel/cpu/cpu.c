@@ -1,5 +1,9 @@
-#include "kernel/cpu.h"
+#include "cpu/cpu.h"
+#include "cpu/fpu.h"
+#include "cpu/gdt.h"
+#include "cpu/idt.h"
 #include "kernel/system.h"
+
 
 u8 inb(u16 port)
 {
@@ -30,4 +34,5 @@ void cpu_setup()
     setup(gdt);
     setup(pic);
     setup(idt);
+    setup(fpu);
 }

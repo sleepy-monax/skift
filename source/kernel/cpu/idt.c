@@ -1,30 +1,8 @@
-#include "kernel/cpu.h"
-#include "kernel/system.h"
 #include "libc.h"
-
-#define INTGATE  0x8E00
-#define IDT_ENTRY_COUNT 256
-
-typedef PACKED(struct) 
-{
-    u16 size;
-    u32 offset;
-} idt_descriptor_t;
-
-typedef PACKED(struct) 
-{
-    u16 offset0_15; // offset bits 0..15
-    u16 selector; // a code segment selector in GDT or LDT
-    u16 type_attr; // type and attributes
-    u16 offset16_31; // offset bits 16..31
-} idt_entry_t;
-
-typedef struct 
-{
-    idt_entry_t entries[IDT_ENTRY_COUNT];
-    idt_descriptor_t descriptor;
-    int_handler_t handlers[IDT_ENTRY_COUNT];
-} idt_t;
+#include "cpu/idt.h"
+#include "cpu/io.h"
+#include "cpu/exception.h"
+#include "kernel/system.h"
 
 idt_t idt;
 
@@ -71,7 +49,7 @@ void interrupt_handler(int intno, int errcode)
 {
     if (intno < 32)
     {
-        exeption(intno, errcode);
+        exception_handler(intno, errcode);
     }
 
     UNUSED(intno + errcode);

@@ -1,6 +1,6 @@
 #pragma once
 #include "types.h"
-#include "valist.h"
+#include "stdarg.h"
 #include "libc.h"
 
 typedef bool (*kclass_ctor_t)(void * instance, va_list va); // constructor

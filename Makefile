@@ -7,14 +7,15 @@ build: kernel.bin filesystem.img
 rebuild: clean build
 
 run: build
-	@echo "\033[1;37mBooting qemu...\033[0m"
+	@echo "\n\033[1;37m .. Booting qemu.\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS)
 
 run-nox: build
-	@echo "\n\033[1;37mBooting qemu...\033[0m\n"
+	@echo "\n\033[1;37m .. Booting qemu.\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS) -nographic
 
 debug: build
+	@echo "\n\033[1;37m .. Booting qemu (debug).\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS) -s -S
 
 clean:

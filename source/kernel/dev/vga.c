@@ -1,5 +1,5 @@
+#include "cpu/io.h"
 #include "device/vga.h"
-#include "kernel/cpu.h"
 
 u16 *video_memory = (u16 *)vga_frame_buffer;
 

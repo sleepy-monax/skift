@@ -1,13 +1,6 @@
-#include "kernel/cpu.h"
+#include "cpu/exception.h"
+#include "cpu/idt.h"
 #include "kernel/system.h"
-
-void isr_setup()
-{
-    for(u32 i = 0; i < 32; i++)
-    {
-        /* code */
-    }   
-}
 
 static const char *exception_messages[32] = {
 	"Division by zero",
@@ -44,9 +37,7 @@ static const char *exception_messages[32] = {
 	"Reserved"
 };
 
-
-
-void exeption(int interupts, int errorcode)
+void exception_handler(int interupts, int errorcode)
 {
-    panic("Exeption %s (%x:%x)!", exception_messages[interupts], interupts, errorcode);
+    panic("CPU exception %s (%x:%x)!", exception_messages[interupts], interupts, errorcode);
 }

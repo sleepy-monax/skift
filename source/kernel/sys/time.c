@@ -1,5 +1,5 @@
+#include "cpu/io.h"
 #include "kernel/system.h"
-#include "kernel/cpu.h"
 
 #define CMOS_ADDRESS 0x70
 #define CMOS_DATA 0x71

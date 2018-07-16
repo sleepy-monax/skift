@@ -1,7 +1,9 @@
-#include "libc.h"
-#include "kernel/cpu.h"
+#include "cpu/cpu.h"
+#include "cpu/fpu.h"
+#include "cpu/io.h"
 #include "kernel/system.h"
 #include "kernel/task.h"
+#include "libc.h"
 
 tid_t current_task = -1;
 task_t tasks[TASK_MAX_COUNT];
@@ -110,7 +112,8 @@ tid_t task_start_named(task_entry_t entry, string name)
 
     if (current_task == -1) current_task = free_task;
 
-    info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
+    // Dead lock if uncommented
+    // info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
 
     sti();
 
@@ -121,8 +124,11 @@ esp_t task_shedule(esp_t esp)
 {
     // save the state of the task.
     tasks[current_task].esp = esp;
+    fpu_save((buffer8_t)&tasks[current_task].fpu_states);
     tid_t next_task = get_next_task_by_state(current_task, TASK_RUNNING);
+    // Dead lock if uncommented
     //info("swtching from %s to %s.", tasks[current_task].name, tasks[next_task].name);
     current_task = next_task;
+    fpu_load((buffer8_t)&tasks[current_task].fpu_states);
     return tasks[current_task].esp;
 }

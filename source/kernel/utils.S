@@ -1,5 +1,7 @@
 section .text
 
+# --- CPU tables ------------------------------------------------------------- #
+
 global gdt_flush
 gdt_flush:
     mov eax, [esp + 4]
@@ -28,3 +30,17 @@ paging_enable:
     or eax, 0x80000000
     mov cr0, eax
     ret
+
+# --- CPUID ------------------------------------------------------------------ #
+
+global cpuid_get_feature_EDX
+cpuid_get_feature_EDX:
+    mov eax, 1
+    cpuid
+    mov eax, edx
+
+global cpuid_get_feature_ECX
+cpuid_get_feature_ECX:
+    mov eax, 1
+    cpuid
+    mov eax, ecx

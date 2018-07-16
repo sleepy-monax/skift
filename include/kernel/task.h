@@ -25,6 +25,7 @@ typedef struct
     u32 esp;
     task_entry_t entry;
     u8 stack[TASK_STACK_SIZE];
+    u8 fpu_states[512];
 } task_t;
 
 void task_setup();
