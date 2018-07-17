@@ -8,7 +8,7 @@ AS = nasm
 OBJDUMP = $(TOOLS_PREFIX)objdump
 
 CFLAGS  = -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb
-LDFLAGS =
+LDFLAGS = -O3
 ASFLAGS = -felf32
 QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg
 QEMUFLAGS += -drive file=filesystem.img,index=0,media=disk,format=raw

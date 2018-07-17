@@ -29,7 +29,6 @@ void fpu_setup()
 {
     fpu_enable();
     fpu_init();
-
 }
 
 void fpu_save(buffer8_t state)

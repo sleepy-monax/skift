@@ -1,11 +1,13 @@
 #include "libc.h"
 
-void memcpy(void * dest, void * src, u32 len)
+void * memcpy(void * dest, void * src, u32 len)
 {
     u32 i;
     for (i = 0; i < len; i++) {
         *((u8*)dest + i) = *((u8*)src + i);
     }
+
+    return dest;
 }
 
 void memset(void * dest, int val, u32 len)

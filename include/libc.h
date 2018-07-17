@@ -18,7 +18,7 @@ void fprintf(int file, string format, ...);
 void printfva(string format, va_list va);
 char * printfbva(char * buffer, const char * format, va_list va);
 
-void memcpy(void * dest, void * src, u32 len);
+void * memcpy(void * dest, void * src, u32 len);
 void memset(void * dest, int val, u32 len);
 void * malloc(u32 size);
 void * calloc(u32 nelem, u32 elsize);

@@ -5,10 +5,12 @@ extern task_shedule
 
 %macro  SAVE_REGS 0
         pushad 
+        
         push ds
         push es
         push fs
-        push gs 
+        push gs
+
         push ebx
         mov bx,0x10
         mov ds,bx

@@ -45,16 +45,20 @@ void list_push(list_t *list, u32 val)
     new_head->next = current_head;
 }
 
-void list_pop(list_t *list)
+u32 list_pop(list_t *list)
 {
     struct list_node* current_head = list->head;
+    int value = 0;
 
     if (current_head != NULL)
     {
+        value = current_head->val;
         struct list_node* next_node = current_head->next;
         list->head = next_node;
         free(current_head);
     }
+
+    return value;
 }
 
 void list_append(list_t * list, u32 value)

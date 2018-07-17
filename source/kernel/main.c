@@ -2,7 +2,6 @@
 #include "cpu/cpuid.h"
 #include "device/vga.h"
 #include "kernel/device.h"
-#include "kernel/kobject.h"
 #include "kernel/multiboot.h"
 #include "kernel/system.h"
 #include "kernel/task.h"
@@ -27,10 +26,11 @@ void dummy_func(char c, vga_color_t color)
     while(1)
         for(u32 i = 0; i < 80; i++)
         {
-            vga_cell(i,0, vga_entry(c, color, vga_black));  
+            vga_cell(i, 0, vga_entry(c, color, vga_black));  
             //printf("%c", c);
-            for(u32 i = 0; i < 10000; i++) { }
+            for(u32 i = 0; i < 1000000; i++) { }
         }
+        
 }
 
 void taskA() { dummy_func('A', vga_red); }
@@ -40,31 +40,13 @@ void taskC() { dummy_func('C', vga_magenta); }
 #include "device/bga.h"
 #include "math.h"
 
-void taskD() 
-{
-    double time = 0.0;
-    while(1){
-        for(u32 x = 0; x < 400; x++)
-        {
-            for(u32 y = 0; y < 400; y++)
-            {
-                bga_pixel(x, y, (fabs(sin((x + y) / 24.0 + time))) * 255.0);
-            }
-        }
-
-        time+= 0.1;
-    }
-    
-}
 
 void main(multiboot_info_t * info)
 {
     console_setup();
     setup(heap);
-    setup(kobject);
 
     setup(cpu);
-    setup(device);
     setup(system);
 
 
@@ -77,7 +59,6 @@ void main(multiboot_info_t * info)
     task_start_named((task_entry_t)&taskA, "A");
     task_start_named((task_entry_t)&taskB, "B");
     task_start_named((task_entry_t)&taskC, "C");
-    task_start_named((task_entry_t)&taskD, "D");
     
     dummy_func('K', vga_blue);          
 

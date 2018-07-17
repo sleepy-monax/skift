@@ -1,4 +1,5 @@
 #include "libc.h"
+#include "cpu/cpu.h"
 #include "cpu/idt.h"
 #include "cpu/io.h"
 #include "cpu/exception.h"
@@ -45,15 +46,13 @@ void idt_entry(u8 index, u32 offset, u16 selector, u16 type)
     entry->type_attr = type | 0x80;
 }
 
-void interrupt_handler(int intno, int errcode)
+void interrupt_handler(context_t regs)
 {
-    if (intno < 32)
+    if (regs.int_no < 32)
     {
-        exception_handler(intno, errcode);
+        exception_handler(&regs);
     }
 
-    UNUSED(intno + errcode);
-    
-    info("Interrupt %d %d!", intno, errcode);
+    info("Interrupt %d %d!", regs.int_no, regs.errcode);
     outb(0x20, 0x20);
 }

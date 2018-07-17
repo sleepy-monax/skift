@@ -1,3 +1,4 @@
+#include "libc.h"
 #include "cpu/exception.h"
 #include "cpu/idt.h"
 #include "kernel/system.h"
@@ -37,7 +38,13 @@ static const char *exception_messages[32] = {
 	"Reserved"
 };
 
-void exception_handler(int interupts, int errorcode)
+void dump_registers(context_t * regs)
 {
-    panic("CPU exception %s (%x:%x)!", exception_messages[interupts], interupts, errorcode);
+	printf("EIP=%x CR0=%x", regs->eip, CR0());
+}
+
+void exception_handler(context_t * regs)
+{
+	dump_registers(regs);
+    panic("CPU exception %s (%x:%x)!", exception_messages[regs->int_no], regs->int_no, regs->errcode);
 }

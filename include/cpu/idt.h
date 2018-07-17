@@ -1,4 +1,5 @@
 #pragma once
+#include "cpu/cpu.h"
 #include "types.h"
 
 // Gate call protection. 
@@ -9,12 +10,7 @@
 #define INTGATE  0x8E00
 #define IDT_ENTRY_COUNT 256
 
-typedef PACKED(struct)
-{
-
-} cpu_state_t;
-
-typedef void (*int_handler_t)(cpu_state_t * states);
+typedef void (*int_handler_t)(context_t * states);
 
 typedef PACKED(struct) 
 {
@@ -39,5 +35,6 @@ typedef struct
 
 void exeption(int interupts, int errorcode);
 void pic_setup();
+void pic_EOI();
 void idt_setup();
 void idt_entry(u8 index, u32 offset, u16 selector, u16 type);

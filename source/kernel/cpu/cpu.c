@@ -2,6 +2,7 @@
 #include "cpu/fpu.h"
 #include "cpu/gdt.h"
 #include "cpu/idt.h"
+#include "cpu/irq.h"
 #include "kernel/system.h"
 
 
@@ -29,10 +30,18 @@ void outw(u16 port, u16 data)
     asm volatile("outw %0,%1" : : "a" (data), "d" (port));
 }
 
+u32 CR0()
+{
+    u32 r;
+    asm volatile("mov %%cr0, %0" : "=r" (r));
+    return r;
+}
+
 void cpu_setup()
 {
     setup(gdt);
     setup(pic);
     setup(idt);
     setup(fpu);
+    setup(irq);
 }

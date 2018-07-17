@@ -22,7 +22,7 @@ void list_delete(list_t* list);
 void list_push(list_t* list, u32 val); 
 //push node at the start of the list.
 
-void list_pop(list_t* list); 
+u32 list_pop(list_t* list); 
 //pop the first element of the list.
 
 void list_append(list_t * list, u32 value);

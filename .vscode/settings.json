@@ -21,6 +21,7 @@
         "type_traits": "c",
         "cmath": "c",
         "cstdlib": "cpp",
-        "io.h": "c"
+        "io.h": "c",
+        "cpu.h": "c"
     }
 }
