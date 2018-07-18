@@ -1,3 +1,4 @@
+#include "cpu/irq.h"
 #include "cpu/cpu.h"
 #include "cpu/fpu.h"
 #include "cpu/io.h"
@@ -5,6 +6,7 @@
 #include "kernel/task.h"
 #include "libc.h"
 
+u32 system_tick = 0;
 tid_t current_task = -1;
 task_t tasks[TASK_MAX_COUNT];
 
@@ -64,6 +66,7 @@ void task_setup()
 
     // Create the kernel task.
     task_start_named(NULL, "kernel");
+    irq_register(0, (irq_handler_t)&task_shedule);
 }
 
 tid_t task_start_named(task_entry_t entry, string name)
@@ -92,6 +95,9 @@ tid_t task_start_named(task_entry_t entry, string name)
     stack_push(task, 0x202); // EFLAGS
     stack_push(task, 0x08); // CS
     stack_push(task, (u32)entry); // EIP
+
+    stack_push(task, 0);
+    stack_push(task, 0);
 
     // things push by pushad
     stack_push(task, 0); // EDI
@@ -122,6 +128,8 @@ tid_t task_start_named(task_entry_t entry, string name)
 
 esp_t task_shedule(esp_t esp) 
 {
+    system_tick++;
+    
     // save the state of the task.
     tasks[current_task].esp = esp;
     fpu_save((buffer8_t)&tasks[current_task].fpu_states);

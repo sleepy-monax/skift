@@ -58,7 +58,6 @@ char * printfbva(char * buffer, const char * format, va_list va)
 
                 case 'x':
                     itos(va_arg(va, u32), temp, 16);
-                    strcat(buffer, "0x");
                     strcat(buffer, temp);
                     break;
 

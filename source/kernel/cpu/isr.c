@@ -1,5 +1,5 @@
-#include "cpu/isr.h"
 #include "cpu/idt.h"
+#include "cpu/isr.h"
 #include "kernel/system.h"
 
 static const char *exception_messages[32] = {
@@ -41,7 +41,7 @@ extern u32 isr_vector[];
 extern bool console_bypass_lock;
 isr_handler_t isr_handlers[32];
 
-void irs_setup()
+void isr_setup()
 {
     for(u32 i = 0; i < 32; i++)
     {
@@ -74,10 +74,10 @@ void isr_handler(context_t context)
     {
         if (context.int_no == 32)
         {
-            panic("No syscalls handler!");
+            cpanic(&context, "No syscalls handler!");
         }
 
-        panic("EXCEPTION: '%s' (INT:%i ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);
+        cpanic(&context, "EXCEPTION: '%s' (INT:%d ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);
     }
 
     pic_EOI();

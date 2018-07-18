@@ -3,5 +3,5 @@
 
 typedef void (*isr_handler_t)(context_t *);
 
-void irq_setup();
-isr_handler_t irq_register(int index, isr_handler_t handler);
+void isr_setup();
+isr_handler_t isr_register(int index, isr_handler_t handler);

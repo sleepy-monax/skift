@@ -45,14 +45,8 @@ void main(multiboot_info_t * info)
 {
     console_setup();
     setup(heap);
-
     setup(cpu);
     setup(system);
-
-
-    sti();
-    
-    print("\n");
     print_sysinfo(info);
     major("The kernel has started successfully !");
 
@@ -60,9 +54,10 @@ void main(multiboot_info_t * info)
     task_start_named((task_entry_t)&taskB, "B");
     task_start_named((task_entry_t)&taskC, "C");
     
-    dummy_func('K', vga_blue);          
+    asm("int $1");
 
-    // while(1){}
+    dummy_func('K', vga_blue);          
+    sti();
     
     panic("The end of the main function has been reached.");
 }

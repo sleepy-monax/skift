@@ -3,6 +3,7 @@
 #include "cpu/gdt.h"
 #include "cpu/idt.h"
 #include "cpu/irq.h"
+#include "cpu/isr.h"
 #include "kernel/system.h"
 
 
@@ -44,4 +45,5 @@ void cpu_setup()
     setup(idt);
     setup(fpu);
     setup(irq);
+    setup(isr);
 }

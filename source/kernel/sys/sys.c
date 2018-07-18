@@ -3,6 +3,17 @@
 #include "kernel/task.h"
 #include "libc.h"
 
+char * __kernel_name = "core-one";
+
+int    __kernel_version_major = 0;
+int    __kernel_version_minor = 1;
+int    __kernel_version_patch = 0;
+char * __kernel_version_codename = "babystep";
+
+/* kernel version format major.minor.patch-codename */
+char * __kernel_version_format = "%d.%d.%d-%s";
+
+
 void system_setup()
 {
     setup(task);
@@ -19,49 +30,4 @@ void __log(log_level_t level, string message, ...)
     printf("%s", log_level[level]); 
     printfva(message, va);
     print("\n&f");
-}
-
-const char * const witty_comments[] = 
-{
-    "Witty comment unavailable :(",
-    "Surprise! Haha. Well, this is awkward.",
-    "Oh - I know what I did wrong!",
-    "Uh... Did I do that?",
-    "Oops.",
-    "On the bright side, I bought you a teddy bear!",
-    "Yo DAWG, I heard you like errors,\n\t// so i put an error in your error handler\n\t// so you can error while you error",
-    "Excuse Me Sir, \n\t// Do You Have a Moment to Talk About Jesus Christ?",
-    "...",
-};
-
-extern bool console_bypass_lock;
-
-void __panic(const string file, const string function, const int line, string message, ...)
-{
-    console_bypass_lock = true;
-    cli();
-
-    va_list va;
-    va_start(va, message);
-    
-    printf("\n&8--- &4!!!&8 ------------------------------------------------------------------------&f\n");
-    
-    printf("\n\t&4KERNEL PANIC\n\t&8// %s\n\n\t&f", witty_comments[0 % 8]); 
-    
-    printfva(message, va);
-    printf("\n\t&7at %s &e%s&f() &7ln%d", file, function, line); 
-    
-    printf("\n\n");
-    printf("\n\t&eDiagnostic:&7");
-    printf("\n\tThe kernel was running for %d tick.", -1);
-
-
-    //printf("\n\n\n\n\n\n\n");
-    printf("\n\n");
-    
-    printf("\n\t&fPress any key to reboot...\n"); 
-
-    printf("\n&8--------------------------------------------------------------- kernel 0.0.1 ---\n");
-
-    while(1);
 }

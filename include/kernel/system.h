@@ -1,5 +1,6 @@
 #pragma once
 #include "types.h"
+#include "cpu/cpu.h"
 
 #define system_name "core"
 #define version_major 0
@@ -23,12 +24,14 @@ typedef enum
 #define info(x...) __log(LOG_INFO, x)
 #define warn(x...) __log(LOG_WARNING, x)
 #define error(x...) __log(LOG_ERROR, x)
-#define panic(x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, x) 
+#define cpanic(context, x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, context, x) 
+#define panic(x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, NULL, x) 
 
 #define setup(x) { info("Setting up " #x "..."); x##_setup(); }
 
+void dump_context(context_t* context);
 void __log(log_level_t level, string message, ...);
-void __panic(const string file, const string function, const int line, string message, ...);
+void __panic(const string file, const string function, const int line, context_t * context, string message, ...);
 
 /* --- time ----------------------------------------------------------------- */
 
