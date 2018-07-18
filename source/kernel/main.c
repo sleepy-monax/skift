@@ -5,14 +5,15 @@
 #include "kernel/multiboot.h"
 #include "kernel/system.h"
 #include "kernel/task.h"
+#include "kernel/version.h"
 #include "libc.h"
 #include "types.h"
 
 
 void print_sysinfo(multiboot_info_t * info)
 {
-    major("Skift release 1 (babysteps)");
-    info("kernel 0.0.1 // %s %s %dk %dm %s\n",
+    major(KERNEL_UNAME);
+    info("%s %s %dk %dm %s\n",
         cpuid_get_vendorid(),
         info->boot_loader_name,
         info->mem_lower,

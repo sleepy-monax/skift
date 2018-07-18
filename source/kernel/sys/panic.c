@@ -56,8 +56,8 @@ void __panic(const string file, const string function, const int line, context_t
 
 
     printf("\n&8--------------------------------------------------------------------------------");
-    printf("\r----------------------------------------------- %s ", __kernel_name);
-    printf(KERNEL_VERSION);
+    print("\r----------------------------------------------- ");
+    printf(KERNEL_UNAME);
     print(" \n");
 
     while(1);
