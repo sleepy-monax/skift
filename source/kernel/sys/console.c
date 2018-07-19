@@ -4,6 +4,7 @@
 #include "kernel/task.h"
 #include "ascii.h"
 #include "libc.h"
+#include "lock.h"
 
 #define TAB_SIZE 4
 

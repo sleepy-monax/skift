@@ -36,3 +36,5 @@ u32 stoi(string str, u8 base);
 void itos(u32 value, string buffer, u8 base);
 
 void heap_setup();
+
+#define NEW(x) (x *)malloc(sizeof(x))

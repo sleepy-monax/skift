@@ -1,4 +1,4 @@
-#include "kernel/task.h"
+#include "lock.h"
 
 void lock_init(lock_t* lock, string name)
 {

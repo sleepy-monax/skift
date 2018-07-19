@@ -22,6 +22,7 @@
         "cmath": "c",
         "cstdlib": "cpp",
         "io.h": "c",
-        "cpu.h": "c"
+        "cpu.h": "c",
+        "unordered_map": "c"
     }
 }

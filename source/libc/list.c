@@ -1,144 +1,137 @@
 #include "libc.h"
 #include "list.h"
 
-list_t *list_alloc()
+/* --- Private functions ---------------------------------------------------- */
+
+void delete_node(list_t * list, list_node_t * node)
+{ 
+    if (node->prev != NULL)
+    {
+        node->prev->next = node->next;
+    }
+    else
+    {
+        // the node is the head of the list.
+        list->head = node->next;
+    }
+
+    if (node->next != NULL)
+    {
+        node->next->prev = node->prev;
+    }
+    else
+    {
+        // the node is the tail of the list.
+        list->tail = node->prev;
+    }
+    
+    list->count--;
+    free(node);
+}
+
+void insert_node(list_t * list, list_node_t * at, list_node_t * node, bool after)
 {
-    list_t* list = (list_t *)malloc(sizeof(list_t));
+    UNUSED(after);
+    node->next = at;
+
+    if (at == NULL || at->prev == NULL)
+    {
+        node->prev = NULL;
+        list->head = node;
+    }
+    else
+    {
+        node->prev = at->prev;
+        at->prev->next = node;
+    }
+
+    at->prev = node;
+}
+
+/* --- Public functions ----------------------------------------------------- */
+list_t * list_alloc()
+{
+    list_t * list = NEW(list_t);
+    
     list->count = 0;
     list->head = NULL;
+    list->tail = NULL;
+
     return list;
 }
 
-void list_delete(list_t * list)
+void * list_push(list_t * self, void * value)
 {
-    u32 item_count = list->count;
+    list_node_t * new_node = NEW(list_node_t);
+    
+    new_node->value = value;
+    new_node->next = self->head;
+    new_node->prev = NULL;
 
-    for (u32 i = 0; i < item_count; i++)
+    if (self->head == NULL) // the list must be empty
     {
-        list_pop(list);
+        self->head = new_node;
+        self->tail = new_node;
+    }
+    else
+    {
+        self->head->prev = new_node;
     }
 
-    free(list);
+    self->head = new_node;
+    self->count++;
+
+    return value;
 }
 
-void list_delete_items(list_t * list)
-// Detroy list and all items
+void * list_push_back(list_t * self, void * value)
 {
-    for (u32 i = 0; i < list->count; i++)
+    list_node_t * oldTail = self->tail;
+    list_node_t * newTail = NEW(list_node_t);
+
+    newTail->owner = self;
+    newTail->next = NULL;
+    newTail->prev = oldTail;
+    newTail->value = value;
+
+    if (oldTail != NULL)
     {
-        free((void *)list_value_at(list, i));
+        oldTail->next = newTail;
     }
 
-    list_delete(list);
-}
-
-void list_push(list_t *list, u32 val)
-{
-    list->count++;
-    
-    struct list_node* current_head = list->head;
-    struct list_node* new_head = (struct list_node*)malloc(sizeof(struct list_node));
-    
-    list->head = new_head;
-    
-    new_head->val = val;
-    new_head->next = current_head;
-}
-
-u32 list_pop(list_t *list)
-{
-    struct list_node* current_head = list->head;
-    int value = 0;
-
-    if (current_head != NULL)
+    if (self->count == 0)
     {
-        value = current_head->val;
-        struct list_node* next_node = current_head->next;
-        list->head = next_node;
-        free(current_head);
+        self->head = newTail;
+    }
+
+    self->tail = newTail;
+    self->count++;
+
+    return value;
+}
+
+void * list_pop(list_t * self)
+{
+    void * value = NULL;
+
+    if (self->head != NULL)
+    {   
+        value = self->head->value;
+        delete_node(self, self->head);
     }
 
     return value;
 }
 
-void list_append(list_t * list, u32 value)
+void * list_pop_back(list_t * self)
 {
-    struct list_node* node = list->head;
-    
-    if (node == NULL) {list_push(list, value); return;}
-    list->count++;
+    void * value = NULL;
 
-    while (node->next != NULL)
-    {
-        node = node->next;
+    if (self->tail != NULL)
+    {   
+        value = self->tail->value;
+        delete_node(self, self->tail);
     }
 
-    node->next = (struct list_node*)malloc(sizeof(struct list_node));
-    node->next->next = NULL;
-    node->next->val = value;
-}
-
-void list_insert_at(list_t *list, u32 index, u32 value)
-{
-    struct list_node* node = list->head;
-    list->count++;
-
-    for (u32 i = 0; i < index; i++)
-    {
-        if (node->next)
-        {
-            node = node->next;
-        }
-    }
-
-    struct list_node* new_node = (struct list_node*)malloc(sizeof(struct list_node));
-    new_node->val = value;
-    new_node->next = node->next;
-    node->next = new_node;
-}
-
-void list_remove_at(list_t *list, u32 index)
-{
-    struct list_node* node = list->head;
-
-    for (u32 i = 0; i < index; i++)
-    {
-        node = node->next;
-    }
-
-    struct list_node* node_to_remove = node->next;
-    node->next = node_to_remove->next;
-    free(node_to_remove);
-}
-
-void list_remove_value(list_t * list, u32 value)
-{
-    for (u32 i = 0; i < list->count; i++)
-    {
-        if (list_value_at(list, i) == value)
-        {
-            list_remove_at(list, i);
-            return;
-        }
-    }
-}
-
-u32 list_value_at(list_t* list, u32 index)
-{
-    struct list_node* node = list->head;
-
-    for (u32 i = 0; i < index; i++)
-    {
-        node = node->next;
-    }
-
-    return node->val;
-}
-
-void list_dump(list_t* list)
-{
-    for (u32 i = 0; i < list->count; i++)
-    {
-        printf("[%d] %d\n", 0xf, i, list_value_at(list, i));
-    }
+    return value;
 }

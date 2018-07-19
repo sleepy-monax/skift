@@ -21,7 +21,6 @@ void fpu_enable(void)
 }
 
 /* --- Public functions ----------------------------------------------------- */
-
 // the fpu state buffer need to be alligned.
 u8 buffer[512] __attribute__((aligned(16)));
 

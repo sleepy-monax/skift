@@ -33,15 +33,3 @@ tid_t task_start(task_entry_t entry);
 tid_t task_start_named(task_entry_t entry, string name);
 
 esp_t task_shedule();
-
-/* --- spin lock ------------------------------------------------------------ */
-
-typedef struct 
-{
-    string name;
-    bool locked;
-} lock_t;
-
-void lock_init(lock_t* lock, string name);
-void lock_acquire(lock_t* lock);
-void lock_release(lock_t* lock);

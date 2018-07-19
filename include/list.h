@@ -1,40 +1,39 @@
 #pragma once
 #include "types.h"
+#include "lock.h"
 
-typedef struct list 
+typedef struct lnode
+{
+    struct lnode * next;
+    struct lnode * prev;
+    void * value;
+    void * owner;
+} list_node_t;
+
+typedef struct
 {
     u32 count;
-    struct list_node * head;
+    list_node_t * head;
+    list_node_t * tail;
 } list_t;
 
-struct list_node 
-{
-    u32 val;
-    struct list_node * next;
-};
+list_t * list_alloc();
+void list_free(list_t * self); // free the data struct.
+void list_destroy(list_t * self); // free the data struct and data.
 
-list_t* list_alloc(); 
-// Create a new list.
+void * list_push(list_t * self, void * value); // pop the first element of the list.
+void * list_push_back(list_t * self, void * value); // pop the last element of the list.
+void * list_pop(list_t * self);
+void * list_pop_back(list_t * self);
 
-void list_delete(list_t* list); 
-// remove a list and all of it nodes.
+void * list_value(list_t * list, u32 index);
+void * list_remove(list_t * list, u32 index);
+void * list_insert(list_t * list, u32 index, void * value);
 
-void list_push(list_t* list, u32 val); 
-//push node at the start of the list.
+u32 list_index_of(list_t * list, void * value);
 
-u32 list_pop(list_t* list); 
-//pop the first element of the list.
+#define LIST_FOREACH(i, list)\
+    for (list_node_t * i = (list)->head; i != NULL; i = i->next)
 
-void list_append(list_t * list, u32 value);
-
-void list_insert_at(list_t* list, u32 index, u32 value); 
-// insert a value at a index.
-
-void list_remove_at(list_t* list, u32 index); 
-// remove a value at a index.
-
-void list_remove_value(list_t * list, u32 value);
-// remove all item of a value.
-
-u32 list_value_at(list_t* list, u32 index); 
-// Get a value at a index.
+#define LIST_FOREACHR(i, list)\
+    for (list_node_t * i = (list)->tail; i != NULL; i = i->prev)
