@@ -45,7 +45,7 @@ void stack_push(task_t* task, u32 value)
 
 void task_setup()
 {
-    u32 divisor = 1193180 / 1000;
+    u32 divisor = 1193180 / 500;
     outb(0x43, 0x36);
     u8 l = (u8)(divisor & 0xFF);
     u8 h = (u8)( (divisor>>8) & 0xFF );
