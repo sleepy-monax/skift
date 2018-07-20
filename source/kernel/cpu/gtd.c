@@ -25,8 +25,6 @@ void gdt_setup()
     // tss segment
     gdt_tss_entry(5, 0x10, 0x0);
 
-    gdt_dump();
-
     gdt.descriptor.offset = (u32)&gdt.entries[0];
     gdt.descriptor.size = (sizeof(gdt_entry_t) * GDT_ENTRY_COUNT) - 1;
 

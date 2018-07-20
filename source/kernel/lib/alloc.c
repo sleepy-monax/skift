@@ -23,7 +23,7 @@ block_t * get_last_block();
 void heap_setup()
 {
     heap_base = heap_end = (u32)&__end;
-    major("Heap base at %x(%d).", heap_base, heap_base);
+    info("Heap base at %x(%d).", heap_base, heap_base);
     create_block(heap_base);
 }
 

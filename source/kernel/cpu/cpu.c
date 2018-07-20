@@ -4,7 +4,9 @@
 #include "cpu/idt.h"
 #include "cpu/irq.h"
 #include "cpu/isr.h"
+#include "cpu/cpuid.h"
 #include "kernel/system.h"
+#include "libc.h"
 
 
 u8 inb(u16 port)

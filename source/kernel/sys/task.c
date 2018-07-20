@@ -120,7 +120,7 @@ tid_t task_start_named(task_entry_t entry, string name)
     if (current_task == -1) current_task = free_task;
 
     // Dead lock if uncommented
-    info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
+    //info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
 
     atomic_end();
 

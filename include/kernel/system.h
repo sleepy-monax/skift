@@ -13,24 +13,23 @@ void system_setup();
 
 typedef enum 
 {
-    LOG_MAJOR,
     LOG_INFO,
     LOG_WARNING,
     LOG_ERROR,
     LOG_PANIC
 } log_level_t;
 
-#define major(x...) __log(LOG_MAJOR, x)
-#define info(x...) __log(LOG_INFO, x)
-#define warn(x...) __log(LOG_WARNING, x)
-#define error(x...) __log(LOG_ERROR, x)
-#define cpanic(context, x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, context, x) 
-#define panic(x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, NULL, x) 
+#define info(x...) __log(LOG_INFO, (string)__FUNCTION__, x)
+#define warn(x...) __log(LOG_WARNING, (string)__FUNCTION__, x)
+#define error(x...) __log(LOG_ERROR, (string)__FUNCTION__, x)
 
 #define setup(x) { info("Setting up " #x "..."); x##_setup(); }
 
+#define cpanic(context, x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, context, x) 
+#define panic(x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, NULL, x) 
+
 void dump_context(context_t* context);
-void __log(log_level_t level, string message, ...);
+void __log(log_level_t level, string function, string message, ...);
 void __panic(const string file, const string function, const int line, context_t * context, string message, ...);
 void __assert_failed(string expr, string file, string function, int line);
 

@@ -22,5 +22,5 @@ void mm_setup()
     
     paging_load_directorie(&kernel_page_directorie);
     paging_enable();
-    major("Paging enabled!");
+    info("Paging enabled!");
 }

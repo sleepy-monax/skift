@@ -6,8 +6,7 @@ u16 *video_memory = (u16 *)vga_frame_buffer;
 void vga_setup()
 {
     vga_clear(vga_white, vga_black);
-    vga_cursor(0,0);
-    vga_cell(0, 0, vga_entry('A', vga_white, vga_red));    
+    vga_cursor(0,0); 
 }
 
 void vga_clear(vga_color_t fg, vga_color_t bg)
