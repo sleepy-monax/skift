@@ -52,11 +52,6 @@ void taskclock()
         {
             vga_cell(i, 0, vga_entry(buffer[i], vga_white, vga_light_blue));  
         }
-
-        // for(u32 i = 0; buffer[i]; i++)
-        // {
-        //     vga_cell(i, 0, vga_entry(buffer[i], vga_white, vga_light_blue));
-        // }
     }
 }
 

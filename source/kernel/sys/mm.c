@@ -1,4 +1,5 @@
 #include "kernel/mm.h"
+#include "kernel/system.h"
 #include "libc.h"
 
 page_directorie_t ALIGNED(kernel_page_directorie, PAGE_SIZE);
@@ -21,4 +22,5 @@ void mm_setup()
     
     paging_load_directorie(&kernel_page_directorie);
     paging_enable();
+    major("Paging enabled!");
 }
