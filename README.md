@@ -20,8 +20,8 @@
 
 ## Build the operating system
  1. First you need to build the crosscompiler using: `make crosscompiler`
- - Then build the system using: `make`
- - finaly you can run it using: `make run`
+ 2. Then build the system using: `make`
+ 3. Finaly you can run it using: `make run`
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.md for details.

@@ -16,7 +16,6 @@ void main(multiboot_info_t * info)
     info(KERNEL_UNAME);
     info("Booting...");
 
-    setup(heap);
     setup(cpu);
     setup(system);
     atomic_enable();

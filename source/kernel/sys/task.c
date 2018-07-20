@@ -57,7 +57,6 @@ void task_setup()
     memset(&tasks, 0, sizeof(task_t) * TASK_MAX_COUNT);
 
     // setup entries
-    
     for(tid_t tid = 0; tid < TASK_MAX_COUNT; tid++)
     {
         task_t * task = &tasks[tid];
@@ -120,7 +119,7 @@ tid_t task_start_named(task_entry_t entry, string name)
     if (current_task == -1) current_task = free_task;
 
     // Dead lock if uncommented
-    //info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
+    // info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
 
     atomic_end();
 
@@ -136,7 +135,7 @@ esp_t task_shedule(esp_t esp)
     fpu_save((buffer8_t)&tasks[current_task].fpu_states);
     tid_t next_task = get_next_task_by_state(current_task, TASK_RUNNING);
     // Dead lock if uncommented
-    //info("swtching from %s to %s.", tasks[current_task].name, tasks[next_task].name);
+    // info("swtching from %s to %s.", tasks[current_task].name, tasks[next_task].name);
     current_task = next_task;
     fpu_load((buffer8_t)&tasks[current_task].fpu_states);
     return tasks[current_task].esp;

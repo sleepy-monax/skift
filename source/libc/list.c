@@ -29,12 +29,9 @@ void delete_node(list_t * list, list_node_t * node)
     free(node);
 }
 
-void insert_node(list_t * list, list_node_t * at, list_node_t * node, bool after)
+void insert_node(list_t * list, list_node_t * at, list_node_t * node)
 {
-    UNUSED(after);
-    node->next = at;
-
-    if (at == NULL || at->prev == NULL)
+    if (at->prev == NULL)
     {
         node->prev = NULL;
         list->head = node;
@@ -64,7 +61,9 @@ void * list_push(list_t * self, void * value)
 {
     list_node_t * new_node = NEW(list_node_t);
     
+    new_node->owner = self;
     new_node->value = value;
+    
     new_node->next = self->head;
     new_node->prev = NULL;
 
@@ -86,25 +85,25 @@ void * list_push(list_t * self, void * value)
 
 void * list_push_back(list_t * self, void * value)
 {
-    list_node_t * oldTail = self->tail;
-    list_node_t * newTail = NEW(list_node_t);
+    list_node_t * new_node = NEW(list_node_t);
+    
+    new_node->owner = self;
+    new_node->value = value;
 
-    newTail->owner = self;
-    newTail->next = NULL;
-    newTail->prev = oldTail;
-    newTail->value = value;
+    new_node->next = NULL;
+    new_node->prev = self->tail;
 
-    if (oldTail != NULL)
+    if (self->head == NULL) // the list must be empty
     {
-        oldTail->next = newTail;
+        self->head = new_node;
+        self->tail = new_node;
+    }
+    else
+    {
+        self->head->next = new_node;
     }
 
-    if (self->count == 0)
-    {
-        self->head = newTail;
-    }
-
-    self->tail = newTail;
+    self->tail = new_node;
     self->count++;
 
     return value;
