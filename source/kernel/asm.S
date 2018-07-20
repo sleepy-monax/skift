@@ -1,5 +1,17 @@
 section .text
 
+global paging_enable
+paging_enable:
+    mov eax, cr0
+    or eax, 0x80000000
+    mov cr0, eax
+    ret
+
+global paging_load_directorie
+paging_load_directorie:
+    mov eax, [esp + 4]
+    mov cr3, eax
+    ret
 # --- CPU tables ------------------------------------------------------------- #
 
 global gdt_flush
@@ -22,13 +34,6 @@ global load_idt
 load_idt:
     mov eax, [esp + 4]
     lidt [eax]
-    ret
-
-global paging_enable
-paging_enable:
-    mov eax, cr0
-    or eax, 0x80000000
-    mov cr0, eax
     ret
 
 # --- CPUID ------------------------------------------------------------------ #

@@ -32,6 +32,7 @@ typedef enum
 void dump_context(context_t* context);
 void __log(log_level_t level, string message, ...);
 void __panic(const string file, const string function, const int line, context_t * context, string message, ...);
+void __assert_failed(string expr, string file, string function, int line);
 
 /* --- time ----------------------------------------------------------------- */
 

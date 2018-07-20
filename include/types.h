@@ -15,6 +15,7 @@ typedef long long ptrdiff_t;
 typedef unsigned char bool;
 
 #define PACKED(x) x __attribute__ ((packed))
+#define ALIGNED(x, align) x __attribute__((aligned(align)))
 
 #define UNUSED(x) (void)(x)
 

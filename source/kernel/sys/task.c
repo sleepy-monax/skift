@@ -5,6 +5,7 @@
 #include "kernel/system.h"
 #include "kernel/task.h"
 #include "libc.h"
+#include "kernel/atomic.h"
 
 u32 system_tick = 0;
 tid_t current_task = -1;
@@ -71,7 +72,7 @@ void task_setup()
 
 tid_t task_start_named(task_entry_t entry, string name)
 {
-    cli();
+    atomic_begin();
 
     tid_t free_task = get_task_by_state(TASK_FREE);
 
@@ -119,9 +120,9 @@ tid_t task_start_named(task_entry_t entry, string name)
     if (current_task == -1) current_task = free_task;
 
     // Dead lock if uncommented
-    // info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
+    info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
 
-    sti();
+    atomic_end();
 
     return task->id;
 }

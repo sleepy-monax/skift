@@ -1,5 +1,13 @@
 #include "libc.h"
 
+void printfb(char * buffer, string format, ...)
+{
+    va_list va;
+    va_start(va, format);
+
+    printfbva(buffer, format, va);
+}
+
 char * printfbva(char * buffer, const char * format, va_list va)
 {
     buffer[0] = '\0';
