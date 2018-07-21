@@ -23,6 +23,9 @@
         "cstdlib": "cpp",
         "io.h": "c",
         "cpu.h": "c",
-        "unordered_map": "c"
+        "unordered_map": "c",
+        "cstring": "c",
+        "initializer_list": "c",
+        "utility": "c"
     }
 }

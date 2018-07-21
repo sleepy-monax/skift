@@ -1,4 +1,5 @@
 #include "libc.h"
+#include "string.h"
 
 void printfb(char * buffer, string format, ...)
 {
