@@ -26,6 +26,7 @@
         "unordered_map": "c",
         "cstring": "c",
         "initializer_list": "c",
-        "utility": "c"
+        "utility": "c",
+        "atomic.h": "c"
     }
 }

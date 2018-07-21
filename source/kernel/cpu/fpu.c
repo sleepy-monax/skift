@@ -1,5 +1,6 @@
 #include "cpu/fpu.h"
 #include "libc.h"
+#include "string.h"
 
 void fpu_init(void)
 {

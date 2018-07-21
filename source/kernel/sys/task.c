@@ -6,10 +6,12 @@
 #include "kernel/task.h"
 #include "libc.h"
 #include "kernel/atomic.h"
+#include "string.h"
 
 u32 system_tick = 0;
 tid_t current_task = -1;
 task_t tasks[TASK_MAX_COUNT];
+u32 running_task_count = 0;
 
 tid_t get_task_by_state(task_state_t state)
 {
@@ -92,6 +94,20 @@ tid_t task_start_named(task_entry_t entry, string name)
     // Setup the stack of the task;
     task->esp= (u32)&task->stack + TASK_STACK_SIZE; 
 
+    //task->esp += sizeof(context_t);
+    //context_t * context = (context_t*)task->esp;
+//
+    //memset(context, 0, sizeof(context_t));
+//
+    //context->eflags = 0x202;
+    //context->cs = 0x08;
+    //context->eip = (u32)entry;
+//
+    //context->ds = 0x10;
+    //context->es = 0x10;
+    //context->fs = 0x10;
+    //context->gs = 0x10;
+
     stack_push(task, 0x202); // EFLAGS
     stack_push(task, 0x08); // CS
     stack_push(task, (u32)entry); // EIP
@@ -119,7 +135,9 @@ tid_t task_start_named(task_entry_t entry, string name)
     if (current_task == -1) current_task = free_task;
 
     // Dead lock if uncommented
-    // info("Task '%s' with tid %d created (stack %x, entry %x).", task->name, task->id, task->stack, task->entry);
+    info("Task '%s' (tid %d, stack %x, entry %x)", task->name, task->id, task->stack, task->entry);
+
+    running_task_count++;
 
     atomic_end();
 
@@ -135,7 +153,7 @@ esp_t task_shedule(esp_t esp)
     fpu_save((buffer8_t)&tasks[current_task].fpu_states);
     tid_t next_task = get_next_task_by_state(current_task, TASK_RUNNING);
     // Dead lock if uncommented
-    // info("swtching from %s to %s.", tasks[current_task].name, tasks[next_task].name);
+    //info("swtching from %s to %s.", tasks[current_task].name, tasks[next_task].name);
     current_task = next_task;
     fpu_load((buffer8_t)&tasks[current_task].fpu_states);
     return tasks[current_task].esp;

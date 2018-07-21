@@ -1,6 +1,7 @@
 #include "kernel/mm.h"
 #include "kernel/system.h"
 #include "libc.h"
+#include "string.h"
 
 page_directorie_t ALIGNED(kernel_page_directorie, PAGE_SIZE);
 page_table_t ALIGNED(kernel_page_table, PAGE_SIZE);

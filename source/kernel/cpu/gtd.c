@@ -1,5 +1,6 @@
 #include "cpu/gdt.h"
 #include "libc.h"
+#include "string.h"
 
 gdt_t gdt;
 
