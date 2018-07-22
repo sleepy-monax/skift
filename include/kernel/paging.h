@@ -55,5 +55,3 @@ typedef PACKED(struct) // page directorie
 
 extern void paging_enable(void);
 extern void paging_load_directorie(page_directorie_t * directorie);
-
-void mm_setup();

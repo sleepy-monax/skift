@@ -1,8 +1,8 @@
 #include "cpu/cpu.h"
 #include "kernel/system.h"
-#include "kernel/task.h"
+#include "kernel/tasking.h"
 #include "libc.h"
-#include "kernel/mm.h"
+#include "kernel/memory.h"
 
 char * __kernel_name = "core-one";
 

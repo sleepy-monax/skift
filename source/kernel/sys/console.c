@@ -1,7 +1,7 @@
 #include "kernel/system.h"
 #include "device/uart.h"
 #include "device/vga.h"
-#include "kernel/task.h"
+#include "kernel/tasking.h"
 #include "ascii.h"
 #include "libc.h"
 #include "lock.h"

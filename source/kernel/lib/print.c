@@ -1,5 +1,5 @@
 #include "kernel/system.h"
-#include "kernel/task.h"
+#include "kernel/tasking.h"
 #include "libc.h"
 
 void print(string message)

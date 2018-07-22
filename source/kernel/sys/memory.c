@@ -1,4 +1,5 @@
-#include "kernel/mm.h"
+#include "kernel/memory.h"
+#include "kernel/paging.h"
 #include "kernel/system.h"
 #include "libc.h"
 #include "string.h"
@@ -24,4 +25,14 @@ void mm_setup()
     paging_load_directorie(&kernel_page_directorie);
     paging_enable();
     info("Paging enabled!");
+}
+
+void malloc()
+{
+
+}
+
+void free()
+{
+
 }

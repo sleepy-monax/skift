@@ -3,7 +3,7 @@
 #include "cpu/fpu.h"
 #include "cpu/io.h"
 #include "kernel/system.h"
-#include "kernel/task.h"
+#include "kernel/tasking.h"
 #include "libc.h"
 #include "kernel/atomic.h"
 #include "string.h"

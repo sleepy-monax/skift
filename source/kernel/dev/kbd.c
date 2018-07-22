@@ -6,6 +6,7 @@ size_t kbd_buffer_size = 0;
 
 esp_t kbd_ird_handler(esp_t esp)
 {
+    
     return esp;
 }
 

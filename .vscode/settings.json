@@ -27,6 +27,8 @@
         "cstring": "c",
         "initializer_list": "c",
         "utility": "c",
-        "atomic.h": "c"
+        "atomic.h": "c",
+        "memory.h": "c",
+        "string": "cpp"
     }
 }

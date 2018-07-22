@@ -2,7 +2,7 @@
 #include "kernel/device.h"
 #include "kernel/multiboot.h"
 #include "kernel/system.h"
-#include "kernel/task.h"
+#include "kernel/tasking.h"
 #include "kernel/version.h"
 #include "kernel/atomic.h"
 #include "libc.h"
