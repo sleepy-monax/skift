@@ -8,6 +8,7 @@
 #define version_patch 1
 
 void system_setup();
+void kshell();
 
 /* --- Logging -------------------------------------------------------------- */
 

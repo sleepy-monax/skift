@@ -22,7 +22,7 @@ typedef struct
 {
     node_type_t type;
     u32 size;
-    u32 data;
+    void * data;
 } fs_node_t;
 
 typedef struct 
