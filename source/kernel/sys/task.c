@@ -92,43 +92,38 @@ tid_t task_start_named(task_entry_t entry, string name)
     task->name[TASK_NAME_SIZE - 1] = '\0';
 
     // Setup the stack of the task;
-    task->esp= (u32)&task->stack + TASK_STACK_SIZE; 
+    task->esp = (u32)&task->stack + TASK_STACK_SIZE; 
 
-    //task->esp += sizeof(context_t);
-    //context_t * context = (context_t*)task->esp;
-//
-    //memset(context, 0, sizeof(context_t));
-//
-    //context->eflags = 0x202;
-    //context->cs = 0x08;
-    //context->eip = (u32)entry;
-//
-    //context->ds = 0x10;
-    //context->es = 0x10;
-    //context->fs = 0x10;
-    //context->gs = 0x10;
+    
+    task->esp -= sizeof(context_t);
+    context_t * context = (context_t*)task->esp;
+    memset(context, 0, sizeof(context_t));
+    
+    context->eflags = 0x202;
+    context->cs = 0x08;
+    context->eip = (u32)entry;
+    context->ds = 0x10;
+    context->es = 0x10;
+    context->fs = 0x10;
+    context->gs = 0x10;
 
-    stack_push(task, 0x202); // EFLAGS
-    stack_push(task, 0x08); // CS
-    stack_push(task, (u32)entry); // EIP
-
-    stack_push(task, 0);
-    stack_push(task, 0);
-
-    // things push by pushad
-    stack_push(task, 0); // EDI
-    stack_push(task, 0); // ESI
-    stack_push(task, 0); // EBP
-    stack_push(task, 0); // ESP - ignored
-    stack_push(task, 0); // EBX
-    stack_push(task, 0); // EDX
-    stack_push(task, 0); // ECX
-    stack_push(task, 0); // EAX
-
-    stack_push(task, 0x10); // ds
-    stack_push(task, 0x10); // es
-    stack_push(task, 0x10); // fs
-    stack_push(task, 0x10); // gs
+    // stack_push(task, 0x202);      // EFLAGS
+    // stack_push(task, 0x08);       // CS
+    // stack_push(task, (u32)entry); // EIP
+    // stack_push(task, 0);          // intno
+    // stack_push(task, 0);          // errcode
+    // stack_push(task, 0);          // EDI
+    // stack_push(task, 0);          // ESI
+    // stack_push(task, 0);          // EBP
+    // stack_push(task, 0);          // ESP - ignored - useless
+    // stack_push(task, 0);          // EBX
+    // stack_push(task, 0);          // EDX
+    // stack_push(task, 0);          // ECX
+    // stack_push(task, 0);          // EAX
+    // stack_push(task, 0x10);       // DS 
+    // stack_push(task, 0x10);       // ES 
+    // stack_push(task, 0x10);       // FS 
+    // stack_push(task, 0x10);       // GS 
 
     task->state = TASK_RUNNING;
 
