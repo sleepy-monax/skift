@@ -12,12 +12,12 @@ fs_node_t * fs_findir(fs_node_t * node, string name)
     
     for(size_t i = 0; i < node->size; i++)
     {
-        if (strcpm(name, entry->name))
+        if (strcmp(name, entry->name))
         {
             return entry->node;
         }
 
-        entry->next;
+        entry = entry->next;
     }
     
     return NULL;
@@ -43,7 +43,7 @@ fs_node_t * get_fs_node(string path)
         {
             current_node = fs_findir(current_node, current_name);
             
-            if (current_name)
+            if (current_node)
             {
                 current_name[0] = '\0';
             }
@@ -88,6 +88,7 @@ void fs_setup()
 
 fs_node_t * fs_open(string path, u8 flags)
 {
+    UNUSED(flags);
     fs_node_t * node = get_fs_node(path);
 
     if (node->open(node))
@@ -103,6 +104,7 @@ s32 fs_close(fs_node_t * node)
 {
     node->close(node);
     node->refcount--;
+    return 0;
 }
 
 s32 fs_read(fs_node_t * node, void * buffer, size_t size)
