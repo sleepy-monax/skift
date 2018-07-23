@@ -29,6 +29,7 @@
         "utility": "c",
         "atomic.h": "c",
         "memory.h": "c",
-        "string": "cpp"
+        "string": "cpp",
+        "stdlib.h": "c"
     }
 }
