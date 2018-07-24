@@ -26,13 +26,3 @@ void mm_setup()
     paging_enable();
     info("Paging enabled!");
 }
-
-void malloc()
-{
-
-}
-
-void free()
-{
-
-}

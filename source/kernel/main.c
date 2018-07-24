@@ -40,6 +40,7 @@ void main(multiboot_info_t * info)
 
     task_start_named(taskclock, "clock");
 
+    while(true);
     kshell();
 
     panic("The end of the main function has been reached.");
