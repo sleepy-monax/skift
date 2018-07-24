@@ -24,6 +24,17 @@ void system_setup()
 
 const char * const log_level[] = { "&7 ", " [warn] ", " &4[!!!] "};
 
+void __debug(string function, string message, ...)
+{
+    UNUSED(function);
+
+    va_list va;
+    va_start(va, message);
+    print("&7 * &8");
+    printfva(message, va);
+    print("\n&f");
+}
+
 void __log(log_level_t level, string function, string message, ...)
 {
     va_list va;

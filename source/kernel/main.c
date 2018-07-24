@@ -10,6 +10,7 @@
 
 #include "device/vga.h"
 #include "string.h"
+#include "stdlib.h"
 
 extern u32 running_task_count;
 void taskclock()
@@ -39,6 +40,9 @@ void main(multiboot_info_t * info)
     sti();
 
     task_start_named(taskclock, "clock");
+
+    void * p = malloc(256);
+    free(p + 4);
 
     while(true);
     kshell();

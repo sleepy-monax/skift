@@ -16,7 +16,7 @@ typedef struct
 } block_t;
 
 extern u32 __end;
-u32 heap_base;
+u32 heap_base = 0;
 u32 heap_end;
 
 block_t * tail;
@@ -104,7 +104,7 @@ block_t * append_block(size_t size)
 bool install_heap()
 {
     heap_base = heap_end = (u32)&__end;
-    info("Heap base at 0x%x(%d).", heap_base, heap_base);
+    debug("Heap base at %x.", heap_base, heap_base);
     create_block(heap_base);
 
     return true;
@@ -113,6 +113,11 @@ bool install_heap()
 void * malloc(size_t size)
 {
     atomic_begin();
+
+    if (heap_base == 0)
+    {
+        install_heap();
+    }
 
     block_t * block = find_free_block(size);
 
@@ -124,8 +129,9 @@ void * malloc(size_t size)
     block->free = false;
     block->size = size;
     
+    debug("%dbytes allocated at %x(block %x)", block->size, (void *)(block + 1), block);
+
     atomic_end();
-    
     return (void *)(block + 1);
 }
 
@@ -148,7 +154,7 @@ void free(void * address)
 
     if (block->magic != BLOCK_MAGIC)
     {
-        panic("\nBlock magic is 0x%x not 0x%x!", block->magic, BLOCK_MAGIC);
+        panic("HEAP CORUPTED: block magic is 0x%x not 0x%x!", block->magic, BLOCK_MAGIC);
     }
 
     block->free = true;
