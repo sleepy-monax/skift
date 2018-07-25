@@ -33,7 +33,7 @@ bool bga_is_available(void)
     return found;
 }
 
-u32 * bga_get_framebuffer()
+u32 * bga_get_framebuffer() // XXX: this is a really bad hack!
 {
     bga_set_bank(0);
     u32 * lfb = 0;

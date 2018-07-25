@@ -5,20 +5,20 @@
 
 typedef unsigned int size_t;
 
-typedef unsigned short wchar_t;
-
 typedef long long ptrdiff_t;
 
 
 #define true 1
 #define false 0
-typedef unsigned char bool;
 
 #define PACKED(x) x __attribute__ ((packed))
 #define ALIGNED(x, align) x __attribute__((aligned(align)))
 
 #define UNUSED(x) (void)(x)
 
+
+typedef unsigned short wchar_t;
+typedef unsigned char bool;
 typedef char * string;
 
 typedef char s8;

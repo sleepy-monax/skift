@@ -79,7 +79,7 @@ tid_t task_start_named(task_entry_t entry, string name)
 
     if (free_task == -1) 
     {
-        warn("No more free task!");
+        panic("Out of task table entries!");
         return -1;
     }
     
@@ -107,30 +107,13 @@ tid_t task_start_named(task_entry_t entry, string name)
     context->fs = 0x10;
     context->gs = 0x10;
 
-    // stack_push(task, 0x202);      // EFLAGS
-    // stack_push(task, 0x08);       // CS
-    // stack_push(task, (u32)entry); // EIP
-    // stack_push(task, 0);          // intno
-    // stack_push(task, 0);          // errcode
-    // stack_push(task, 0);          // EDI
-    // stack_push(task, 0);          // ESI
-    // stack_push(task, 0);          // EBP
-    // stack_push(task, 0);          // ESP - ignored - useless
-    // stack_push(task, 0);          // EBX
-    // stack_push(task, 0);          // EDX
-    // stack_push(task, 0);          // ECX
-    // stack_push(task, 0);          // EAX
-    // stack_push(task, 0x10);       // DS 
-    // stack_push(task, 0x10);       // ES 
-    // stack_push(task, 0x10);       // FS 
-    // stack_push(task, 0x10);       // GS 
-
     task->state = TASK_RUNNING;
 
     if (current_task == -1) current_task = free_task;
 
     // Dead lock if uncommented
-    info("Task '%s' (tid %d, stack %x, entry %x)", task->name, task->id, task->stack, task->entry);
+    debug("Task '%s' (tid %d, stack %x, entry %x)", task->name, task->id, task->stack, task->entry);
+    dump_context(context);
 
     running_task_count++;
 
