@@ -19,10 +19,11 @@ debug: build
 	@qemu-system-i386 $(QEMUFLAGS) -s -S
 
 clean:
-	@echo -n "\n\033[1;37m .. Cleaning up Source tree...\033[0m"
+	@echo -n "\n\033[1;37m .. Cleaning up Source tree\033[0m"
 	@find -name "*.o" -delete
 	@find -name "*.c.o" -delete
 	@find -name "*.S.o" -delete
+	@find -name "*.cpp.o" -delete
 	@find -name "*.bin" -delete
 	@find -name "*.asm" -delete
 	@find -name "*.img" -delete
@@ -44,6 +45,9 @@ include tools/common.mk scripts/*.mk
 
 
 # --- Makefile debug --------------------------------------------------------- #
+dump_includes:
+	i686-elf-g++ -E -x c++ - -v < /dev/null
+
 dumpfs: filesystem.img
 	od -A d -c $^
 
