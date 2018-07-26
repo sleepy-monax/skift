@@ -31,7 +31,6 @@ esp_t irq_handler(esp_t esp, context_t context)
     if (irq_handlers[context.int_no] != NULL)
     {
         esp = irq_handlers[context.int_no](esp, &context);
-        pic_EOI();
     }
     else
     {

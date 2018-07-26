@@ -8,142 +8,38 @@
 
 typedef struct 
 {
+    bool used;
     u32 magic;
-    u32 owner;
     u32 size;
-    bool free;
+
     void * next;
     void * prev;
 } block_t;
 
 extern u32 __end;
+u32 heap_top = 0;
 u32 heap_base = 0;
-u32 heap_end;
-u32 block_count = 0;
 
 block_t * tail;
+block_t * head;
 
-/* malloc ********************************************************************/
-
-void merge_right(block_t * block)
+bool heap_setup()
 {
-    block_t * next = block->next;
-    block->next = next->next;
-    block->size += next->size + sizeof(block_t);
-
-    debug("block merged %x + %x", block, next);
-
-    block_count--;
-}
-
-block_t * find_free_block(u32 size)
-{
-    block_t * current_block = (block_t *)heap_base;
-    while (current_block->next != NULL)
-    {
-        if (current_block->free)
-        {
-            if (current_block->size >= size)
-            {
-                return current_block;
-            }
-            else
-            {
-                block_t * next_block = current_block->next;
-
-                if (next_block->free)
-                {
-                    merge_right(current_block);
-                }
-                else
-                {
-                    current_block = current_block->next;
-                }
-            }
-        }
-        else
-        {
-            current_block = current_block->next;
-        }
-    }
-
-    return NULL;
-}
-
-block_t * create_block(u32 address)
-{
-    block_t * b = (block_t *)address;
-    b->magic = BLOCK_MAGIC;
-    b->free = true;
-    b->next = NULL;
-    b->prev = NULL;
-    b->size = 0;
-
-    block_count++;
-
-    return b;
-}
-
-block_t * append_block(size_t size)
-{
-    if (tail->free)
-    {
-
-        u32 old_size = tail->size;
-
-        debug("Expanding tail block from %d to %d.", old_size, size);
-
-        tail->size = size;
-        heap_end += size - old_size;
-
-        return tail;
-    }
-    else
-    {
-        block_t * block = create_block(heap_end);
-        tail->next = (void *)block;
-        block->next = NULL;
-
-        tail = block;
-        heap_end += sizeof(block_t) + size;
-        return block;
-    }
-}
-
-/* --- Public functions ----------------------------------------------------- */
-
-bool install_heap()
-{
-    heap_base = heap_end = (u32)&__end;
-    debug("Heap base at %x.", heap_base, heap_base);
-    tail = create_block(heap_base);
-
-    return true;
-}
-
-void * malloc(size_t size)
-{
-    atomic_begin();
-
-    if (heap_base == 0)
-    {
-        install_heap();
-    }
-
-    block_t * block = find_free_block(size);
-
-    if (block == NULL)
-    {
-        block = append_block(size);
-    }
-
-    block->free = false;
-    block->size = size;
+    heap_base = heap_top = (u32)&__end;
     
-    debug("%dbytes allocated at %x(block %x nb%d)", block->size, (void *)(block + 1), block, block_count);
+    tail = (block_t*)heap_base;
+    head = tail;
 
-    atomic_end();
-    return (void *)(block + 1);
+    tail->size = 0;
+    tail->magic = BLOCK_MAGIC;
+    tail->used = false;
+    
+    tail->next = NULL;
+    tail->prev = NULL;
+
+    heap_top += sizeof(block_t);
+    
+    return true;
 }
 
 void * calloc(size_t nelem, size_t elsize)
@@ -158,6 +54,43 @@ void * calloc(size_t nelem, size_t elsize)
 	return (p);
 }
 
+void * malloc(size_t size)
+{
+    atomic_begin();
+
+    if (heap_top == 0)
+        heap_setup();
+
+    block_t * block;
+
+    if (!tail->used)
+    {
+        block = tail;
+        heap_top += size - tail->size;
+        debug("Sizing the tail at %x from %d to %d.", tail, tail->size, size);
+    }
+    else
+    {
+        block = (block_t*)heap_top;        
+        block->prev = tail;
+        tail->next  = block;
+        
+        debug("Block %x allocated (s: %d).", block, block->size);
+
+        tail = block;
+        heap_top += sizeof(block_t) + size;
+    }
+       
+    block->used = true;
+    block->magic = BLOCK_MAGIC;
+    block->size = size;
+
+    atomic_end();
+
+    return block + 1;
+}
+
+
 void free(void * address)
 {
     atomic_begin();
@@ -168,7 +101,7 @@ void free(void * address)
         panic("HEAP CORUPTED: block magic is 0x%x not 0x%x!", block->magic, BLOCK_MAGIC);
     }
 
-    block->free = true;
+    block->used = false;
     debug("Memory at %x is now free.", address);
     atomic_end();
 }
@@ -179,7 +112,7 @@ void dump_heap()
     print("&fHeap dump:&7");
     do
     {
-        printf("\n\tblock: %x s: %d free: %d next: %x", current_block, current_block->size, current_block->free, current_block->next);
+        printf("\n\tblock: %x s: %d used: %d next: %x", current_block, current_block->size, current_block->used, current_block->next);
         current_block = current_block->next;
     } while (current_block != NULL);
     print("\n");

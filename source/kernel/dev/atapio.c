@@ -1,60 +1,81 @@
 #include "cpu/io.h"
 #include "device/atapio.h"
+#include "kernel/atomic.h"
+#include "kernel/system.h"
 
 int atapio_common(u8 drive, u32 numblock, u8 count)
 {
-        outb(0x1F1, 0x00);      /* NULL byte to port 0x1F1 */
-        outb(0x1F2, count);     /* Sector count */
-        outb(0x1F3, (unsigned char) numblock);  /* Low 8 bits of the block address */
-        outb(0x1F4, (unsigned char) (numblock >> 8));   /* Next 8 bits of the block address */
-        outb(0x1F5, (unsigned char) (numblock >> 16));  /* Next 8 bits of the block address */
+    outb(0x1F1, 0x00);                            /* NULL byte to port 0x1F1 */
+    outb(0x1F2, count);                           /* Sector count */
+    outb(0x1F3, (unsigned char)numblock);         /* Low 8 bits of the block address */
+    outb(0x1F4, (unsigned char)(numblock >> 8));  /* Next 8 bits of the block address */
+    outb(0x1F5, (unsigned char)(numblock >> 16)); /* Next 8 bits of the block address */
 
-        /* Drive indicator, magic bits, and highest 4 bits of the block address */
-        outb(0x1F6, 0xE0 | (drive << 4) | ((numblock >> 24) & 0x0F));
+    /* Drive indicator, magic bits, and highest 4 bits of the block address */
+    outb(0x1F6, 0xE0 | (drive << 4) | ((numblock >> 24) & 0x0F));
 
-        return 0;
+    return 0;
 }
 
 void atapio_wait()
 {
-    while (!(inb(0x1F7) & 0x08));
+    u8 status;
+
+    do
+    {
+        status = inb(0x1F7);
+    }
+    while ((status & 0x80) && !(status & 0x08));
 }
 
 int atapio_read(u8 drive, u32 numblock, u8 count, char *buf)
 {
-        u16 tmpword;
-        int idx;
+    atomic_begin();
+    debug("ATA::pio read drive:%d block:%d count:%d", drive, numblock, count);
+    u16 tmpword;
+    int idx;
 
-        atapio_common(drive, numblock, count);
-        outb(0x1F7, 0x20);
+    atapio_common(drive, numblock, count);
+    outb(0x1F7, 0x20);
 
-        /* Wait for the drive to signal that it's ready: */
-        atapio_wait();
+    /* Wait for the drive to signal that it's ready: */
+    atapio_wait();
 
-        for (idx = 0; idx < 256 * count; idx++) {
-                tmpword = inw(0x1F0);
-                buf[idx * 2] = (unsigned char) tmpword;
-                buf[idx * 2 + 1] = (unsigned char) (tmpword >> 8);
-        }
+    for (idx = 0; idx < 256 * count; idx++)
+    {
+        tmpword = inw(0x1F0);
+        buf[idx * 2] = (unsigned char)tmpword;
+        buf[idx * 2 + 1] = (unsigned char)(tmpword >> 8);
+    }
 
-        return count;
+    debug("ATA::pio read done!");
+    atomic_end();
+
+    return count;
 }
 
 int atapio_write(u8 drive, u32 numblock, u8 count, char *buf)
 {
-        u16 tmpword;
-        int idx;
+    atomic_begin();
+    debug("ATA::pio write drive:%d block:%d count:%d", drive, numblock, count);
 
-        atapio_common(drive, numblock, count);
-        outb(0x1F7, 0x30);
+    u16 tmpword;
+    int idx;
 
-        /* Wait for the drive to signal that it's ready: */
-        atapio_wait();
+    atapio_common(drive, numblock, count);
+    outb(0x1F7, 0x30);
 
-        for (idx = 0; idx < 256 * count; idx++) {
-                tmpword = (buf[idx * 2 + 1] << 8) | buf[idx * 2];
-                outw(0x1F0, tmpword);
-        }
+    /* Wait for the drive to signal that it's ready: */
+    atapio_wait();
 
-        return count;
+    for (idx = 0; idx < 256 * count; idx++)
+    {
+        tmpword = (buf[idx * 2 + 1] << 8) | buf[idx * 2];
+        outw(0x1F0, tmpword);
+    }
+
+    debug("ATA::pio write done!");
+    atomic_end();
+
+    return count;
 }

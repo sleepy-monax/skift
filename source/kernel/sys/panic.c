@@ -30,8 +30,8 @@ void dump_context(context_t* context)
 
 void __panic(const string file, const string function, const int line, context_t* context, string message, ...)
 {
-    console_bypass_lock = true;
     cli();
+    console_bypass_lock = true;
 
     va_list va;
     va_start(va, message);

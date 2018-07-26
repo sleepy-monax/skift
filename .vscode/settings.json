@@ -30,6 +30,7 @@
         "atomic.h": "c",
         "memory.h": "c",
         "string": "cpp",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "random": "c"
     }
 }
