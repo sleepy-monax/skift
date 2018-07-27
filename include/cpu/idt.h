@@ -35,6 +35,5 @@ typedef struct
 
 void exeption(int interupts, int errorcode);
 void pic_setup();
-void pic_EOI();
 void idt_setup();
 void idt_entry(u8 index, u32 offset, u16 selector, u16 type);

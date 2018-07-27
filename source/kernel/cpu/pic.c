@@ -31,9 +31,3 @@ void pic_setup()
 	outb(0x21, 0x0);  PIC_WAIT();
 	outb(0xA1, 0x0);  PIC_WAIT();
 }
-
-void pic_EOI()
-{
-	// send a end of interrupt
-	outb(0x20, 0x20);
-}

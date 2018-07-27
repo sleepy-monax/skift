@@ -12,6 +12,8 @@
 #include "device/atapio.h"
 #include "string.h"
 #include "stdlib.h"
+#include "kernel/tasking.h"
+#include "kernel/memory.h"
 
 extern u32 running_task_count;
 multiboot_info_t * mbootinfo;
@@ -44,11 +46,14 @@ void main(multiboot_info_t * info)
 
     print("\n");
     setup(cpu);
-    setup(system);
+    
+    setup(task);
+    setup(mm);
+
     atomic_enable();
     sti();
 
-    //asm("int $0");
+    //asm("int $37");
     //task_start_named(taskclock, "clock");
 
     /*for(size_t i = 0; i < 16; i++)
@@ -65,12 +70,13 @@ void main(multiboot_info_t * info)
     
     dump_heap();*/
 
-    char data[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non semper lectus, ac gravida est. Pellentesque iaculis ornare erat, et sodales eros. Praesent id rhoncus leo. Donec tincidunt mi in pharetra sollicitudin. Integer scelerisque aliquam tellus et cursus. Nunc sed molestie nisl, eu viverra nunc. Etiam odio est, tempor id aliquam non, posuere non lorem. Phasellus accumsan eleifend lacus, ut pulvinar ipsum luctus in. Etiam semper arcu lacus, id tincidunt nunc interdum et. Pellentesque et tellus sed.";
+    char data[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non semper lectus, ac gravida est. Pellentesque iaculis ornare erat, et sodales eros. Praesent id rhoncus leo. Donec tincidunt mi in pharetra sollicitudin. Integer scelerisque aliquam tellus et cursus. Nunc sed molestie nisl, eu viverra nunc. Etiam odio est, tempor id aliquam non, posuere non lorem. Phasellus accumsan eleifend lacus, ut pulvinar ipsum luctus in. Etiam semper arcu lacus, id tincidunt nunc interdum et. Pellentesque et tellus sed\n";
     atapio_write(0, 0, 1, (char*)data);
-    atapio_write(0, 0, 1, (char*)data);
-    atapio_write(0, 0, 1, (char*)data);
-    atapio_write(0, 0, 1, (char*)data);
-    //while(true);
+    atapio_write(0, 1, 1, (char*)data);
+    atapio_write(0, 2, 1, (char*)data);
+    atapio_write(0, 3, 1, (char*)data);
+    
+    while(true);
     //kshell();
 
     panic("The end of the main function has been reached.");

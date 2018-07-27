@@ -1,5 +1,6 @@
 #include "cpu/idt.h"
 #include "cpu/irq.h"
+#include "cpu/io.h"
 #include "kernel/system.h"
 #include "libc.h"
 
@@ -28,6 +29,7 @@ irq_handler_t irq_register(int index, irq_handler_t handler)
 
 esp_t irq_handler(esp_t esp, context_t context)
 {
+    info("HANDLER");
     if (irq_handlers[context.int_no] != NULL)
     {
         esp = irq_handlers[context.int_no](esp, &context);
@@ -35,11 +37,16 @@ esp_t irq_handler(esp_t esp, context_t context)
     else
     {
         console_bypass_lock = true;
-        error("Unhandeled IRQ %d!", context.int_no);
+        info("Unhandeled IRQ %d!", context.int_no);
         console_bypass_lock = false;
     }
 
-    pic_EOI();
+    if (context.int_no >= 8)
+    {
+        outb(0xA0, 0x20);
+    }
+
+    outb(0x20, 0x20);
 
     return esp; // this is only use for task switching.
 }

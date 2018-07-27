@@ -60,7 +60,6 @@ int atapio_write(u8 drive, u32 numblock, u8 count, char *buf)
     debug("ATA::pio write drive:%d block:%d count:%d", drive, numblock, count);
 
     u16 tmpword;
-    int idx;
 
     atapio_common(drive, numblock, count);
     outb(0x1F7, 0x30);
@@ -68,9 +67,9 @@ int atapio_write(u8 drive, u32 numblock, u8 count, char *buf)
     /* Wait for the drive to signal that it's ready: */
     atapio_wait();
 
-    for (idx = 0; idx < 256 * count; idx++)
+    for (int i = 0; i < 256 * count; i++)
     {
-        tmpword = (buf[idx * 2 + 1] << 8) | buf[idx * 2];
+        tmpword = (buf[i * 2 + 1] << 8) | buf[i * 2];
         outw(0x1F0, tmpword);
     }
 

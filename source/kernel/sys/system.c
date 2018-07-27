@@ -1,8 +1,6 @@
 #include "cpu/cpu.h"
 #include "kernel/system.h"
-#include "kernel/tasking.h"
 #include "libc.h"
-#include "kernel/memory.h"
 
 char * __kernel_name = "core-one";
 
@@ -14,13 +12,6 @@ char * __kernel_version_codename = "babystep";
 /* kernel version format major.minor.patch-codename */
 char * __kernel_version_format = "%d.%d.%d-%s";
 char * __kernel_uname_format = "%s %d.%d.%d-%s";
-
-
-void system_setup()
-{
-    setup(task);
-    setup(mm);
-}
 
 const char * const log_level[] = { "&7 ", " [warn] ", " &4[!!!] "};
 
