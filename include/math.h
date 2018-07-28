@@ -3,6 +3,7 @@
 
 #define PI (3.141592654)
 #define min(a, b)  (a) < (b) ? (a) : (b)
+#define max(a, b)  (a) > (b) ? (a) : (b)
 
 int abs(int value);
 

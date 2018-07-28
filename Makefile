@@ -21,19 +21,19 @@ include scripts/*.mk
 
 # --- Commands --------------------------------------------------------------- #
 
-build: kernel.bin filesystem.img
+all: kernel.bin filesystem.img
 
-rebuild: clean build
+rebuild: clean all
 
-run: build
+run: all
 	@echo "\n\033[1;37m .. Booting qemu.\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS)
 
-run-nox: build
+run-nox: all
 	@echo "\n\033[1;37m .. Booting qemu.\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS) -nographic
 
-debug: build
+debug: all
 	@echo "\n\033[1;37m .. Booting qemu (debug).\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS) -s -S
 
@@ -85,4 +85,4 @@ dumpfs: filesystem.img
 	@$(CC) $(CPPFLAGS) -c -o $@ $^
 	@echo "\r\033[0m ✅ "
 
-.PHONY: build rebuild run run-nox debug clean crosscompiler
+.PHONY: all rebuild run run-nox debug clean crosscompiler

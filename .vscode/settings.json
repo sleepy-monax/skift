@@ -1,36 +1,10 @@
 {
     "files.exclude": {
         "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
         "**/*.o": true,
+        "toolchain/": true,
     },
     "files.associations": {
-        "system_error": "c",
-        "array": "cpp",
-        "string_view": "cpp",
-        "kobject.h": "c",
-        "ascii.h": "c",
-        "list": "cpp",
-        "complex": "cpp",
-        "istream": "c",
-        "optional": "c",
-        "ostream": "c",
-        "type_traits": "c",
-        "cmath": "c",
-        "cstdlib": "cpp",
-        "io.h": "c",
-        "cpu.h": "c",
-        "unordered_map": "c",
-        "cstring": "c",
-        "initializer_list": "c",
-        "utility": "c",
-        "atomic.h": "c",
-        "memory.h": "c",
-        "string": "cpp",
-        "stdlib.h": "c",
-        "random": "c"
-    }
+        "math.h": "c"
+    },
 }
