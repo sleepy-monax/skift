@@ -1,6 +1,6 @@
-cross/
-tools/build
-tools/tarballs
+toolchain/
+build/
+bin/
 *.c.o
 *.S.o
 *.bin

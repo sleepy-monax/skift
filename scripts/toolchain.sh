@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 TARGET=i686-elf
 GCC_VERSION=6.4.0
 BINUTILS_VERSION=2.27
-PREFIX=$DIR/../cross
+PREFIX=$DIR/../toolchain
 
 mkdir -p tarballs
 
@@ -34,11 +34,11 @@ pushd tarballs
 popd
 
 mkdir -p $PREFIX
-mkdir -p build
-mkdir -p build/binutils
-mkdir -p build/gcc
+mkdir -p ../build
+mkdir -p ../build/binutils
+mkdir -p ../build/gcc
 
-pushd build
+pushd ../build
 
     unset PKG_CONFIG_LIBDIR # Just in case
 

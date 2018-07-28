@@ -53,7 +53,7 @@ void __panic(const string file, const string function, const int line, context_t
         dump_context(context);
     }
 
-    print("\n\t&fSystem halted!");
+    print("\n\t&fSystem halted!\n");
 
     // printf("\n&8--------------------------------------------------------------------------------");
     // print("\r----------------------------------------------- ");
