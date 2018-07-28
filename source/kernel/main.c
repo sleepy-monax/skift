@@ -25,7 +25,6 @@ void taskclock()
     {
         memset(buffer, 0, 80);
         printfb(buffer, " [ %s '%s' ] [ %d:%d:%d ] [ %d tasks ] [ %dmo ]",
-        
         __kernel_name, __kernel_version_codename, time_get(TIME_HOUR), time_get(TIME_MINUTE), time_get(TIME_SECOND), running_task_count, mbootinfo->mem_upper / 1024);
     
         for(u32 i = 0; i < 80; i++)
@@ -53,9 +52,9 @@ void main(multiboot_info_t * info)
     atomic_enable();
     sti();
 
-    //asm("int $37");
-    //task_start_named(taskclock, "clock");
-
+    // asm("int $45");
+    task_start_named(taskclock, "clock");
+    //print("\033[0;34m");
     /*for(size_t i = 0; i < 16; i++)
     {
         void * p = malloc(16 + i);

@@ -6,6 +6,7 @@ dd irq%1
 
 %macro IRQ 1
 irq%1:
+    cli
     push 0
     push %1
     jmp irq_common
@@ -19,10 +20,14 @@ irq_common:
     push fs
     push gs 
 
-    push ebx
-    mov bx,0x10 ; load the kernel code segment
-    mov ds,bx
-    pop ebx
+    mov ax, 0x10
+
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    cld
 
     mov eax, esp
     push esp

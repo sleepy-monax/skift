@@ -6,12 +6,14 @@ dd isr%1
 
 %macro ISR_ERR 1
 isr%1:
+    cli
     push %1
     jmp isr_common
 %endmacro
 
 %macro ISR_NOERR 1
 isr%1:
+    cli
     push 0
     push %1
     jmp isr_common
@@ -25,10 +27,14 @@ isr_common:
     push fs
     push gs 
 
-    push ebx
-    mov bx,0x10 ; load the kernel code segment
-    mov ds,bx
-    pop ebx
+    mov ax, 0x10
+
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    cld
 
     call isr_handler
 

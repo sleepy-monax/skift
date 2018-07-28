@@ -29,7 +29,6 @@ irq_handler_t irq_register(int index, irq_handler_t handler)
 
 esp_t irq_handler(esp_t esp, context_t context)
 {
-    info("HANDLER");
     if (irq_handlers[context.int_no] != NULL)
     {
         esp = irq_handlers[context.int_no](esp, &context);
@@ -48,5 +47,6 @@ esp_t irq_handler(esp_t esp, context_t context)
 
     outb(0x20, 0x20);
 
-    return esp; // this is only use for task switching.
+    // this is only use for task switching.
+    return esp;
 }

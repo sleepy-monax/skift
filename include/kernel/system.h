@@ -93,3 +93,4 @@ void console_color(console_color_t fg, console_color_t bg);
 void console_put(char c);
 void console_print(string message);
 void console_read(string buffer, int size);
+void console_clear();

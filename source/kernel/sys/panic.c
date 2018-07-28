@@ -32,7 +32,7 @@ void __panic(const string file, const string function, const int line, context_t
 {
     cli();
     console_bypass_lock = true;
-
+    console_clear();
     va_list va;
     va_start(va, message);
     
@@ -46,17 +46,19 @@ void __panic(const string file, const string function, const int line, context_t
     printf("\n");
     printf("\n\t&eDiagnostic:&7");
     printf("\n\tThe system was running for %d tick.&8", system_tick);
-    printf("\n");
+    printf("\n\n");
     
     if (context != NULL)
     {
         dump_context(context);
     }
 
-    printf("\n&8--------------------------------------------------------------------------------");
-    print("\r----------------------------------------------- ");
-    printf(KERNEL_UNAME);
-    print(" \n");
+    print("\n\t&fSystem halted!");
+
+    // printf("\n&8--------------------------------------------------------------------------------");
+    // print("\r----------------------------------------------- ");
+    // printf(KERNEL_UNAME);
+    // print(" \n");
 
     while(1);
 }

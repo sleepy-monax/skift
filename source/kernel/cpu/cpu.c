@@ -46,6 +46,6 @@ void cpu_setup()
     setup(pic);
     setup(idt);
     setup(fpu);
-    setup(irq);
     setup(isr);
+    setup(irq);
 }

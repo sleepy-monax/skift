@@ -141,6 +141,14 @@ void console_print(string message)
         lock_release(&console_lock);
 }
 
+void console_clear()
+{
+    vga_clear(vga_light_gray, vga_black);
+    console.cursor.x = 0;
+    console.cursor.y = 0;
+    vga_cursor(console.cursor.x, console.cursor.y);
+}
+
 void console_read(string buffer, int size)
 {
     UNUSED(buffer + size);
