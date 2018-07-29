@@ -31,7 +31,7 @@
 ### 📂 Milestone 1 - File system
  - [X] ATA pio driver (done but fault when interupts enabled :/ )
  - [ ] RAM disk
- - [ ] Virtual file system
+ - [ ] Virtual file system (WIP)
  
 ### 👦 Milestone 2 - User mde
  - [ ] ELF loader

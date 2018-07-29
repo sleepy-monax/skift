@@ -2,9 +2,9 @@
     "files.exclude": {
         "**/.git": true,
         "**/*.o": true,
+        "**/*.a": true,
+        "**/*.bin": true,
+        "**/*.img": true,
         "toolchain/": true,
-    },
-    "files.associations": {
-        "math.h": "c"
-    },
+    }
 }
