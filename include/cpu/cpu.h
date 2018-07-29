@@ -14,4 +14,3 @@ typedef PACKED(struct)
 } context_t;
 
 u32 CR0();
-void cpu_setup();

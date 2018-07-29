@@ -1,9 +1,3 @@
-#include "cpu/cpu.h"
-#include "cpu/fpu.h"
-#include "cpu/gdt.h"
-#include "cpu/idt.h"
-#include "cpu/irq.h"
-#include "cpu/isr.h"
 #include "cpu/cpuid.h"
 #include "kernel/system.h"
 #include "libc.h"
@@ -38,14 +32,4 @@ u32 CR0()
     u32 r;
     asm volatile("mov %%cr0, %0" : "=r" (r));
     return r;
-}
-
-void cpu_setup()
-{
-    setup(gdt);
-    setup(pic);
-    setup(idt);
-    setup(fpu);
-    setup(isr);
-    setup(irq);
 }
