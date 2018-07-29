@@ -3,7 +3,7 @@
   <br>
   <a href="https://github.com/NicolasVanBossuyt/core-one"><img src="https://github.com/NicolasVanBossuyt/core-one/raw/master/doc/logo_blue.png?raw=true" alt="core one" width="512"></a>
   <br>
-  core<b>ONE</b>
+  skift<b>OS</b>
   <br>
 </h1>
 
@@ -14,16 +14,43 @@
 </p>
 
 <br><br><br><br><br>
-<br><br><br><br><br>
 
 ## Features
+ - *none* 😣
+
+## Screenshots
+![logo](doc/capture_2018-07-15_10-58-37.png)
+
+## Roadmap
+### ♥ Milestone 0 - a basic kernel
+ - [X] IDT, GDT, IRQ and ISR
+ - [ ] Pagging
+ - [ ] Memory managment
+ - [X] Tasking
+
+### 📂 Milestone 1 - File system
+ - [X] ATA pio driver (done but fault when interupts enabled :/ )
+ - [ ] RAM disk
+ - [ ] Virtual file system
+ 
+### 👦 Milestone 2 - User mde
+ - [ ] ELF loader
+ - [ ] hellowolrd.c
+
+### 🤙 Milestoone 3 - System calls
+ - [ ] SYSCALLS (printf, open, close, read, write, ioctl, exec, fork, wait, exit)
+
+### 🐚 Milestone 3 - shell
+ - [ ] Basic shell
+ - [ ] coreutils (ls, cat, ...)
+
+### 👽 Milestone 4 - What next?
+ - ...
 
 ## Build the operating system
- 1. First you need to build the crosscompiler using: `make crosscompiler`
+ 1. First you need to build the toolchain using: `make toolchain`
  2. Then build the system using: `make`
  3. Finaly you can run it using: `make run`
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.md for details.
-
-![logo](doc/capture_2018-07-15_10-58-37.png)
