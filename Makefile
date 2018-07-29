@@ -17,8 +17,6 @@ ASFLAGS = -felf32
 QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg
 QEMUFLAGS += -drive file=filesystem.img,index=0,media=disk,format=raw
 
-include scripts/*.mk
-
 # --- Commands --------------------------------------------------------------- #
 
 all: kernel.bin filesystem.img
@@ -69,6 +67,8 @@ dumpfs: filesystem.img
 	od -A d -c $^
 
 # --- Build rules ------------------------------------------------------------ #
+
+include scripts/*.mk
 
 %.S.o: %.S
 	@echo -n "\033[1;34m 🔧 ASM \033[0m$^ => $@"
