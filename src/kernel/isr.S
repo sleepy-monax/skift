@@ -82,7 +82,7 @@ ISR_NOERR 29
 ISR_NOERR 30
 ISR_NOERR 31
 
-ISR_NOERR 32 ; !!! this is note the 32 idt entry it's the 127
+ISR_NOERR 128 ; !!! this is note the 32 idt entry it's the 127
 
 
 global isr_vector
@@ -120,4 +120,4 @@ isr_vector:
     ISR_NAME 30
     ISR_NAME 31
     
-    ISR_NAME 32 ; !!! this is note the 32 idt entry it's the 127
+    ISR_NAME 128 ; !!! this is note the 32 idt entry it's the 127

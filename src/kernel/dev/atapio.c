@@ -30,7 +30,7 @@ void atapio_wait()
 
 int atapio_read(u8 drive, u32 numblock, u8 count, char *buf)
 {
-    //atomic_begin();
+    atomic_begin();
     debug("ATA::pio read drive:%d block:%d count:%d", drive, numblock, count);
     u16 tmpword;
     int idx;
@@ -48,8 +48,10 @@ int atapio_read(u8 drive, u32 numblock, u8 count, char *buf)
         buf[idx * 2 + 1] = (unsigned char)(tmpword >> 8);
     }
 
+    asm("hlt");
+    while(true){};
     debug("ATA::pio read done!");
-    //atomic_end();
+    atomic_end();
 
     return count;
 }
@@ -74,7 +76,7 @@ int atapio_write(u8 drive, u32 numblock, u8 count, char *buf)
     }
 
     debug("ATA::pio write done!");
-    // atomic_end();
+    atomic_end();
 
     return count;
 }

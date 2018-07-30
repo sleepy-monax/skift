@@ -50,7 +50,7 @@ void isr_setup()
     }  
 
     // syscall handler
-    //idt_entry(127, isr_vector[32], 0x08, 0x8E);
+    idt_entry(128, isr_vector[32], 0x08, 0x8E);
 }
 
 isr_handler_t isr_register(int index, isr_handler_t handler)
@@ -73,9 +73,9 @@ void isr_handler(context_t context)
     }
     else
     {
-        if (context.int_no == 32)
+        if (context.int_no == 128)
         {
-            cpanic(&context, "No syscalls handler!");
+            panic("No syscalls handler!");
         }
 
         cpanic(&context, "EXCEPTION: '%s' (INT:%d ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);

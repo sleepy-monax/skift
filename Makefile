@@ -14,7 +14,7 @@ CFLAGS  = -I ./include -ffreestanding -O2 -nostdlib -std=gnu11 -Wall -Wextra -We
 CPPFLAGS  = -I ./include -ffreestanding -O2 -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
 LDFLAGS = -O2
 ASFLAGS = -felf32
-QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg
+QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg #-d int
 QEMUFLAGS += -drive file=filesystem.img,index=0,media=disk,format=raw
 
 # --- Commands --------------------------------------------------------------- #

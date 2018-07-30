@@ -29,9 +29,10 @@ int uart_is_transmit_empty(uart_port_t port)
  
 void uart_put(uart_port_t port, char a) 
 {
-   while (uart_is_transmit_empty(port) == 0);
+    UNUSED(port + a);
+   //while (uart_is_transmit_empty(port) == 0);
  
-   outb(port,a);
+   //outb(port,a);
 }
 
 const char * const color_code[] = 
@@ -57,6 +58,7 @@ const char * const color_code[] =
 
 void uart_set_color(uart_port_t port, uchar color)
 {
+    UNUSED(port + color);
     uart_print(port, "\033[");
     uart_print(port, (string)color_code[color]);
     uart_print(port, "m");
@@ -64,6 +66,7 @@ void uart_set_color(uart_port_t port, uchar color)
 
 void uart_print(uart_port_t port, string str) 
 {   
+    UNUSED(port + str);
     for(u32 i = 0; str[i] != '\0'; i++)
     {
         uart_put(port, str[i]);
