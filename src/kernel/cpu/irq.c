@@ -36,7 +36,7 @@ esp_t irq_handler(esp_t esp, context_t context)
     else
     {
         //console_bypass_lock = true;
-        //info("Unhandeled IRQ %d!", context.int_no);
+        //debug("Unhandeled IRQ %d!", context.int_no);
         //console_bypass_lock = false;
     }
 

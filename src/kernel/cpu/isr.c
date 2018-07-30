@@ -79,7 +79,6 @@ void isr_handler(context_t context)
         }
 
         cpanic(&context, "EXCEPTION: '%s' (INT:%d ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);
-		//debug("EXCEPTION: '%s' (INT:%d ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);
 	}
 
     outb(0x20, 0x20);
