@@ -12,7 +12,7 @@ void irq_setup()
 {
     for(u32 i = 0; i < 16; i++)
     {
-        idt_entry(32 + i, irq_vector[i], 0x10, 0x8E);
+        idt_entry(32 + i, irq_vector[i], 0x08, 0x8E);
     }   
 }
 

@@ -14,3 +14,6 @@ typedef PACKED(struct)
 } context_t;
 
 u32 CR0();
+u32 CR2();
+u32 CR3();
+u32 CR4();

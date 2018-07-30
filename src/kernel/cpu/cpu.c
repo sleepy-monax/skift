@@ -33,3 +33,24 @@ u32 CR0()
     asm volatile("mov %%cr0, %0" : "=r" (r));
     return r;
 }
+
+u32 CR2()
+{
+    u32 r;
+    asm volatile("mov %%cr2, %0" : "=r" (r));
+    return r;
+}
+
+u32 CR3()
+{
+    u32 r;
+    asm volatile("mov %%cr3, %0" : "=r" (r));
+    return r;
+}
+
+u32 CR4()
+{
+    u32 r;
+    asm volatile("mov %%cr4, %0" : "=r" (r));
+    return r;
+}

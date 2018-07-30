@@ -50,7 +50,7 @@ void isr_setup()
     }  
 
     // syscall handler
-    idt_entry(127, isr_vector[32], 0x08, 0x8E);
+    //idt_entry(127, isr_vector[32], 0x08, 0x8E);
 }
 
 isr_handler_t isr_register(int index, isr_handler_t handler)
