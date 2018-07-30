@@ -80,7 +80,7 @@ void main(multiboot_info_t * info)
         {
             for(u32 x = 0; x < 800; x++)
             {
-                bga_pixel(x, y, (x ^ y) + i );
+                bga_pixel(x, y, (x + y) + i );
             }
         }
 
