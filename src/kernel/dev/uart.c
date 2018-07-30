@@ -29,10 +29,8 @@ int uart_is_transmit_empty(uart_port_t port)
  
 void uart_put(uart_port_t port, char a) 
 {
-    UNUSED(port + a);
-   //while (uart_is_transmit_empty(port) == 0);
- 
-   //outb(port,a);
+   while (uart_is_transmit_empty(port) == 0);
+   outb(port,a);
 }
 
 const char * const color_code[] = 

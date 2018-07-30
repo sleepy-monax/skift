@@ -77,8 +77,10 @@ void isr_handler(context_t context)
         {
             panic("No syscalls handler!");
         }
-
-        cpanic(&context, "EXCEPTION: '%s' (INT:%d ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);
+		else
+		{
+        	cpanic(&context, "EXCEPTION: '%s' (INT:%d ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);
+		}
 	}
 
     outb(0x20, 0x20);

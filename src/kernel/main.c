@@ -67,32 +67,8 @@ void main(multiboot_info_t * info)
     sti();
     
     task_start_named(taskclock, "clock");
-    /*for(size_t i = 0; i < 16; i++)
-    {
-        void * p = malloc(16 + i);
-        void * q = malloc(8 + i);
 
-        memset(p, 0, 16 + i);
-        memset(q, 0,  8 + i);
-
-        free(p);
-        free(q);
-    }
     
-    dump_heap();*/
-    //asm("int $35");
-    
-    //asm("int $118");
-
-    char data[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non semper lectus, ac gravida est. Pellentesque iaculis ornare erat, et sodales eros. Praesent id rhoncus leo. Donec tincidunt mi in pharetra sollicitudin. Integer scelerisque aliquam tellus et cursus. Nunc sed molestie nisl, eu viverra nunc. Etiam odio est, tempor id aliquam non, posuere non lorem. Phasellus accumsan eleifend lacus, ut pulvinar ipsum luctus in. Etiam semper arcu lacus, id tincidunt nunc interdum et. Pellentesque et tellus sed\n";
-    atapio_write(0, 0, 1, (char*)data);
-    atapio_write(0, 1, 1, (char*)data);
-    atapio_write(0, 2, 1, (char*)data);
-    atapio_write(0, 3, 1, (char*)data);
-    
-
-    while(true);
-    //kshell();
 
     panic("The end of the main function has been reached.");
 }

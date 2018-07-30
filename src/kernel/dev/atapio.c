@@ -48,8 +48,6 @@ int atapio_read(u8 drive, u32 numblock, u8 count, char *buf)
         buf[idx * 2 + 1] = (unsigned char)(tmpword >> 8);
     }
 
-    asm("hlt");
-    while(true){};
     debug("ATA::pio read done!");
     atomic_end();
 
