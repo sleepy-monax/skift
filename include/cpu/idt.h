@@ -22,7 +22,8 @@ typedef PACKED(struct)
 {
     u16 offset0_15;  // offset bits 0..15
     u16 selector;    // a code segment selector in GDT or LDT
-    u16 type_attr;   // type and attributes
+    u8 zero;
+    u8 type_attr;   // type and attributes
     u16 offset16_31; // offset bits 16..31
 } idt_entry_t;
 

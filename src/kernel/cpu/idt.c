@@ -33,6 +33,8 @@ void idt_entry(u8 index, u32 offset, u16 selector, u16 type)
     entry->offset0_15 = offset & 0xffff;
     entry->offset16_31 = (offset>>16) & 0xffff;
 
+    entry->zero = 0;
+
     entry->selector = selector;
-    entry->type_attr = type | 0x80;
+    entry->type_attr = type | 0x60;
 }
