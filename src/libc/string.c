@@ -1,3 +1,4 @@
+#include "types.h"
 #include "string.h"
 #include "math.h"
 
@@ -30,10 +31,12 @@ int memcmp(const void * str1, const void * str2, size_t n)
 
 void * memcpy(void * dest, const void * src, size_t n)
 {
-    u32 i;
-    for (i = 0; i < n; i++) 
+    char * d = dest;
+    const char * s = src;
+
+    for (size_t i = 0; i < n; i++) 
     {
-        *((u8*)dest + i) = *((u8*)src + i);
+        d[i] = s[i];
     }
 
     return dest;

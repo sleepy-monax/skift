@@ -5,6 +5,11 @@
 #define min(a, b)  (a) < (b) ? (a) : (b)
 #define max(a, b)  (a) > (b) ? (a) : (b)
 
+#define NaN (0.0/0.0)
+#define INF (1.0/0.0)
+#define POS_INF (1.0/0.0)
+#define NEG_INF (-1.0/0.0)
+
 int abs(int value);
 
 

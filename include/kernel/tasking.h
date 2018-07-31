@@ -16,7 +16,7 @@ typedef enum
     TASK_FREE
 } task_state_t;
 
-typedef struct
+typedef PACKED(struct)
 {
     tid_t id;
     char name[TASK_NAME_SIZE];

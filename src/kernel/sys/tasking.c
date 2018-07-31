@@ -67,7 +67,10 @@ void task_setup()
     }
 
     // Create the kernel task.
-    task_start_named(NULL, "kernel");
+    tid_t ktid = task_start_named(NULL, "kernel");
+
+    fpu_save((buffer8_t)&tasks[ktid].fpu_states);
+
     irq_register(0, (irq_handler_t)&task_shedule);
 }
 
@@ -84,6 +87,8 @@ tid_t task_start_named(task_entry_t entry, string name)
     }
     
     task_t * task = &tasks[free_task];
+    memset(task, 0, sizeof(task_t));
+
 
     task->entry = entry;
 

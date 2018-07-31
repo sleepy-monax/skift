@@ -14,13 +14,14 @@
 #include "libc.h"
 #include "types.h"
 
-#include "device/bga.h"
 #include "device/vga.h"
 #include "device/atapio.h"
 #include "string.h"
 #include "stdlib.h"
 #include "kernel/tasking.h"
 #include "kernel/memory.h"
+
+#include "DEMO.h"
 
 extern u32 running_task_count;
 multiboot_info_t * mbootinfo;
@@ -59,34 +60,19 @@ void main(multiboot_info_t * info)
     setup(idt);
     setup(isr);
     setup(irq);
-
     setup(fpu);
+
     setup(task);
     //setup(mm);
 
     atomic_enable();
     sti();
     
+    task_start_named(demo_mandelbrot, "mandelbrot");
+    task_start_named(demo_color, "color");
     task_start_named(taskclock, "clock");
 
-    bga_setup();
-    bga_mode(800, 600);
-    
-    u32 i = 0;
-    while (true)
-    {
-        
-        for(u32 y = 0; y < 600; y++)
-        {
-            for(u32 x = 0; x < 800; x++)
-            {
-                bga_pixel(x, y, (x + y) + i );
-            }
-        }
-
-        i++;
-        
-    }
+    while(true);
 
     panic("The end of the main function has been reached.");
 }

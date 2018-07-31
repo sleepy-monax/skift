@@ -33,12 +33,12 @@ void fpu_setup()
 
 void fpu_save(buffer8_t state)
 {
-    asm volatile ("fxsave (%0)" :: "r"(buffer));
-	memcpy(state,&buffer,512);
+    asm volatile ("fxsave (%0)" :: "r"(&buffer));
+	memcpy(state, buffer, 512);
 }
 
 void fpu_load(buffer8_t state)
 {
-	memcpy(buffer, state,512);
-	asm volatile ("fxrstor (%0)" :: "r"(buffer));
+	memcpy(buffer, state, 512);
+	asm volatile ("fxrstor (%0)" :: "r"(&buffer));
 }

@@ -26,7 +26,11 @@
 
 #define VBE_DISPI_LFB_PHYSICAL_ADDRESS  0xE0000000
 
-void bga_setup();
+extern u32 * bga_framebuffer;
+extern u32 bga_width;
+extern u32 bga_height;
+
+#define bga_pixel(x, y, value) (bga_framebuffer[x + y * bga_width] = value)
+
 void bga_mode(u32 width, u32 height);
 void bga_blit(buffer32_t buffer);
-void bga_pixel(u32 x, u32 y, u32 value);
