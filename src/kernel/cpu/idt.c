@@ -1,9 +1,4 @@
-#include "libc.h"
-#include "string.h"
-#include "cpu/cpu.h"
 #include "cpu/idt.h"
-#include "cpu/io.h"
-#include "kernel/system.h"
 
 idt_t idt;
 

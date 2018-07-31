@@ -1,27 +1,11 @@
-#include "cpu/cpu.h"
-#include "cpu/fpu.h"
+#include "kernel/multiboot.h"
+#include "kernel/version.h"
+#include "kernel/tasking.h"
+#include "kernel/time.h"
 #include "cpu/gdt.h"
 #include "cpu/idt.h"
-#include "cpu/irq.h"
 #include "cpu/isr.h"
-#include "cpu/cpu.h"
-#include "kernel/device.h"
-#include "kernel/multiboot.h"
-#include "kernel/system.h"
-#include "kernel/tasking.h"
-#include "kernel/version.h"
-#include "kernel/atomic.h"
-#include "libc.h"
-#include "types.h"
-
-#include "device/vga.h"
-#include "device/atapio.h"
-#include "string.h"
-#include "stdlib.h"
-#include "kernel/tasking.h"
-#include "kernel/memory.h"
-
-#include "DEMO.h"
+#include "cpu/irq.h"
 
 extern u32 running_task_count;
 multiboot_info_t * mbootinfo;
@@ -60,16 +44,13 @@ void main(multiboot_info_t * info)
     setup(idt);
     setup(isr);
     setup(irq);
-    setup(fpu);
 
     setup(task);
-    //setup(mm);
+    setup(mm);
 
     atomic_enable();
     sti();
     
-    task_start_named(demo_mandelbrot, "mandelbrot");
-    task_start_named(demo_color, "color");
     task_start_named(taskclock, "clock");
 
     while(true);

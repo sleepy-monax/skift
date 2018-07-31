@@ -5,6 +5,16 @@
 #define sti() asm volatile("sti")
 #define hlt() asm volatile("hlt")
 
+u32 CR0();
+u32 CR2();
+u32 CR3();
+u32 CR4();
+
+u8   inb (u16 port);
+void outb(u16 port, u8 data);
+u16  inw (u16 port);
+void outw(u16 port, u16 data);
+
 typedef PACKED(struct)
 {
     u32 gs, fs, es, ds;
@@ -13,7 +23,4 @@ typedef PACKED(struct)
     u32 eip, cs, eflags;
 } context_t;
 
-u32 CR0();
-u32 CR2();
-u32 CR3();
-u32 CR4();
+void dump_context(context_t* context);

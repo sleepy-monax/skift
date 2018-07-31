@@ -6,9 +6,5 @@
         "**/*.bin": true,
         "**/*.img": true,
         "toolchain/": true,
-    },
-    "files.associations": {
-        "cmath": "c",
-        "string.h": "c"
     }
 }

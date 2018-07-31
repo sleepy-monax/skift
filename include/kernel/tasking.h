@@ -21,8 +21,7 @@ typedef PACKED(struct)
     tid_t id;
     char name[TASK_NAME_SIZE];
     task_state_t state;
-
-    u8 fpu_states[512];
+    
     u32 esp;
     task_entry_t entry;
     u8 stack[TASK_STACK_SIZE];

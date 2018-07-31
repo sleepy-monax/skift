@@ -1,6 +1,4 @@
 #include "cpu/cpuid.h"
-#include "libc.h"
-#include "string.h"
 
 static inline int cpuid_string(int code, int where[4]) 
 {

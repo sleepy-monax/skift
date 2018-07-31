@@ -1,8 +1,5 @@
-#include "cpu/idt.h"
 #include "cpu/irq.h"
-#include "cpu/io.h"
-#include "kernel/system.h"
-#include "libc.h"
+#include "cpu/idt.h"
 
 extern u32 irq_vector[];
 extern bool console_bypass_lock;
@@ -35,9 +32,9 @@ esp_t irq_handler(esp_t esp, context_t context)
     }
     else
     {
-        //console_bypass_lock = true;
-        //debug("Unhandeled IRQ %d!", context.int_no);
-        //console_bypass_lock = false;
+        // console_bypass_lock = true;
+        // debug("Unhandeled IRQ %d!", context.int_no);
+        // console_bypass_lock = false;
     }
 
     if (context.int_no >= 8)

@@ -1,4 +1,4 @@
-#include "lock.h"
+#include "sync/lock.h"
 
 void lock_init(lock_t* lock, string name)
 {

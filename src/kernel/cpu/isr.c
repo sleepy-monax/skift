@@ -1,7 +1,4 @@
-#include "cpu/idt.h"
 #include "cpu/isr.h"
-#include "kernel/system.h"
-#include "cpu/io.h"
 
 static const char *exception_messages[32] = {
 	"Division by zero",
@@ -79,7 +76,7 @@ void isr_handler(context_t context)
         }
 		else
 		{
-        	cpanic(&context, "EXCEPTION: '%s' (INT:%d ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);
+        	cpanic(&context, "CPU EXCEPTION: '%s' (INT:%d ERR:%x) !",exception_messages[context.int_no], context.int_no, context.errcode);
 		}
 	}
 
