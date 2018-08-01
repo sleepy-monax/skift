@@ -62,7 +62,7 @@ void main(multiboot_info_t * info)
     sti();
     
 
-    while(true) print("\rhello");
+    while(true);
 
     panic("The end of the main function has been reached.");
 }

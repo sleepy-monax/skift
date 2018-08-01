@@ -3,6 +3,8 @@ build/
 bin/
 *.c.o
 *.S.o
+*.c.ko
+*.S.ko
 *.bin
 *.asm
 *.img

@@ -47,6 +47,9 @@ clean:
 	@find -name "*.c.o" -delete
 	@find -name "*.S.o" -delete
 	@find -name "*.cpp.o" -delete
+	@find -name "*.c.ko" -delete
+	@find -name "*.S.ko" -delete
+	@find -name "*.cpp.ko" -delete
 	@find -name "*.bin" -delete
 	@find -name "*.asm" -delete
 	@find -name "*.img" -delete

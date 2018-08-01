@@ -2,13 +2,10 @@
     "files.exclude": {
         "**/.git": true,
         "**/*.o": true,
+        "**/*.ko": true,
         "**/*.a": true,
         "**/*.bin": true,
         "**/*.img": true,
         "toolchain/": true,
-    },
-    "files.associations": {
-        "stdio.h": "c",
-        "system_error": "c"
     }
 }

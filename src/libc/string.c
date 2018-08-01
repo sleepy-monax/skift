@@ -4,13 +4,14 @@
 
 void * memchr(const void * str, int c, size_t n)
 {
-    const u8 *src = (const u8 *)str;
+    const u8 *s = (const u8 *)str;
   
-    while (n-- > 0)
+    for(size_t i = 0; i < n; i++)
     {
-        if (*src == c)
-            return (void*)src;
-        src++;
+        if (*(s + i) == c)
+        {
+            return (s + i);
+        }
     }
 
     return NULL;
@@ -18,17 +19,21 @@ void * memchr(const void * str, int c, size_t n)
 
 int memcmp(const void * str1, const void * str2, size_t n)
 {
-    register const u8 *s1 = (const u8*)str1;
-    register const u8 *s2 = (const u8*)str2;
+    const u8 *s1 = str1;
+    const u8 *s2 = str2;
 
-    while (n-- > 0)
+    for(size_t i = 0; i < n; i++)
     {
-        if (*s1++ != *s2++)
-	    return s1[-1] < s2[-1] ? -1 : 1;
+        if ( *(s1 + i) != *(s2 + i) ) 
+        {
+            return *(s1 + i) - *(s2 + i);
+        }
     }
+    
     return 0;
 }
 
+void * memmove(void * dest, const void * src, size_t n) { return memcpy(dest, src, n); }
 void * memcpy(void * dest, const void * src, size_t n)
 {
     char * d = dest;
@@ -42,32 +47,41 @@ void * memcpy(void * dest, const void * src, size_t n)
     return dest;
 }
 
-void * memmove(void * dest, const void * src, size_t n)
-{
-    return memcpy(dest, src, n);
-}
 
 void * memset(void * str, int c, size_t n)
 {
-    u8* temp = (u8*)str;
-    for ( ; n != 0; n--) *temp++ = c;
+    char * s = str;
+    
+    for(size_t i = 0; i < n; i++)
+    {
+        *(s + i) = c;
+    }
+
     return str;
 }
 
 char * strcat(char * dest, const char * src)
 {
-    u32 i,j;
-    for (i = 0; dest[i] != '\0'; i++);
+    u32 dest_size = strlen(dest);
+    u32 src_size = strlen(dest);
 
-    for (j = 0; src[j] != '\0'; j++)
-        dest[i+j] = src[j];
-    dest[i+j] = '\0';
+    char * d = dest;
+    const char * s = src;
+
+    
+    for(size_t i = 0; i < src_size; i++)
+    {
+        d[dest_size + i] = src[i];
+    }
+
+    d[dest_size + src_size + 1] = '\0';
+
     return dest;
 }
 
 char * strncat(char * s1, const char * s2, size_t n)
 {
-      char *s = s1;
+    char *s = s1;
     /* Find the end of S1.  */
     s1 += strlen (s1);
     size_t ss = strnlen (s2, n);
@@ -94,7 +108,8 @@ int strcmp(const char * stra, const char * strb)
 {
     u32 i;
 
-    for (i = 0; stra[i] == strb[i]; i++) {
+    for (i = 0; stra[i] == strb[i]; i++) 
+    {
         if (stra[i] == '\0') return 0;
     }
 
@@ -106,14 +121,15 @@ int strncmp(const char * s1, const char * s2, size_t n)
     register unsigned char u1, u2;
 
     while (n-- > 0)
-        {
+    {
         u1 = (unsigned char) *s1++;
         u2 = (unsigned char) *s2++;
         if (u1 != u2)
-        return u1 - u2;
+            return u1 - u2;
+
         if (u1 == '\0')
-        return 0;
-        }
+            return 0;
+    }
     return 0;
 }
 

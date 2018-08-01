@@ -16,7 +16,7 @@ esp_t timer_handler(esp_t esp, context_t * context)
 
 void timer_setup()
 {
-    timer_set_frequency(100);
+    timer_set_frequency(1000);
     irq_register(0, (irq_handler_t)&timer_handler);
 }
 
