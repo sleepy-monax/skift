@@ -23,4 +23,3 @@ typedef enum
 void __debug(string function, string message, ...);
 void __log(log_level_t level, string function, string message, ...);
 void __panic(const string file, const string function, const int line, context_t * context, string message, ...);
-void __assert_failed(string expr, string file, string function, int line);

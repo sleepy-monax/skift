@@ -4,7 +4,7 @@
 
 void * memchr(const void * str, int c, size_t n)
 {
-    const u8 *s = (const u8 *)str;
+    u8 *s = (u8 *)str;
   
     for(size_t i = 0; i < n; i++)
     {
@@ -63,18 +63,16 @@ void * memset(void * str, int c, size_t n)
 char * strcat(char * dest, const char * src)
 {
     u32 dest_size = strlen(dest);
-    u32 src_size = strlen(dest);
+    u32 src_size = strlen(src);
 
     char * d = dest;
-    const char * s = src;
-
     
     for(size_t i = 0; i < src_size; i++)
     {
         d[dest_size + i] = src[i];
     }
 
-    d[dest_size + src_size + 1] = '\0';
+    d[dest_size + src_size] = '\0';
 
     return dest;
 }

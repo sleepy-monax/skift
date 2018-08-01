@@ -3,7 +3,7 @@
 
 void test_memchr()
 {
-    char * data0 = "Lorem ipsum &olor sit amet amet.";
+    //char * data0 = "Lorem ipsum &olor sit amet amet.";
 
 
 }
