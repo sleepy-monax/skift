@@ -1,5 +1,6 @@
 #pragma once
 #include "types.h"
+#include "utils.h"
 
 enum {
     CPUID_FEAT_ECX_SSE3         = 1 << 0, 

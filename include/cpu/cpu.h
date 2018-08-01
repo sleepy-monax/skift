@@ -1,5 +1,6 @@
 #pragma once
 #include "types.h"
+#include "utils.h"
 
 #define cli() asm volatile("cli")
 #define sti() asm volatile("sti")

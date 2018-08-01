@@ -1,4 +1,7 @@
+#include "cpu/idt.h"
 #include "cpu/isr.h"
+
+#include "kernel/logging.h"
 
 static const char *exception_messages[32] = {
 	"Division by zero",

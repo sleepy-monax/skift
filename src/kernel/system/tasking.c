@@ -1,5 +1,10 @@
-#include "kernel/tasking.h"
+#include <string.h>
+
 #include "cpu/cpu.h"
+#include "cpu/irq.h"
+#include "kernel/logging.h"
+#include "kernel/tasking.h"
+#include "sync/atomic.h"
 
 u32 system_tick = 0;
 tid_t current_task = -1;
@@ -99,7 +104,6 @@ tid_t task_start_named(task_entry_t entry, string name)
 
     running_task_count++;
 
-    while(true);
     atomic_end();
 
     return task->id;

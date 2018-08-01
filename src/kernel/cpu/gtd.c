@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "cpu/gdt.h"
 
 gdt_t gdt;

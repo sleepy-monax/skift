@@ -1,5 +1,6 @@
 #pragma once
 #include "types.h"
+#include "utils.h"
 
 #define PATH_SEPARATOR '/'
 #define MAX_FILE_NAME_SIZE 32

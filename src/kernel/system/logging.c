@@ -1,6 +1,8 @@
+#include <stdio.h>
+#include <stdarg.h>
+
 #include "kernel/logging.h"
 #include "kernel/time.h"
-#include "stdarg.h"
 
 const char * const log_level[] = { "&7 ", " [warn] ", " &4[!!!] "};
 

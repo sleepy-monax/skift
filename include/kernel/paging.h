@@ -1,5 +1,6 @@
 #pragma once
 #include "types.h"
+#include "utils.h"
 
 #define PAGE_SIZE 0x1000
 #define PAGE_TABLE_ENTRY_COUNT 1024

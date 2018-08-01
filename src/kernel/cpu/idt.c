@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "cpu/idt.h"
 
 idt_t idt;

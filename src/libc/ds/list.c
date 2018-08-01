@@ -1,6 +1,6 @@
-#include "libc.h"
-#include "list.h"
-#include "stdlib.h"
+#include <stdlib.h>
+
+#include "lib/list.h"
 
 /* --- Private functions ---------------------------------------------------- */
 

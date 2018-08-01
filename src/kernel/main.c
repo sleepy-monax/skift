@@ -1,3 +1,10 @@
+#include <stdio.h>
+#include <string.h>
+
+#include "sync/atomic.h"
+
+#include "devices/vga.h"
+#include "kernel/console.h"
 #include "kernel/multiboot.h"
 #include "kernel/version.h"
 #include "kernel/tasking.h"
@@ -6,6 +13,8 @@
 #include "cpu/idt.h"
 #include "cpu/isr.h"
 #include "cpu/irq.h"
+
+#include "kernel/logging.h"
 
 extern u32 running_task_count;
 multiboot_info_t * mbootinfo;
@@ -46,14 +55,14 @@ void main(multiboot_info_t * info)
     setup(irq);
 
     setup(task);
-    setup(mm);
+    task_start_named(taskclock, "clock");
+    //setup(mm);
 
     atomic_enable();
     sti();
     
-    task_start_named(taskclock, "clock");
 
-    while(true);
+    while(true) print("\rhello");
 
     panic("The end of the main function has been reached.");
 }

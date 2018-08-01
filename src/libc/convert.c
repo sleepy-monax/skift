@@ -1,4 +1,5 @@
-#include "libc.h"
+#include "types.h"
+#include "stdlib.h"
 #include "string.h"
 
 string basechar     = "0123456789abcdefghijklmnopqrstuvwxyz";

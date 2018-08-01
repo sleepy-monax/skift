@@ -1,3 +1,4 @@
+#include "cpu/cpu.h"
 #include "kernel/time.h"
 
 #define CMOS_ADDRESS 0x70

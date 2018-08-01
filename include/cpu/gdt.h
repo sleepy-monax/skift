@@ -1,5 +1,6 @@
 #pragma once
 #include "types.h"
+#include "utils.h"
 
 #define GDT_ENTRY_COUNT 6
 

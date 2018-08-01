@@ -1,5 +1,6 @@
 #pragma once
 #include "types.h"
+#include "utils.h"
 
 #define TASK_MAX_COUNT 16
 #define TASK_NAME_SIZE 64

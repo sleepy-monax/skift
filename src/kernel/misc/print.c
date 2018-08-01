@@ -1,3 +1,8 @@
+#include <stdarg.h>
+#include <stdio.h>
+
+#include "kernel/console.h"
+
 void print(string message)
 {
     console_print(message);

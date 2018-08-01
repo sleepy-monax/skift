@@ -15,7 +15,7 @@ typedef enum
 #define warn(x...) __log(LOG_WARNING, (string)__FUNCTION__, x)
 #define error(x...) __log(LOG_ERROR, (string)__FUNCTION__, x)
 
-#define setup(x) { info("Setting up " #x "..."); x##_setup(); }
+#define setup(x) { x##_setup(); info("Setting up " #x "..."); }
 
 #define cpanic(context, x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, context, x) 
 #define panic(x...) __panic(__FILE__, (string)__FUNCTION__, __LINE__, NULL, x) 

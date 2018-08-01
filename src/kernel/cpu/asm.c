@@ -1,6 +1,7 @@
+#include <stdio.h>
+
 #include "cpu/cpu.h"
 #include "kernel/console.h"
-#include 
 
 u8 inb(u16 port)
 {

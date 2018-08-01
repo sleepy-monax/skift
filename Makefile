@@ -10,10 +10,16 @@ AR = $(TOOLS_PREFIX)ar
 LD = $(TOOLS_PREFIX)ld
 OBJDUMP = $(TOOLS_PREFIX)objdump
 
-CFLAGS  = -I ./include -ffreestanding -O2 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb
-CPPFLAGS  = -I ./include -ffreestanding -O2 -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
-LDFLAGS = -O3
-ASFLAGS = -felf32
+CFLAGS     = -D __USER -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
+CPPFLAGS   = -D __USER -I ./include -ffreestanding -O3 -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
+LDFLAGS    = -O3
+ASFLAGS    = -felf32
+
+KCFLAGS    = -D __KERNEL -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
+KCPPFLAGS  = -D __KERNEL -I ./include -ffreestanding -O3 -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
+KLDFLAGS   = -O3
+KASFLAGS   = -felf32
+
 QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg
 QEMUFLAGS += -drive file=filesystem.img,index=0,media=disk,format=raw
 
@@ -82,6 +88,23 @@ include scripts/*.mk
 
 %.cpp.o: %.cpp
 	@echo -n "\033[1;33m 🔧 G++ \033[0m$^ => $@"
+	@$(CC) $(CPPFLAGS) -c -o $@ $^
+	@echo "\r\033[0m ✅ "
+
+# KERNEL OBJECT SPECIFIC RULES
+
+%.S.ko: %.S
+	@echo -n " 🔧 kernel \033[1;34mASM\033[0m $^ => $@"
+	@$(AS) $(ASFLAGS) $^ -o $@
+	@echo "\r\033[0m ✅ "
+
+%.c.ko: %.c
+	@echo -n " 🔧 kernel \033[1;32mGCC\033[0m $^ => $@"
+	@$(CC) $(CFLAGS) -c -o $@ $^
+	@echo "\r\033[0m ✅ "
+
+%.cpp.ko: %.cpp
+	@echo -n " 🔧 kernel \033[1;33mG++\033[0m $^ => $@"
 	@$(CC) $(CPPFLAGS) -c -o $@ $^
 	@echo "\r\033[0m ✅ "
 

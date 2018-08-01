@@ -1,3 +1,6 @@
+#include <string.h>
+#include "kernel/filesystem.h"
+
 fs_node_t * root;
 
 fs_node_t * fs_findir(fs_node_t * node, string name)
