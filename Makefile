@@ -97,17 +97,17 @@ include scripts/*.mk
 # KERNEL OBJECT SPECIFIC RULES
 
 %.S.ko: %.S
-	@echo -n " 🔧 kernel \033[1;34mASM\033[0m $^ => $@"
+	@echo -n " 🔧 k\033[1;34mASM\033[0m $^ => $@"
 	@$(AS) $(ASFLAGS) $^ -o $@
 	@echo "\r\033[0m ✅ "
 
 %.c.ko: %.c
-	@echo -n " 🔧 kernel \033[1;32mGCC\033[0m $^ => $@"
+	@echo -n " 🔧 k\033[1;32mGCC\033[0m $^ => $@"
 	@$(CC) $(CFLAGS) -c -o $@ $^
 	@echo "\r\033[0m ✅ "
 
 %.cpp.ko: %.cpp
-	@echo -n " 🔧 kernel \033[1;33mG++\033[0m $^ => $@"
+	@echo -n " 🔧 k\033[1;33mG++\033[0m $^ => $@"
 	@$(CC) $(CPPFLAGS) -c -o $@ $^
 	@echo "\r\033[0m ✅ "
 

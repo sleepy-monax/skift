@@ -16,6 +16,9 @@
 
 #include "kernel/logging.h"
 
+#include "kernel/paging.h"
+#include "kernel/memory.h"
+
 extern u32 running_task_count;
 multiboot_info_t * mbootinfo;
 

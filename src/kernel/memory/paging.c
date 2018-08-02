@@ -26,3 +26,5 @@ void mm_setup()
     paging_enable();
     info("Paging enabled!");
 }
+
+
