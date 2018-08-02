@@ -9,6 +9,7 @@
         "toolchain/": true,
     },
     "files.associations": {
-        "string.h": "c"
+        "string.h": "c",
+        "logging.h": "c"
     }
 }
