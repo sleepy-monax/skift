@@ -3,12 +3,13 @@
 
 #define TIME_SECOND 0x00
 #define TIME_MINUTE 0x02
-#define TIME_HOUR   0x04
-#define TIME_DAY    0x07
-#define TIME_MONTH  0x08
-#define TIME_YEAR   0x09
+#define TIME_HOUR 0x04
+#define TIME_DAY 0x07
+#define TIME_MONTH 0x08
+#define TIME_YEAR 0x09
 
-typedef struct {
+typedef struct
+{
     u8 second;
     u8 minute;
     u8 hour;

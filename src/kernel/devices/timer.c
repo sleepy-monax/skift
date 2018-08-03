@@ -5,7 +5,7 @@
 
 u32 ticks;
 
-esp_t timer_handler(esp_t esp, context_t * context)
+esp_t timer_handler(esp_t esp, context_t *context)
 {
     UNUSED(context);
     ticks++;
@@ -25,7 +25,7 @@ void timer_set_frequency(int hz)
     u32 divisor = 1193180 / hz;
     outb(0x43, 0x36);
     outb(0x40, divisor & 0xFF);
-    outb(0x40, (divisor>>8) & 0xFF);
+    outb(0x40, (divisor >> 8) & 0xFF);
 
     info("Timer frequency is %dhz.", hz);
 }

@@ -25,15 +25,16 @@ void * mem_frame_get_free()
     return NULL;
 }
 
-void mem_frame_set_used(void * mem)
+void * mem_frame_set_used(void * mem)
 {
-    debug("Memory frame set used: %x.", (u32)mem);
+    // debug("Memory frame set used: %x.", (u32)mem);
     mem_frame[(u32)mem / PAGE_SIZE / 8] |= 1 << (u32)mem / PAGE_SIZE % 8;
+    return mem;
 }
 
 void mem_frame_set_free(void * mem)
 {
-    debug("Memory frame set free: %x.", (u32)mem);
+    // debug("Memory frame set free: %x.", (u32)mem);
     mem_frame[(u32)mem / PAGE_SIZE / 8] &= ~(1 << (u32)mem / PAGE_SIZE % 8);
 }
 

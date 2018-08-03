@@ -4,17 +4,18 @@
 #include "cpu/irq.h"
 #include "kernel/logging.h"
 #include "kernel/tasking.h"
+#include "kernel/memory.h"
 #include "sync/atomic.h"
 
 u32 system_tick = 0;
-tid_t current_task = -1;
+pid_t current_task = -1;
 task_t tasks[TASK_MAX_COUNT];
 u32 running_task_count = 0;
 
-tid_t get_task_by_state(task_state_t state)
+pid_t get_task_by_state(task_state_t state)
 {
         
-    for(tid_t tid = 0; tid < TASK_MAX_COUNT; tid++)
+    for(pid_t tid = 0; tid < TASK_MAX_COUNT; tid++)
     {
         task_t * task = &tasks[tid];
         if (task->state == state) return tid;
@@ -23,12 +24,12 @@ tid_t get_task_by_state(task_state_t state)
     return -1;
 }
 
-tid_t get_next_task_by_state(tid_t base, task_state_t state)
+pid_t get_next_task_by_state(pid_t base, task_state_t state)
 {
     
     for(u32 offset = 0; offset < TASK_MAX_COUNT; offset++)
     {
-        tid_t tid = (base + offset + 1) %TASK_MAX_COUNT;
+        pid_t tid = (base + offset + 1) %TASK_MAX_COUNT;
         task_t * task = &tasks[tid];
         if (task->state == state) return tid;
     }
@@ -51,7 +52,7 @@ void task_setup()
     memset(&tasks, 0, sizeof(task_t) * TASK_MAX_COUNT);
 
     // setup entries
-    for(tid_t tid = 0; tid < TASK_MAX_COUNT; tid++)
+    for(pid_t tid = 0; tid < TASK_MAX_COUNT; tid++)
     {
         task_t * task = &tasks[tid];
         task->id = tid;
@@ -64,11 +65,11 @@ void task_setup()
     irq_register(0, (irq_handler_t)&task_shedule);
 }
 
-tid_t task_start_named(task_entry_t entry, string name)
+pid_t task_start_named(task_entry_t entry, string name)
 {
     atomic_begin();
 
-    tid_t free_task = get_task_by_state(TASK_FREE);
+    pid_t free_task = get_task_by_state(TASK_FREE);
 
     if (free_task == -1) 
     {
@@ -116,7 +117,7 @@ esp_t task_shedule(esp_t esp)
     // Save the old context
     tasks[current_task].esp = esp;
 
-    tid_t next_task = get_next_task_by_state(current_task, TASK_RUNNING);
+    pid_t next_task = get_next_task_by_state(current_task, TASK_RUNNING);
     current_task = next_task;
 
     // Load the new context

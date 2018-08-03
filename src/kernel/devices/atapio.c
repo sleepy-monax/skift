@@ -24,8 +24,7 @@ void atapio_wait()
     do
     {
         status = inb(0x1F7);
-    }
-    while ((status & 0x80) && !(status & 0x08));
+    } while ((status & 0x80) && !(status & 0x08));
 }
 
 int atapio_read(u8 drive, u32 numblock, u8 count, char *buf)

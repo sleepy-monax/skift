@@ -1,8 +1,11 @@
+#include <string.h>
+
 #include "kernel/memory.h"
 #include "kernel/paging.h"
 
-
 extern int __end;
+
+page_directorie_t * kernel_pd;
 
 void mm_setup()
 {
@@ -12,4 +15,7 @@ void mm_setup()
     {
         mem_frame_set_used((void *)(i * PAGE_SIZE));
     }
+
+
+
 }

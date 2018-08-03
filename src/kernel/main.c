@@ -59,14 +59,11 @@ void main(multiboot_info_t * info)
 
     setup(task);
     task_start_named(taskclock, "clock");
-    //setup(mm);
+    setup(mm);
 
     atomic_enable();
     sti();
     
-    mem_frame_init();
-
-
     while(true);
 
     panic("The end of the main function has been reached.");

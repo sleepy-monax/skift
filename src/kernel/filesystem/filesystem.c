@@ -1,15 +1,16 @@
 #include <string.h>
 #include "kernel/filesystem.h"
 
-fs_node_t * root;
+fs_node_t *root;
 
-fs_node_t * fs_findir(fs_node_t * node, string name)
+fs_node_t *fs_findir(fs_node_t *node, string name)
 {
-    if (!node || node->type != NODE_DIR) return NULL;
+    if (!node || node->type != NODE_DIR)
+        return NULL;
 
-    directory_entry_t * entry = (directory_entry_t*)node->data;
-    
-    for(size_t i = 0; i < node->size; i++)
+    directory_entry_t *entry = (directory_entry_t *)node->data;
+
+    for (size_t i = 0; i < node->size; i++)
     {
         if (strcmp(name, entry->name))
         {
@@ -18,11 +19,11 @@ fs_node_t * fs_findir(fs_node_t * node, string name)
 
         entry = entry->next;
     }
-    
+
     return NULL;
 }
 
-fs_node_t * get_fs_node(string path)
+fs_node_t *get_fs_node(string path)
 {
     if (path[0] != PATH_SEPARATOR)
     {
@@ -30,9 +31,9 @@ fs_node_t * get_fs_node(string path)
     }
 
     char current_name[MAX_FILE_NAME_SIZE];
-         current_name[0] = '\0';
+    current_name[0] = '\0';
 
-    fs_node_t * current_node = root;
+    fs_node_t *current_node = root;
 
     for (size_t i = 1; path[i]; i++)
     {
@@ -41,7 +42,7 @@ fs_node_t * get_fs_node(string path)
         if (c == PATH_SEPARATOR)
         {
             current_node = fs_findir(current_node, current_name);
-            
+
             if (current_node)
             {
                 current_name[0] = '\0';
@@ -55,15 +56,15 @@ fs_node_t * get_fs_node(string path)
         {
             strapd(current_name, c);
         }
-    }  
+    }
 
     return current_node;
 }
 
-fs_node_t * new_node(node_type_t type, open_t open, close_t close, read_t read, write_t write, ioctl_t ioctl)
+fs_node_t *new_node(node_type_t type, open_t open, close_t close, read_t read, write_t write, ioctl_t ioctl)
 {
-    fs_node_t * node = 0; // TODO molloc : (fs_node_t *)malloc(sizeof(fs_node_t));
-    
+    fs_node_t *node = 0; // TODO molloc : (fs_node_t *)malloc(sizeof(fs_node_t));
+
     node->type = type;
 
     node->open = open;
@@ -71,7 +72,7 @@ fs_node_t * new_node(node_type_t type, open_t open, close_t close, read_t read, 
     node->read = read;
     node->write = write;
     node->ioctl = ioctl;
-    
+
     node->size = 0;
     node->data = NULL;
 
@@ -82,13 +83,12 @@ fs_node_t * new_node(node_type_t type, open_t open, close_t close, read_t read, 
 
 void fs_setup()
 {
-    
 }
 
-fs_node_t * fs_open(string path, u8 flags)
+fs_node_t *fs_open(string path, u8 flags)
 {
     UNUSED(flags);
-    fs_node_t * node = get_fs_node(path);
+    fs_node_t *node = get_fs_node(path);
 
     if (node->open(node))
     {
@@ -99,14 +99,14 @@ fs_node_t * fs_open(string path, u8 flags)
     return NULL;
 }
 
-s32 fs_close(fs_node_t * node)
+s32 fs_close(fs_node_t *node)
 {
     node->close(node);
     node->refcount--;
     return 0;
 }
 
-s32 fs_read(fs_node_t * node, void * buffer, size_t size)
+s32 fs_read(fs_node_t *node, void *buffer, size_t size)
 {
     if (node->read)
     {
@@ -116,7 +116,7 @@ s32 fs_read(fs_node_t * node, void * buffer, size_t size)
     return -1;
 }
 
-s32 fs_write(fs_node_t * node, void * buffer, size_t size)
+s32 fs_write(fs_node_t *node, void *buffer, size_t size)
 {
     if (node->write)
     {
@@ -126,7 +126,7 @@ s32 fs_write(fs_node_t * node, void * buffer, size_t size)
     return -1;
 }
 
-s32 fs_ioctl(fs_node_t * node, u32 request, void * argp)
+s32 fs_ioctl(fs_node_t *node, u32 request, void *argp)
 {
     if (node->ioctl)
     {

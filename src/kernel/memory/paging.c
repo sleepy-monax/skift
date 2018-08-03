@@ -28,4 +28,18 @@ void __mm_setup()
     info("Paging enabled!");
 }
 
+page_directorie_t * paging_new_page_directorie()
+{
+    page_directorie_t * page_directorie = (page_directorie_t *)mem_frame_alloc();
+    memset(page_directorie, 0, sizeof(page_directorie_t));
+    return page_directorie;
+}
+
+page_table_t * paging_new_page_table_t()
+{
+    page_table_t * page_table = (page_table_t *)mem_frame_alloc();
+    memset(page_table, 0, sizeof(page_table_t));
+    return page_table;
+}
+
 
