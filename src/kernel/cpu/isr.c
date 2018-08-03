@@ -46,11 +46,11 @@ void isr_setup()
 {
     for(u32 i = 0; i < 32; i++)
     {
-        idt_entry(i, isr_vector[i], 0x08, 0x8E);
+        idt_entry(i, isr_vector[i], 0x08, INTGATE);
     }  
 
     // syscall handler
-    idt_entry(128, isr_vector[32], 0x08, 0x8E);
+    idt_entry(128, isr_vector[32], 0x08, TRAPGATE);
 }
 
 isr_handler_t isr_register(int index, isr_handler_t handler)
