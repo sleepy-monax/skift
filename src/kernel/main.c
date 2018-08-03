@@ -64,8 +64,7 @@ void main(multiboot_info_t * info)
     atomic_enable();
     sti();
     
-    void * p = mem_frame_alloc();
-    mem_frame_free(p);
+    mem_frame_init();
 
 
     while(true);

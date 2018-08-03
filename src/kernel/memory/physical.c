@@ -1,4 +1,5 @@
 #include "kernel/paging.h"
+#include "kernel/memory.h"
 #include "kernel/logging.h"
 #include "sync/atomic.h"
 
@@ -26,13 +27,13 @@ void * mem_frame_get_free()
 
 void mem_frame_set_used(void * mem)
 {
-    debug("Memory frame set used: %x.", (u32)mem / PAGE_SIZE);
+    debug("Memory frame set used: %x.", (u32)mem);
     mem_frame[(u32)mem / PAGE_SIZE / 8] |= 1 << (u32)mem / PAGE_SIZE % 8;
 }
 
 void mem_frame_set_free(void * mem)
 {
-    debug("Memory frame set free: %x.", (u32)mem / PAGE_SIZE);
+    debug("Memory frame set free: %x.", (u32)mem);
     mem_frame[(u32)mem / PAGE_SIZE / 8] &= ~(1 << (u32)mem / PAGE_SIZE % 8);
 }
 
