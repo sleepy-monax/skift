@@ -1,5 +1,4 @@
 #include "types.h"
-#include "libc.h"
 #include "syscall.h"
 
 // The Hideo compositor (http://avp.wikia.com/wiki/Hideo_Yutani)

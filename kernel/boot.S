@@ -25,11 +25,14 @@ stack_top:
 ; Declare _start as a function symbol with the given symbol size.
 section .text
 global _start:function (_start.end - _start)
-_start: 
+_start:
+	cld
 	; To set up a stack, we set the esp register to point to the top of our
 	; stack (as it grows downwards on x86 systems).
 	mov esp, stack_top
  
+	push ebp
+	push eax ; Push the multiboot magic
 	push ebx ; Push the multiboot header adress.
 	
 	extern main

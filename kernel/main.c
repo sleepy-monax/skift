@@ -9,6 +9,7 @@
 #include "kernel/version.h"
 #include "kernel/tasking.h"
 #include "kernel/time.h"
+#include "cpu/cpuid.h"
 #include "cpu/gdt.h"
 #include "cpu/idt.h"
 #include "cpu/isr.h"
@@ -42,20 +43,47 @@ void taskclock()
 
 void dump_heap();
 
-void main(multiboot_info_t * info)
+void dump_multiboot_info(multiboot_info_t * info)
 {
-    UNUSED(info);
+    printf("&fMultiboot info:&7");
+    printf("\n\tbootloader name: %s", info->boot_loader_name);
+    printf("\n\tkernel command line: %s", info->cmdline);
+    printf("\n\tmemory: LOWER=%dko, UPPER=%dko", info->mem_lower, info->mem_upper);
+    printf("\n\tframebuffer: addr=%d, size=%dx%d", info->framebuffer_addr, info->framebuffer_width, info->framebuffer_height);
+    print("\n");
+}
+
+void dump_kernel_info()
+{
+    printf("&fKernel info:&7");
+    printf("\n\tkernel uname: "); printf(KERNEL_UNAME);
+    print("\n");
+}
+
+void main(multiboot_info_t * info, s32 magic, u32 esp)
+{
+    UNUSED(esp);
+
     console_setup();
 
     mbootinfo = info;
+    
+    print("\n"); 
 
-    print("\n");
-   
+    if (magic != MULTIBOOT_BOOTLOADER_MAGIC )
+    {
+        panic("Invalid multiboot magic number (0x%x)!", magic);
+    }
+
+    info("--- Setting up cpu tables ---");
+
     setup(gdt);
     setup(pic);
     setup(idt);
     setup(isr);
     setup(irq);
+    
+    info("--- Setting up system ---");
 
     setup(task);
     task_start_named(taskclock, "clock");
@@ -64,6 +92,10 @@ void main(multiboot_info_t * info)
     atomic_enable();
     sti();
     
+    print("\n"); dump_multiboot_info(info);
+    print("\n"); cpuid_dump();
+    print("\n"); dump_kernel_info();
+
     while(true);
 
     panic("The end of the main function has been reached.");

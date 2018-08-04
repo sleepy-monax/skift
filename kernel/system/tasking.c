@@ -80,6 +80,7 @@ pid_t task_start_named(task_entry_t entry, string name)
     task_t * task = &tasks[free_task];
     memset(task, 0, sizeof(task_t));
 
+    task->id = free_task;
     task->entry = entry;
     task->state = TASK_RUNNING;
 
@@ -104,6 +105,8 @@ pid_t task_start_named(task_entry_t entry, string name)
     if (current_task == -1) current_task = free_task;
 
     running_task_count++;
+
+    debug("%s is now running! (PID=%d, EIP=%x, ESP=%x)", name, task->id, context->eip, task->esp);
 
     atomic_end();
 
