@@ -1,16 +1,18 @@
 #pragma once
 #include "types.h"
 
-#define OPEN 0
-#define CLOSE 1
-#define READ 2
-#define WRITE 3
-#define IOCTL 4
+typedef int (*syscalls_t)(int, int, int, int, int);
 
-#define EXEC 5
-#define EXIT 6
+#define SYSCALL_COUNT 9
 
-// TODO
+#define SYS_OPEN 0
+#define SYS_CLOSE 1
+#define SYS_READ 2
+#define SYS_WRITE 3
+#define SYS_IOCTL 4
 
-#define BRK 
-#define SBRK
+#define SYS_EXEC 5
+#define SYS_EXIT 6
+
+#define SYS_BRK 7
+#define SYS_SBRK 8
