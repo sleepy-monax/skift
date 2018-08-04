@@ -1,6 +1,6 @@
 export PATH := $(shell scripts/activate.sh)
 
-SOURCE_FOLDER = ./src
+SOURCE_FOLDER = .
 
 TOOLS_PREFIX = i686-elf-
 
@@ -10,15 +10,15 @@ AR = $(TOOLS_PREFIX)ar
 LD = $(TOOLS_PREFIX)ld
 OBJDUMP = $(TOOLS_PREFIX)objdump
 
-CFLAGS     = -D __USER -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
-CPPFLAGS   = -D __USER -I ./include -ffreestanding -O3 -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
-LDFLAGS    = -O3
-ASFLAGS    = -felf32
+KCFLAGS   = -D __KERNEL -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
+KCPPFLAGS = -D __KERNEL -I ./include -ffreestanding -O3 -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
 
-KCFLAGS    = -D __KERNEL -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
-KCPPFLAGS  = -D __KERNEL -I ./include -ffreestanding -O3 -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
-KLDFLAGS   = -O3
-KASFLAGS   = -felf32
+CFLAGS    = -D __USER -I ./include -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
+CPPFLAGS  = -D __USER -I ./include -O3 -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
+
+LDFLAGS   = -O3
+ASFLAGS   = -felf32
+
 
 QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg
 QEMUFLAGS += -drive file=filesystem.img,index=0,media=disk,format=raw
@@ -80,35 +80,22 @@ dumpfs: filesystem.img
 include scripts/*.mk
 
 %.S.o: %.S
-	@echo -n "\033[1;34m 🔧 ASM \033[0m$^ => $@"
-	@$(AS) $(ASFLAGS) $^ -o $@
-	@echo "\r\033[0m ✅ "
+	$(AS) $(ASFLAGS) $^ -o $@
+
 
 %.c.o: %.c
-	@echo -n "\033[1;32m 🔧 GCC \033[0m$^ => $@"
-	@$(CC) $(CFLAGS) -c -o $@ $^
-	@echo "\r\033[0m ✅ "
+	$(CC) $(CFLAGS) -c -o $@ $^
+
 
 %.cpp.o: %.cpp
-	@echo -n "\033[1;33m 🔧 G++ \033[0m$^ => $@"
-	@$(CC) $(CPPFLAGS) -c -o $@ $^
-	@echo "\r\033[0m ✅ "
+	$(CC) $(CPPFLAGS) -c -o $@ $^
+
 
 # KERNEL OBJECT SPECIFIC RULES
-
-%.S.ko: %.S
-	@echo -n " 🔧 k\033[1;34mASM\033[0m $^ => $@"
-	@$(AS) $(ASFLAGS) $^ -o $@
-	@echo "\r\033[0m ✅ "
-
 %.c.ko: %.c
-	@echo -n " 🔧 k\033[1;32mGCC\033[0m $^ => $@"
-	@$(CC) $(CFLAGS) -c -o $@ $^
-	@echo "\r\033[0m ✅ "
+	$(CC) $(KCFLAGS) -c -o $@ $^
 
 %.cpp.ko: %.cpp
-	@echo -n " 🔧 k\033[1;33mG++\033[0m $^ => $@"
-	@$(CC) $(CPPFLAGS) -c -o $@ $^
-	@echo "\r\033[0m ✅ "
+	$(CC) $(KCPPFLAGS) -c -o $@ $^
 
 .PHONY: all rebuild run run-nox debug clean crosscompiler
