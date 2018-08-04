@@ -21,6 +21,6 @@ void syscalls_handler(context_t * context)
     }
     else
     {
-        context->eax = NULL;
+        context->eax = (u32)NULL;
     }
 }

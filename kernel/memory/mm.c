@@ -15,3 +15,13 @@ void mm_setup()
         mem_frame_set_used((void *)(i * PAGE_SIZE));
     }
 }
+
+page_directorie_t * create_task_page_directorie()
+{
+    page_directorie_t * pd = paging_new_page_directorie();
+}
+
+void destroy_task_page_directorie(page_directorie_t * directorie)
+{
+
+}

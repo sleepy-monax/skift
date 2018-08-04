@@ -35,11 +35,21 @@ page_directorie_t * paging_new_page_directorie()
     return page_directorie;
 }
 
+void paging_free_page_directorie(page_directorie_t * page_directorie)
+{
+    mem_frame_free((void *)page_directorie);
+}
+
 page_table_t * paging_new_page_table_t()
 {
     page_table_t * page_table = (page_table_t *)mem_frame_alloc();
     memset(page_table, 0, sizeof(page_table_t));
     return page_table;
+}
+
+void paging_free_page_table(page_table_t * page_table)
+{
+    mem_frame_free((void *)page_table);
 }
 
 
