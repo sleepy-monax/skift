@@ -24,16 +24,17 @@
 ## Roadmap
 ### ♥ Milestone 0 - a basic kernel
  - [X] IDT, GDT, IRQ and ISR
- - [ ] Pagging
- - [ ] Memory managment
+ - [ ] Pagging (WIP)
+ - [ ] Memory managment (WIP)
  - [X] Tasking
 
 ### 📂 Milestone 1 - File system
- - [X] ATA pio driver (done but fault when interupts enabled :/ )
+ - [X] ATA pio driver
  - [ ] RAM disk
  - [ ] Virtual file system (WIP)
  
-### 👦 Milestone 2 - User mde
+### 👦 Milestone 2 - User mode
+ - [ ] Jump to user mode
  - [ ] ELF loader
  - [ ] hellowolrd.c
 
@@ -45,7 +46,11 @@
  - [ ] coreutils (ls, cat, ...)
 
 ### 👽 Milestone 4 - What next?
- - ...
+ - GUI?
+ - Porting sortware?
+ - Real hardware?
+ - Networking?
+ - ???
 
 ## Build the operating system
  1. First you need to build the toolchain using: `make toolchain`
