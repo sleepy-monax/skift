@@ -87,11 +87,19 @@ void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, bool write, b
     page->Write = write;
     page->PageFrameNumber = physical>>12;
 
+    paging_invalidate_tlb();
 }
 
 
-void paging_unmap(page_directorie_t * page_directorie, u32 virtual)
+void paging_unmap(page_directorie_t * pd, u32 virtual)
 {
-    
+    u32 pdindex = (u32)virtual >> 22;
+    u32 ptindex = (u32)virtual >> 12 & 0x03FF;
+
+    page_directorie_entry_t * pd_entry = &pd->entries[pdindex];
+    page_table_t * pt = (page_table_t *)(pd_entry->PageFrameNumber * PAGE_SIZE);
+    page_t* page = &pt->pages[ptindex];
+
+    page->as_uint = 0;
 }
 

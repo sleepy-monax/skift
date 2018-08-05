@@ -76,5 +76,5 @@ void paging_free_page_table(page_table_t * page_table);
 
 void * paging_get_physaddr(page_directorie_t * pd, void * virtualaddr);
 
-void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, bool write, bool user)
+void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, bool write, bool user);
 void paging_unmap(page_directorie_t * page_directorie, u32 virtual);

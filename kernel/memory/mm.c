@@ -8,7 +8,7 @@ extern int __end;
 
 page_directorie_t * kernel_pd;
 
-void mm_setup(int memory_size)
+void mm_setup()
 {
     // Set the kernel memory used so it's not used by other task
     kernel_pd = paging_new_page_directorie();
@@ -16,7 +16,7 @@ void mm_setup(int memory_size)
     for(size_t i = 0; i < ( PAGE_ALIGN((u32)&__end) / PAGE_SIZE); i++)
     {
         mem_frame_set_used((void *)(i * PAGE_SIZE));
-        paging_map(kernel_pd, i * PAGE_SIZE, i * PAGE_SIZE, PAGE_PRESENT | PAGE_WRITE);
+        paging_map(kernel_pd, i * PAGE_SIZE, i * PAGE_SIZE, true, false);
     }
 
     paging_load_directorie(kernel_pd);
@@ -33,4 +33,6 @@ page_directorie_t * create_task_page_directorie()
 void destroy_task_page_directorie(page_directorie_t * directorie)
 {
     //TODO: destroy the page directory and free user pages.
+
+    paging_free_page_directorie(directorie);
 }
