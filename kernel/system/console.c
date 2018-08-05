@@ -120,7 +120,7 @@ void console_print(string message)
                 uart_put(COM1, c);
         }
 
-        if (console.cursor.x > vga_screen_width)
+        if (console.cursor.x >= vga_screen_width)
         {
             console.cursor.x = 0;
             console.cursor.y++;

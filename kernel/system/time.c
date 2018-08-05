@@ -1,5 +1,6 @@
 #include "cpu/cpu.h"
 #include "kernel/time.h"
+#include "kernel/version.h"
 
 #define CMOS_ADDRESS 0x70
 #define CMOS_DATA 0x71
@@ -38,4 +39,27 @@ u32 time_get(u32 selector)
 {
         while (is_cmos_update());
     return from_bcd(get_realtime_reg(selector));
+}
+
+
+#include <stdio.h>
+#include <string.h>
+#include "devices/vga.h"
+
+
+void time_task()
+{
+    char buffer[80];
+    while(true)
+    {
+        memset(buffer, 0, 80);
+        printfb(buffer, " [ %s '%s' ] [ %d:%d:%d ]",
+        __kernel_name, __kernel_version_codename, 
+        time_get(TIME_HOUR), time_get(TIME_MINUTE), time_get(TIME_SECOND));
+    
+        for(u32 i = 0; i < 80; i++)
+        {
+            vga_cell(i, 0, vga_entry(buffer[i], vga_white, vga_light_blue));  
+        }
+    }
 }

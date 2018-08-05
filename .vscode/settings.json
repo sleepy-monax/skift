@@ -8,5 +8,9 @@
         "**/*.img": true,
         "toolchain/": true,
     },
-    "C_Cpp.dimInactiveRegions": false
+    "C_Cpp.dimInactiveRegions": false,
+    "files.associations": {
+        "version.h": "c",
+        "atomic.h": "c"
+    }
 }

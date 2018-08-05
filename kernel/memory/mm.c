@@ -5,17 +5,24 @@
 #include "kernel/paging.h"
 
 extern int __end;
+extern int __start;
 
 page_directorie_t * kernel_pd;
 
 void mm_setup()
 {
     // Set the kernel memory used so it's not used by other task
-    kernel_pd = paging_new_page_directorie();
-
     for(size_t i = 0; i < ( PAGE_ALIGN((u32)&__end) / PAGE_SIZE); i++)
     {
         mem_frame_set_used((void *)(i * PAGE_SIZE));
+    }
+
+    kernel_pd = paging_new_page_directorie();
+
+    debug("kernel size: %x(%x)", &__end, PAGE_ALIGN((u32)&__end));
+
+    for(size_t i = 0; i < ( PAGE_ALIGN((u32)&__end) / PAGE_SIZE); i++)
+    {
         paging_map(kernel_pd, i * PAGE_SIZE, i * PAGE_SIZE, true, false);
     }
 

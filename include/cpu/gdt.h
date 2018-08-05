@@ -69,7 +69,7 @@ typedef struct
 } gdt_t;
 
 void gdt_setup();
-void gdt_entry(int index, u32 base, u32 limit, u8 access, u8 flags);
+void gdt_entry(int index, u32 base, u32 limit, u8 access, u8 flags, string hint);
 void gdt_tss_entry(int index, u16 ss0, u32 esp0);
 
 void gdt_dump();

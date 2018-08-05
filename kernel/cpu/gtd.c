@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "cpu/gdt.h"
+#include "kernel/logging.h"
 
 gdt_t gdt;
 
@@ -10,19 +11,19 @@ extern void gdt_flush(u32);
 void gdt_setup()
 {
     // null segment
-    gdt_entry(0,0,0,0,0); 
+    gdt_entry(0,0,0,0,0, "NULL"); 
     
     // kernel code segment
-    gdt_entry(1, 0, 0xffffffff, PRESENT | EXECUTABLE | READWRITE, FLAGS);
+    gdt_entry(1, 0, 0xffffffff, PRESENT | EXECUTABLE | READWRITE, FLAGS, "KCODE");
 
     // kernel data segment
-    gdt_entry(2, 0, 0xffffffff, PRESENT | READWRITE, FLAGS);
+    gdt_entry(2, 0, 0xffffffff, PRESENT | READWRITE, FLAGS, "KDATA");
 
     // user code segment
-    gdt_entry(3, 0, 0xffffffff, PRESENT | EXECUTABLE | READWRITE | USER, FLAGS); 
+    gdt_entry(3, 0, 0xffffffff, PRESENT | EXECUTABLE | READWRITE | USER, FLAGS, "UCODE"); 
 
     // user data segment
-    gdt_entry(4, 0, 0xffffffff, PRESENT | READWRITE | USER, FLAGS); 
+    gdt_entry(4, 0, 0xffffffff, PRESENT | READWRITE | USER, FLAGS, "UDATA"); 
 
     // tss segment
     gdt_tss_entry(5, 0x10, 0x0);
@@ -40,8 +41,10 @@ void set_kernel_stack(u32 stack)
 
 /* --- gdt entry setup ------------------------------------------------------ */
 
-void gdt_entry(int index, u32 base, u32 limit, u8 access, u8 flags)
+void gdt_entry(int index, u32 base, u32 limit, u8 access, u8 flags, string hint)
 {
+    debug("GDT[%d:%s]\t = { BASE=%x, LIMIT=%x, ACCESS=%b, FLAGS=%b }", index, hint, base, limit, access, flags);
+
     gdt_entry_t * entry = &gdt.entries[index];
     entry->acces = access;
     entry->flags = flags;
@@ -56,7 +59,7 @@ void gdt_entry(int index, u32 base, u32 limit, u8 access, u8 flags)
 
 void gdt_tss_entry(int index, u16 ss0, u32 esp0)
 {
-    gdt_entry(index, (u32)&gdt.tss, sizeof(tss_t), PRESENT | EXECUTABLE | ACCESSED, TSS_FLAGS);
+    gdt_entry(index, (u32)&gdt.tss, sizeof(tss_t), PRESENT | EXECUTABLE | ACCESSED, TSS_FLAGS, "TSS");
     memset(&gdt.tss, 0, sizeof(tss_t));
 
     tss_t* tss = &gdt.tss;

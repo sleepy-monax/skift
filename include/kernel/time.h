@@ -20,3 +20,4 @@ typedef struct
 
 time_t time();
 u32 time_get(u32 selector);
+void time_task();

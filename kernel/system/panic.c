@@ -45,10 +45,5 @@ void __panic(const string file, const string function, const int line, context_t
 
     print("\n\t&fSystem halted!\n");
 
-    // printf("\n&8--------------------------------------------------------------------------------");
-    // print("\r----------------------------------------------- ");
-    // printf(KERNEL_UNAME);
-    // print(" \n");
-
     while(1);
 }
