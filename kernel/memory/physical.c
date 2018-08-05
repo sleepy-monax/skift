@@ -1,6 +1,7 @@
-#include "kernel/paging.h"
-#include "kernel/memory.h"
 #include "kernel/logging.h"
+#include "kernel/memory.h"
+#include "kernel/paging.h"
+
 #include "sync/atomic.h"
 
 u8 mem_frame[1024  * 1024 / 8];

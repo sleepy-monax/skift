@@ -69,9 +69,12 @@ extern void paging_load_directorie(page_directorie_t *directorie);
 extern void paging_invalidate_tlb();
 
 page_directorie_t * paging_new_page_directorie();
-page_table_t      * paging_new_page_table_t();
+void paging_free_page_directorie(page_directorie_t * page_directorie);
+
+page_table_t * paging_new_page_table();
+void paging_free_page_table(page_table_t * page_table);
 
 void * paging_get_physaddr(page_directorie_t * pd, void * virtualaddr);
 
-void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, u32 flags);
+void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, bool write, bool user)
 void paging_unmap(page_directorie_t * page_directorie, u32 virtual);
