@@ -1,11 +1,10 @@
 #include <string.h>
 
+#include "cpu/cpu.h"
+
 #include "kernel/memory.h"
 #include "kernel/paging.h"
 #include "kernel/logging.h"
-
-page_directorie_t ALIGNED(kernel_page_directorie, PAGE_SIZE);
-page_table_t ALIGNED(kernel_page_table, PAGE_SIZE);
 
 void __mm_setup()
 {
@@ -52,4 +51,44 @@ void paging_free_page_table(page_table_t * page_table)
     mem_frame_free((void *)page_table);
 }
 
+void * paging_get_physaddr(page_directorie_t * pd, void * virtualaddr)
+{
+    u32 pdindex = (u32)virtualaddr >> 22;
+    u32 ptindex = (u32)virtualaddr >> 12 & 0x03FF;
+
+    page_directorie_entry_t* pd_entry = &pd->entries[pdindex];
+
+    if (pd_entry->Present)
+    {
+        page_table_t * pt = (page_table_t *)(pd_entry->PageFrameNumber * PAGE_SIZE);
+        page_t* page = &pt->pages[ptindex];
+
+        if (page->Present)
+        {
+            void * physical = (void*)((page->PageFrameNumber & ~0xfff) + ((u32)virtualaddr & 0xfff));
+        }
+    }
+    
+    return NULL;
+}
+
+void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, u32 flags)
+{
+    if (IS_PAGE_ALIGN(physical) && IS_PAGE_ALIGN(virtual))
+    {
+        debug("Mapping %x to %x.", virtual, physical);
+
+        u32 pdindex = (u32)virtualaddr >> 22;
+        u32 ptindex = (u32)virtualaddr >> 12 & 0x03FF;
+    }
+    else
+    {
+        panic("Cannot page map %x to %x, because it's not page aligned!", virtual, physical);
+    }
+}
+
+void paging_unmap(page_directorie_t * page_directorie, u32 virtual)
+{
+    
+}
 

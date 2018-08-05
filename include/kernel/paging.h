@@ -6,13 +6,20 @@
 #define PAGE_TABLE_ENTRY_COUNT 1024
 #define PAGE_DIRECTORIE_ENTRY_COUNT 1024
 
+#define PAGE_ALIGN(x) (x + PAGE_SIZE - (x % PAGE_SIZE))
+#define IS_PAGE_ALIGN(x) (x % PAGE_SIZE == 0)
+
+#define PAGE_PRESENT 1
+#define PAGE_WRITE   1<<1
+#define PAGE_USER    1<<2
+
 typedef PACKED(union) // page table entry
 {
     PACKED(struct)
     {
         bool Present : 1;
         bool Write : 1;
-        bool Supervisor : 1;
+        bool User : 1;
         bool PageLevelWriteThrough : 1;
         bool PageLevelCacheDisable : 1;
         bool Accessed : 1;
@@ -38,7 +45,7 @@ typedef PACKED(union) // page directorie entry
     {
         bool Present : 1;
         bool Write : 1;
-        bool Supervisor : 1;
+        bool User : 1;
         bool PageLevelWriteThrough : 1;
         bool PageLevelCacheDisable : 1;
         bool Accessed : 1;
@@ -59,5 +66,12 @@ page_directorie_t;
 
 extern void paging_enable(void);
 extern void paging_load_directorie(page_directorie_t *directorie);
+extern void paging_invalidate_tlb();
+
 page_directorie_t * paging_new_page_directorie();
-page_table_t * paging_new_page_table_t()
+page_table_t      * paging_new_page_table_t();
+
+void * paging_get_physaddr(page_directorie_t * pd, void * virtualaddr);
+
+void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, u32 flags);
+void paging_unmap(page_directorie_t * page_directorie, u32 virtual);

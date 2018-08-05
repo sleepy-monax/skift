@@ -12,6 +12,12 @@ paging_load_directorie:
     mov eax, [esp + 4]
     mov cr3, eax
     ret
+
+global paging_invalidate_tlb
+paging_invalidate_tlb:
+    mov eax, cr3
+    mov cr3, eax
+    ret
 # --- CPU tables ------------------------------------------------------------- #
 
 global gdt_flush
