@@ -5,7 +5,7 @@
 #include "kernel/paging.h"
 #include "kernel/memory.h"
 
-extern page_directorie_t * kernel_pd;
+extern page_directorie_t * kernel_page_directorie;
 
 process_t * process_new(int pid, bool user)
 {
@@ -20,7 +20,7 @@ process_t * process_new(int pid, bool user)
     }
     else
     {
-        proc->page_directorie = kernel_pd;
+        proc->page_directorie = kernel_page_directorie;
     }
 
     return proc;

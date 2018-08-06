@@ -4,8 +4,8 @@
 #include "kernel/memory.h"
 #include "kernel/paging.h"
 
-page_table_t * kernel_page_tables[256]; // need 256 page table for the 1G reserved to the kernel
 page_directorie_t * kernel_page_directorie;
+page_table_t * kernel_page_tables[256]; // need 256 page table for the 1G reserved to the kernel
 
 void paging_setup()
 {
