@@ -4,6 +4,48 @@
 #include "kernel/memory.h"
 #include "kernel/paging.h"
 
+page_table_t * kernel_page_tables[256]; // need 256 page table for the 1G reserved to the kernel
+page_directorie_t * kernel_page_directorie;
+
+void paging_setup()
+{
+    kernel_page_directorie = paging_new_page_directorie();
+
+    for(size_t i = 0; i < 256; i++)
+    {
+        kernel_page_tables[i] = paging_new_page_table();
+        page_directorie_entry_t * entry = &kernel_page_directorie->entries[i];
+        
+        entry->Present = true;
+        entry->Write = true;
+        entry->User = false;
+        entry->PageFrameNumber = (u32)(kernel_page_tables[i]) >> 12;
+    }
+}
+
+page_directorie_t * paging_new_user_directorie()
+{
+    page_directorie_t * user_page_directorie = paging_new_page_directorie();
+    
+    for(size_t i = 0; i < 256; i++)
+    {
+        page_directorie_entry_t * entry = &user_page_directorie->entries[i];
+        
+        entry->Present = true;
+        entry->Write = false;
+        entry->User = false;
+        entry->PageFrameNumber = (u32)(kernel_page_tables[i]) >> 12;
+    }
+
+    return user_page_directorie;
+}
+
+void paging_free_user_directorie(page_directorie_t * directorie)
+{
+    //TODO: destroy the page directory and free user pages.
+
+    paging_free_page_directorie(directorie);
+}
 
 page_directorie_t * paging_new_page_directorie()
 {

@@ -13,6 +13,8 @@
 #define PAGE_WRITE   1<<1
 #define PAGE_USER    1<<2
 
+#pragma region "Paging structues"
+
 typedef PACKED(union) // page table entry
 {
     PACKED(struct)
@@ -64,6 +66,9 @@ typedef PACKED(struct)
 }
 page_directorie_t;
 
+#pragma endregion
+
+void paging_setup();
 extern void paging_enable(void);
 extern void paging_load_directorie(page_directorie_t *directorie);
 extern void paging_invalidate_tlb();
@@ -78,3 +83,6 @@ void * paging_get_physaddr(page_directorie_t * pd, void * virtualaddr);
 
 void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, bool write, bool user);
 void paging_unmap(page_directorie_t * page_directorie, u32 virtual);
+
+page_directorie_t * paging_new_user_directorie();
+void paging_free_user_directorie(page_directorie_t * directorie);

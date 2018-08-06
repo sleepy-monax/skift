@@ -6,6 +6,7 @@
 
 extern int __end;
 extern int __start;
+u32 ksbrk_top;
 
 page_directorie_t * kernel_pd;
 
@@ -26,20 +27,48 @@ void mm_setup()
         paging_map(kernel_pd, i * PAGE_SIZE, i * PAGE_SIZE, true, false);
     }
 
+    ksbrk_top = PAGE_ALIGN((u32)&__end);
+
     paging_load_directorie(kernel_pd);
     paging_enable();
 }
 
-page_directorie_t * create_task_page_directorie()
+void * mm_kernel_acquire(int page_count)
 {
-    page_directorie_t * pd = paging_new_page_directorie();
-    //TODO: copy kernel pages.
-    return pd;
+    void * start = (void *)ksbrk_top;
+
+    if (page_count > 0)
+    {
+        for(size_t i = 0; i < page_count; i++)
+        {
+            void* block = mem_frame_alloc();
+            paging_map(kernel_pd, ksbrk_top, block, true, false);
+            ksbrk_top += PAGE_SIZE;
+        }
+     
+        paging_invalidate_tlb();
+        debug("kernel acquire %d pages", page_count);
+        return start;
+    }
+
+    return NULL;
 }
 
-void destroy_task_page_directorie(page_directorie_t * directorie)
+int mm_kernel_giveup(void * where, int page_count)
 {
-    //TODO: destroy the page directory and free user pages.
+    if (page_count > 0)
+    {
+        for(size_t i = 0; i < page_count; i++)
+        {
+            ksbrk_top-= PAGE_SIZE;
+            mem_frame_free(paging_get_physaddr(kernel_pd, (void*)ksbrk_top));
+            paging_unmap(kernel_pd, ksbrk_top);
+        }
+     
+        paging_invalidate_tlb();
+        debug("kernel giveup %d pages", page_count);
+        return 0;
+    }
 
-    paging_free_page_directorie(directorie);
+    return -1;
 }

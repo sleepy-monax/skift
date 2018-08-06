@@ -1,6 +1,8 @@
 #pragma once
 #include "types.h"
-#include "utils.h"
+
+
+
 
 #define TASK_MAX_COUNT 16
 #define TASK_NAME_SIZE 64
@@ -34,3 +36,14 @@ pid_t task_start(task_entry_t entry);
 pid_t task_start_named(task_entry_t entry, string name);
 
 esp_t task_shedule();
+
+#define PROCESS_STACK_SIZE 4096
+
+typedef struct
+{
+    int id;
+    bool user;
+    void * page_directorie;
+    u32 esp;
+    void * stack;
+} process_t;
