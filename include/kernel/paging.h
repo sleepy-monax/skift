@@ -13,8 +13,6 @@
 #define PAGE_WRITE   1<<1
 #define PAGE_USER    1<<2
 
-#pragma region "Paging structues"
-
 typedef PACKED(union) // page table entry
 {
     PACKED(struct)
@@ -65,8 +63,6 @@ typedef PACKED(struct)
     page_directorie_entry_t entries[PAGE_DIRECTORIE_ENTRY_COUNT];
 }
 page_directorie_t;
-
-#pragma endregion
 
 void paging_setup();
 extern void paging_enable(void);

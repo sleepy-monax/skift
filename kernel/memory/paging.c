@@ -20,6 +20,8 @@ void paging_setup()
         entry->Write = true;
         entry->User = false;
         entry->PageFrameNumber = (u32)(kernel_page_tables[i]) >> 12;
+
+        paging_map(kernel_page_directorie, (u32)kernel_page_tables[i], (u32)kernel_page_tables[i], true, false);
     }
 }
 

@@ -9,8 +9,4 @@
         "toolchain/": true,
     },
     "C_Cpp.dimInactiveRegions": false,
-    "files.associations": {
-        "version.h": "c",
-        "atomic.h": "c"
-    }
 }

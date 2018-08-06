@@ -33,7 +33,7 @@ void mm_setup()
     paging_enable();
 }
 
-void * mm_kernel_acquire(int page_count)
+void * mm_kernel_acquire(size_t page_count)
 {
     void * start = (void *)ksbrk_top;
 
@@ -42,7 +42,7 @@ void * mm_kernel_acquire(int page_count)
         for(size_t i = 0; i < page_count; i++)
         {
             void* block = mem_frame_alloc();
-            paging_map(kernel_pd, ksbrk_top, block, true, false);
+            paging_map(kernel_pd, ksbrk_top, (u32)block, true, false);
             ksbrk_top += PAGE_SIZE;
         }
      
@@ -54,13 +54,13 @@ void * mm_kernel_acquire(int page_count)
     return NULL;
 }
 
-int mm_kernel_giveup(void * where, int page_count)
+int mm_kernel_giveup(size_t page_count)
 {
     if (page_count > 0)
     {
         for(size_t i = 0; i < page_count; i++)
         {
-            ksbrk_top-= PAGE_SIZE;
+            ksbrk_top -= PAGE_SIZE;
             mem_frame_free(paging_get_physaddr(kernel_pd, (void*)ksbrk_top));
             paging_unmap(kernel_pd, ksbrk_top);
         }

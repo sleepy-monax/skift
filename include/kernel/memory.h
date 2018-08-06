@@ -16,8 +16,8 @@ struct	boundary_tag
 };
 
 void mm_setup();
-void * mm_kernel_acquire(int page_count);
-int    mm_kernel_giveup(void * where,int page_count);
+void * mm_kernel_acquire(size_t page_count);
+int    mm_kernel_giveup(size_t page_count);
 
 void * mem_frame_set_used(void * mem);
 void   mem_frame_set_free(void * mem);

@@ -16,7 +16,7 @@ process_t * process_new(int pid, bool user)
 
     if (user)
     {
-        proc->page_directorie = create_task_page_directorie();
+        proc->page_directorie = paging_new_user_directorie();
     }
     else
     {
@@ -30,7 +30,7 @@ void process_free(process_t * proc)
 {
     if (proc->user)
     {
-        destroy_task_page_directorie(proc->page_directorie);
+        paging_free_user_directorie(proc->page_directorie);
     }
     else
     {
