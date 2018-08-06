@@ -5,6 +5,7 @@
 #include "sync/atomic.h"
 
 u8 mem_frame[1024  * 1024 / 8];
+u32 mem_used = 0;
 
 inline bool mem_frame_is_used(void * mem)
 {
@@ -45,6 +46,7 @@ void * mem_frame_alloc()
 
     void * mem = mem_frame_get_free();
     mem_frame_set_used(mem);
+    mem_used += PAGE_SIZE;
     
     atomic_end();
 
@@ -57,6 +59,7 @@ void mem_frame_free(void * mem)
     if (mem_frame_is_used(mem))
     {
         mem_frame_set_free(mem);
+         mem_used -= PAGE_SIZE;
     }
     else
     {
