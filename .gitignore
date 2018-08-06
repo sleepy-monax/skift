@@ -1,6 +1,8 @@
 toolchain/
 build/
 bin/
+scripts/build
+scripts/tarballs
 *.c.o
 *.S.o
 *.c.ko
@@ -9,3 +11,4 @@ bin/
 *.asm
 *.img
 *.a
+wget-log

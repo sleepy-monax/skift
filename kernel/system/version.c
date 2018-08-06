@@ -1,6 +1,6 @@
 #include "kernel/version.h"
 
-char * __kernel_name = "core-one";
+char * __kernel_name = "skift";
 
 int    __kernel_version_major = 0;
 int    __kernel_version_minor = 1;

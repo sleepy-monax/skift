@@ -62,7 +62,7 @@ very-clean: clean
 	rm -rf ./build
 
 toolchain:
-	./scripts/toolchain.sh
+	cd scripts; ./toolchain.sh
 
 # --- Makefile debug --------------------------------------------------------- #
 
