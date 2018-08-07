@@ -53,7 +53,7 @@ page_directorie_t * paging_new_page_directorie()
 {
     page_directorie_t * page_directorie = (page_directorie_t *)mem_frame_alloc();
     memset(page_directorie, 0, sizeof(page_directorie_t));
-    debug("New page directorie created at %x.", (u32)page_directorie);
+    // debug("New page directorie created at %x.", (u32)page_directorie);
     return page_directorie;
 }
 
@@ -68,7 +68,7 @@ page_table_t * paging_new_page_table()
 {
     page_table_t * page_table = (page_table_t *)mem_frame_alloc();
     memset(page_table, 0, sizeof(page_table_t));
-    debug("New page table created at %x.", (u32)page_table);
+    // debug("New page table created at %x.", (u32)page_table);
     return page_table;
 }
 

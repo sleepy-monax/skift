@@ -30,7 +30,7 @@ void __panic(const string file, const string function, const int line, context_t
     
     printf("\n\t&4KERNEL PANIC\n\t&8//%s\n\n\t&f", witty_comments[timer_get_ticks() % 8]); 
     
-    printfva(message, va);
+    vprintf(message, va);
     printf("\n\t&7at %s &e%s&f() &7ln%d", file, function, line); 
     
     printf("\n");
@@ -43,7 +43,7 @@ void __panic(const string file, const string function, const int line, context_t
         dump_context(context);
     }
 
-    print("\n\t&fSystem halted!\n");
+    puts("\n\t&fSystem halted!\n");
 
     while(1);
 }

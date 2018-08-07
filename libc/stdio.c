@@ -1,20 +1,46 @@
 #include "types.h"
+
+#include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
 
-void printfb(char * buffer, string format, ...)
+int printf(const char *format, ...)
 {
     va_list va;
     va_start(va, format);
 
-    printfbva(buffer, format, va);
+    int result = vprintf(format, va);
+
+    va_end(va);
+
+    return result;
 }
 
-char * printfbva(char * buffer, const char * format, va_list va)
+int vprintf(const char *format, va_list va)
 {
-    buffer[0] = '\0';
+    char buffer[strlen(format) + 128];
+    int result = vsprintf(buffer, format, va);
+    puts(buffer);
+
+    return result;
+}
+
+int sprintf(char *str, const char *format, ...)
+{
+    va_list va;
+    va_start(va, format);
+
+    int result = vsprintf(str, format, va);
+
+    va_end(va);
+
+    return result;
+}
+
+int vsprintf(char *str, const char *format, va_list va)
+{
+    str[0] = '\0';
 
     bool wait_for_format = false;
 
@@ -33,8 +59,8 @@ char * printfbva(char * buffer, const char * format, va_list va)
             {
                 case 'b':
                     itos(va_arg(va, u32), temp, 2);
-                    strcat(buffer, "0b");
-                    strcat(buffer, temp);
+                    strcat(str, "0b");
+                    strcat(str, temp);
                     break;
 
                 case 'd':
@@ -55,30 +81,30 @@ char * printfbva(char * buffer, const char * format, va_list va)
 
                         if (isneg)
                         {
-                            strcat(buffer, "-");
+                            strcat(str, "-");
                         }
 
                         itos(uvalue, temp, 10);
-                        strcat(buffer, temp);
+                        strcat(str, temp);
                     }
                     break;
 
                 case 'u':
                     itos(va_arg(va, u32), temp, 10);
-                    strcat(buffer, temp);
+                    strcat(str, temp);
                     break;
 
                 case 'x':
                     itos(va_arg(va, u32), temp, 16);
-                    strcat(buffer, temp);
+                    strcat(str, temp);
                     break;
 
                 case 'c':
-                    strapd(buffer, va_arg(va, char));
+                    strapd(str, va_arg(va, char));
                     break;
 
                 case 's':
-                    strcat(buffer, va_arg(va, string));
+                    strcat(str, va_arg(va, string));
                     break;
             
                 default:
@@ -89,9 +115,9 @@ char * printfbva(char * buffer, const char * format, va_list va)
         }
         else
         {
-            strapd(buffer, c);
+            strapd(str, c);
         }
     }
 
-    return buffer;
+    return strlen(str);
 }

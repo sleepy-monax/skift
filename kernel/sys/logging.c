@@ -12,9 +12,9 @@ void __debug(string function, string message, ...)
 
     va_list va;
     va_start(va, message);
-    print("&7 * &8");
-    printfva(message, va);
-    print("\n&f");
+    puts("&7 * &8");
+    vprintf(message, va);
+    puts("\n&f");
 }
 
 void __log(log_level_t level, string function, string message, ...)
@@ -25,8 +25,8 @@ void __log(log_level_t level, string function, string message, ...)
     printf("&3[%d:%d:%d]&7", time_get(TIME_HOUR), time_get(TIME_MINUTE), time_get(TIME_SECOND));
     printf("%s", log_level[level]); 
     printf("&e%s&f()&7 ", function);
-    printfva(message, va);
-    print("\n&f");
+    vprintf(message, va);
+    puts("\n&f");
 }
 
 void __assert_failed(string expr, string file, string function, int line)

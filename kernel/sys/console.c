@@ -59,7 +59,7 @@ void console_put(char c)
         lock_release(&console_lock);
 }
 
-void console_print(string message)
+void console_puts(string message)
 {
     if (!console_bypass_lock)
         lock_acquire(&console_lock);

@@ -55,12 +55,12 @@ const char *const color_code[] =
 
 void uart_set_color(uart_port_t port, uchar color)
 {
-    uart_print(port, "\033[");
-    uart_print(port, (string)color_code[color]);
-    uart_print(port, "m");
+    uart_puts(port, "\033[");
+    uart_puts(port, (string)color_code[color]);
+    uart_puts(port, "m");
 }
 
-void uart_print(uart_port_t port, string str)
+void uart_puts(uart_port_t port, string str)
 {
     for (u32 i = 0; str[i] != '\0'; i++)
     {

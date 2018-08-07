@@ -37,7 +37,7 @@ time_t time()
 
 u32 time_get(u32 selector)
 {
-        while (is_cmos_update());
+    while (is_cmos_update());
     return from_bcd(get_realtime_reg(selector));
 }
 
@@ -53,7 +53,7 @@ void time_task()
     while(true)
     {
         memset(buffer, 0, 80);
-        printfb(buffer, " [ %s '%s' ] [ %d:%d:%d ]",
+        sprintf(buffer, " [ %s '%s' ] [ %d:%d:%d ]",
         __kernel_name, __kernel_version_codename, 
         time_get(TIME_HOUR), time_get(TIME_MINUTE), time_get(TIME_SECOND));
     

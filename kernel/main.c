@@ -29,7 +29,7 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
 
     memcpy(&mbootinfo, info, sizeof(multiboot_info_t));
     
-    print("\n"); 
+    puts("\n"); 
 
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC )
     {
