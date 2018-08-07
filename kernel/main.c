@@ -54,7 +54,7 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
     sti();
 
 
-    while(true){hlt();};
+    while(true){ hlt(); };
 
     panic("The end of the main function has been reached.");
 }
