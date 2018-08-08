@@ -6,7 +6,7 @@
 #include "kernel/tasking.h"
 #include "sync/atomic.h"
 
-u32 system_tick = 0;
+extern uint ticks;
 pid_t current_task = -1;
 task_t tasks[TASK_MAX_COUNT];
 u32 running_task_count = 0;
@@ -114,7 +114,7 @@ pid_t task_start_named(task_entry_t entry, string name)
 
 esp_t task_shedule(esp_t esp) 
 {
-    system_tick++;
+    ticks++;
     
     // Save the old context
     tasks[current_task].esp = esp;

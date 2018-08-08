@@ -3,7 +3,7 @@
 #include "kernel/logging.h"
 #include "cpu/irq.h"
 
-u32 ticks;
+uint ticks = 0;
 
 esp_t timer_handler(esp_t esp, context_t *context)
 {
