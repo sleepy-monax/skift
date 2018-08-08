@@ -11,4 +11,6 @@ scripts/tarballs
 *.asm
 *.img
 *.a
+*.tar
+*.iso
 wget-log

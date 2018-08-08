@@ -19,13 +19,11 @@ CPPFLAGS  = -D __USER -I ./include -O3 -nostdlib -Wall -Wextra -Werror -ggdb -fn
 LDFLAGS   = -O3
 ASFLAGS   = -felf32
 
-
-QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -kernel kernel.bin -M accel=kvm:tcg
-QEMUFLAGS += -drive file=filesystem.img,index=0,media=disk,format=raw
+QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -cdrom image.iso -M accel=kvm:tcg
 
 # --- Commands --------------------------------------------------------------- #
 
-all: kernel.bin filesystem.img
+all: image.iso
 
 rebuild: clean all
 
@@ -54,6 +52,8 @@ clean:
 	@find -name "*.asm" -delete
 	@find -name "*.img" -delete
 	@find -name "*.a" -delete
+	@find -name "*.iso" -delete
+	@find -name "*.tar" -delete
 	@echo "\r\033[0m ✅\n"
 
 very-clean: clean
@@ -65,9 +65,6 @@ toolchain:
 	cd scripts; ./toolchain.sh
 
 # --- Makefile debug --------------------------------------------------------- #
-
-lsincl:
-	i686-elf-g++ -E -x c++ - -v < /dev/null
 
 lsobj:
 	@echo $(KERNEL_OBJS)
@@ -89,7 +86,6 @@ include scripts/*.mk
 
 %.cpp.o: %.cpp
 	$(CC) $(CPPFLAGS) -c -o $@ $^
-
 
 # KERNEL OBJECT SPECIFIC RULES
 %.c.ko: %.c

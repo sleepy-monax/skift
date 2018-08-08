@@ -14,6 +14,7 @@
 #include "kernel/paging.h"
 #include "kernel/tasking.h"
 #include "kernel/time.h"
+#include "kernel/ramdisk.h"
 
 #include "sync/atomic.h"
 
@@ -30,6 +31,12 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
     memcpy(&mbootinfo, info, sizeof(multiboot_info_t));
     
     puts("\n"); 
+
+    
+    info("module count: %d at %x", mbootinfo.mods_count, mbootinfo.mods_addr);
+    multiboot_module_t* module = (multiboot_module_t*)mbootinfo.mods_addr;
+    info("MOD %s, %x, %x", module->cmdline, module->mod_start, module->mod_end);
+    load_ramdisk((void*)module->mod_start);
 
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC )
     {
