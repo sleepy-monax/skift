@@ -1,25 +1,15 @@
 #pragma once
 #include "types.h"
+#include "utils.h"
+#include "kernel/paging.h"
 
-struct	boundary_tag
-{
-	unsigned int magic;			//< It's a kind of ...
-	unsigned int size; 			//< Requested size.
-	unsigned int real_size;		//< Actual size.
-	int index;					//< Location in the page table.
+void memory_init();
 
-	struct boundary_tag *split_left;	//< Linked-list info for broken pages.	
-	struct boundary_tag *split_right;	//< The same.
-	
-	struct boundary_tag *next;	//< Linked list info.
-	struct boundary_tag *prev;	//< Linked list info.
-};
+page_directorie_t * memory_construct_memory_space();
+void memory_detroy_memory_space(page_directorie_t * page_dir);
 
-void mm_setup();
-void * mm_kernel_acquire(size_t page_count);
-int    mm_kernel_giveup(size_t page_count);
+uint ksbrk(int increment);
+void* kbrk(void *addr);
 
-void * mem_frame_set_used(void * mem);
-void   mem_frame_set_free(void * mem);
-void * mem_frame_alloc();
-void   mem_frame_free(void * mem);
+uint usbrk(page_directorie_t* dir, int increment);
+void* ubrk(page_directorie_t* dir, void *addr);

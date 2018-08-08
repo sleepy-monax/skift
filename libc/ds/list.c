@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "lib/list.h"
+#include "ds/list.h"
 
 /* --- Private functions ---------------------------------------------------- */
 

@@ -35,6 +35,10 @@ run-nox: all
 	@echo "\n\033[1;37m .. Booting qemu.\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS) -nographic
 
+bochs: all
+	bochs
+
+
 debug: all
 	@echo "\n\033[1;37m .. Booting qemu (debug).\033[0m\n"
 	@qemu-system-i386 $(QEMUFLAGS) -s -S

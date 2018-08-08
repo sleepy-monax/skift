@@ -2,6 +2,7 @@
 #include "cpu/cpu.h"
 
 bool is_atomic_enable = false;
+uint ATOMIC_COUNTER = 0;
 
 void atomic_enable()
 {
@@ -12,10 +13,12 @@ void atomic_begin()
 {
     if (is_atomic_enable)
         cli();
+        ATOMIC_COUNTER++;
 }
 
 void atomic_end()
 {
-    if (is_atomic_enable)
+    ATOMIC_COUNTER--;
+    if (is_atomic_enable && ATOMIC_COUNTER == 0)
         sti();
 }

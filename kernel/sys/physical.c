@@ -1,24 +1,24 @@
-#include "kernel/logging.h"
-#include "kernel/memory.h"
-#include "kernel/paging.h"
+/* Copyright (c) 2018 Nicolas Van Bossuyt.                                    */
+/* This code is licensed under the MIT License.                               */
+/* See: LICENSE.md                                                            */
 
+#include "kernel/logging.h"
+#include "kernel/physical.h"
 #include "sync/atomic.h"
 
-u8 mem_frame[1024  * 1024 / 8];
-u32 mem_used = 0;
+#define FRAME_SIZE 4096
+#define FRAME_ALIGN(x) (x + FRAME_SIZE - (x % FRAME_SIZE))
 
-inline bool mem_frame_is_used(void * mem)
-{
-    return mem_frame[(u32)mem / PAGE_SIZE / 8] & 1 << (u32)mem / PAGE_SIZE % 8;
-}
+uchar MEMORY[1024  * 1024 / 8];
+uint MEMORY_TOTAL = 0;
 
-void * mem_frame_get_free()
+void * get_free_frame()
 {
-    for(size_t i = 0; i < 1024 * 1024; i++)
+    for(size_t i = 0; i < (MEMORY_TOTAL / FRAME_SIZE); i++)
     {
-        void * p = (void *)(i * PAGE_SIZE);
+        void * p = (void *)(i * FRAME_SIZE);
 
-        if (!mem_frame_is_used(p))
+        if (!physical_is_used(p))
         {
             return p;
         }
@@ -27,43 +27,128 @@ void * mem_frame_get_free()
     return NULL;
 }
 
-void * mem_frame_set_used(void * mem)
+void physical_init(uint memory)
 {
-    // debug("Memory frame set used: %x.", (u32)mem);
-    mem_frame[(u32)mem / PAGE_SIZE / 8] |= 1 << (u32)mem / PAGE_SIZE % 8;
-    return mem;
+    MEMORY_TOTAL = memory;
 }
 
-void mem_frame_set_free(void * mem)
+/* --- Allocations ---------------------------------------------------------- */
+
+bool physical_is_used(void *mem)
 {
-    // debug("Memory frame set free: %x.", (u32)mem);
-    mem_frame[(u32)mem / PAGE_SIZE / 8] &= ~(1 << (u32)mem / PAGE_SIZE % 8);
+    return MEMORY[(u32)mem / FRAME_SIZE / 8] & 1 << (u32)mem / FRAME_SIZE % 8;
 }
 
-void * mem_frame_alloc()
+void physical_used(void *mem)
 {
     atomic_begin();
+    MEMORY[(u32)mem / FRAME_SIZE / 8] |= 1 << (u32)mem / FRAME_SIZE % 8;
+    atomic_end();
+}
 
-    void * mem = mem_frame_get_free();
-    mem_frame_set_used(mem);
-    mem_used += PAGE_SIZE;
-    
+void physical_unused(void *mem)
+{
+    atomic_begin();
+    MEMORY[(u32)mem / FRAME_SIZE / 8] &= ~(1 << (u32)mem / FRAME_SIZE % 8);
+    atomic_end();
+}
+
+void *physical_alloc()
+{
+    atomic_begin();
+    void * free_mem = get_free_frame();
+
+    if (free_mem == NULL)
+    {
+        panic("Out of memory!");
+    }
+
+    physical_used(free_mem);
+
     atomic_end();
 
-    return mem;
+    return free_mem;
 }
 
-void mem_frame_free(void * mem)
+void *physical_alloc_contiguous(uint count)
+{
+    for(size_t i = 0; i < (MEMORY_TOTAL / FRAME_SIZE); i++)
+    {
+        
+        bool is_valid = true;
+
+        for(size_t j = 0; j < count; j++)
+        {
+            void * p = (void *)((i + j) * FRAME_SIZE);
+            is_valid&=!physical_is_used(p);
+        }
+        
+        if (is_valid)
+        {
+            for(size_t j = 0; j < count; j++)
+            {
+                void * p = (void *)((i + j) * FRAME_SIZE);
+                physical_used(p);
+            }
+        }
+
+        return (void*)(i * FRAME_SIZE);
+    }
+
+    return NULL;
+}
+
+void physical_free(void *mem)
 {
     atomic_begin();
-    if (mem_frame_is_used(mem))
+    if (physical_is_used(mem))
     {
-        mem_frame_set_free(mem);
-         mem_used -= PAGE_SIZE;
+        physical_unused(mem);
     }
     else
     {
-        panic("Trying to free a free frame: %x.", (u32)mem);
+        panic("Memory at 0x%x is already free!", mem);
     }
     atomic_end();
+}
+
+/* --- States --------------------------------------------------------------- */
+
+uint physical_get_used()
+{
+    uint result = 0;
+
+    for(size_t i = 0; i < (MEMORY_TOTAL / FRAME_SIZE); i++)
+    {
+        void * p = (void *)(i * FRAME_SIZE);
+
+        if (physical_is_used(p))
+        {
+            result += FRAME_SIZE;
+        }
+    }
+
+    return result;
+}
+
+uint physical_get_free()
+{
+    uint result = 0;
+
+    for(size_t i = 0; i < (MEMORY_TOTAL / FRAME_SIZE); i++)
+    {
+        void * p = (void *)(i * FRAME_SIZE);
+
+        if (!physical_is_used(p))
+        {
+            result += FRAME_SIZE;
+        }
+    }
+
+    return result;
+}
+
+uint physical_get_total()
+{
+    return MEMORY_TOTAL;
 }

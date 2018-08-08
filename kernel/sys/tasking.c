@@ -4,7 +4,6 @@
 #include "cpu/irq.h"
 #include "kernel/logging.h"
 #include "kernel/tasking.h"
-#include "kernel/memory.h"
 #include "sync/atomic.h"
 
 u32 system_tick = 0;
