@@ -14,10 +14,10 @@
 #include "kernel/dumping.h"
 #include "kernel/logging.h"
 #include "kernel/multiboot.h"
+#include "kernel/physical.h"
+#include "kernel/ramdisk.h"
 #include "kernel/tasking.h"
 #include "kernel/time.h"
-#include "kernel/ramdisk.h"
-#include "kernel/physical.h"
 #include "kernel/version.h"
 
 #include "sync/atomic.h"
@@ -54,7 +54,7 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
     
     info("--- Setting up system ---");
     
-    physical_init(module->mod_end, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
+    physical_init((mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
     //mm_setup(module->mod_end, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
     setup(task);
 

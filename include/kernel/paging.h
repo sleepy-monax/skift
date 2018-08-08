@@ -6,6 +6,7 @@
 #define PAGE_TABLE_ENTRY_COUNT 1024
 #define PAGE_DIRECTORIE_ENTRY_COUNT 1024
 #define PAGE_ALIGN(x) (x + PAGE_SIZE - (x % PAGE_SIZE))
+#define IS_PAGE_ALIGN(x) (x % PAGE_SIZE == 0)
 
 typedef PACKED(union) // page table entry
 {
@@ -61,3 +62,6 @@ page_directorie_t;
 extern void paging_enable(void);
 extern void paging_load_directorie(page_directorie_t *directorie);
 extern void paging_invalidate_tlb();
+
+page_table_t * paging_new_page_table();
+page_directorie_t * paging_new_page_directorie();

@@ -4,6 +4,7 @@
 
 #include "kernel/physical.h"
 #include "kernel/virtual.h"
+#include "kernel/logging.h"
 
 uint virtual2physical(page_directorie_t * dir, uint virt)
 {
@@ -20,7 +21,7 @@ uint virtual2physical(page_directorie_t * dir, uint virt)
         if (page->Present)
         {
             void * physical = (void*)((page->PageFrameNumber & ~0xfff) + ((u32)virt & 0xfff));
-            return physical;
+            return (uint)physical;
         }
     }
     

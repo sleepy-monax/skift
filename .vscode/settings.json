@@ -11,4 +11,7 @@
         "toolchain/": true,
     },
     "C_Cpp.dimInactiveRegions": false,
+    "files.associations": {
+        "memory.h": "c"
+    },
 }

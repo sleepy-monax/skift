@@ -28,10 +28,12 @@ page_directorie_t * memory_construct_memory_space()
     {
         /* code */
     }
+
+    return NULL;
     
 }
 
 void memory_detroy_memory_space(page_directorie_t * dir)
 {
-
+    UNUSED(dir);
 }

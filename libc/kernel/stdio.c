@@ -1,3 +1,5 @@
+#ifdef __KERNEL
+
 #include <stdio.h>
 #include <string.h>
 
@@ -25,3 +27,5 @@ int puts(const char * str)
     console_puts((char *)str);
     return strlen(str);
 }
+
+#endif

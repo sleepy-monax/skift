@@ -23,29 +23,35 @@ block_t;
 void * heap_base = NULL;
 void * heap_top = NULL;
 
-void *internal_malloc(size_t size, bool aligned, uint align)
+void * internal_malloc(size_t size, bool aligned, uint align)
 {
+    UNUSED(size);
+    UNUSED(aligned);
+    UNUSED(align);
+
     if (heap_base == NULL)
     {
         heap_base = sbrk(0);
     }
+
+    return NULL;
 }
 
 void internal_free(void *p)
 {
-
+    UNUSED(p);
 }
 
 /* --- public functions ----------------------------------------------------- */
 
 void *malloc(size_t size)
 {
-    return internat_malloc(size, true, 0);
+    return internal_malloc(size, true, 0);
 }
 
 void *amalloc(size_t size, uint align)
 {
-    return internat_malloc(size, true, align);
+    return internal_malloc(size, true, align);
 }
 
 void *realloc(void *p, size_t size)
@@ -57,19 +63,19 @@ void *realloc(void *p, size_t size)
 
 void *calloc(size_t count, size_t size)
 {
-    void *p = internat_malloc(count * size, false, 0);
+    void *p = internal_malloc(count * size, false, 0);
     memset(p, 0, count * size);
     return p;
 }
 
 void *acalloc(size_t count, size_t size, uint align)
 {
-    void *p = internat_malloc(count * size, true, align);
+    void *p = internal_malloc(count * size, true, align);
     memset(p, 0, count * size);
     return p;
 }
 
 void free(void *p)
 {
-    UNUSED(p);
+    internal_free(p);
 }
