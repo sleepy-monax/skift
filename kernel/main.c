@@ -28,10 +28,8 @@
 multiboot_info_t mbootinfo;
 
 
-void main(multiboot_info_t * info, s32 magic, u32 esp)
+void main(multiboot_info_t * info, s32 magic)
 {
-    UNUSED(esp);
-
     console_setup();
 
     memcpy(&mbootinfo, info, sizeof(multiboot_info_t));

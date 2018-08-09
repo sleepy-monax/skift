@@ -18,7 +18,7 @@ void memory_init(uint kernel_end)
         entry->User = false;
         entry->Write = true;
         entry->Present = true;
-        entry->PageFrameNumber = (uint)&kernel_page_tables[256] / PAGE_SIZE;
+        entry->PageFrameNumber = (uint)&kernel_page_tables[i] / PAGE_SIZE;
     }
 
     for(size_t i = 0; i < PAGE_ALIGN(kernel_end) / PAGE_SIZE; i++)
@@ -28,20 +28,26 @@ void memory_init(uint kernel_end)
     }
     
     info("Memory: USED=%dk FREE=%dk TOTAL=%dk", physical_get_used() / 1024,  physical_get_free() / 1024,  physical_get_total() / 1024);
+    paging_load_directorie(&kernel_page_dir);
+    paging_enable();
+    info("Paging is now enabled!");
 }
 
 page_directorie_t * memory_construct_memory_space()
 {
     
-    
+    page_directorie_t * dir = NULL;
 
     for(size_t i = 0; i < 256; i++)
     {
-        /* code */
+        page_directorie_entry_t *entry = &kernel_page_dir.entries[i];
+        entry->User = false;
+        entry->Write = true;
+        entry->Present = true;
+        entry->PageFrameNumber = (uint)&kernel_page_tables[i] / PAGE_SIZE;
     }
 
-    return NULL;
-    
+    return dir;
 }
 
 void memory_detroy_memory_space(page_directorie_t * dir)
