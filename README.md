@@ -1,7 +1,7 @@
 <br><br><br><br><br>
 <h1 align="center">
   <br>
-  <a href="https://github.com/NicolasVanBossuyt/core-one"><img src="https://github.com/NicolasVanBossuyt/core-one/raw/master/doc/logo_blue.png?raw=true" alt="core one" width="512"></a>
+  <a href="https://github.com/NicolasVanBossuyt/core-one"><img src="https://github.com/NicolasVanBossuyt/core-one/raw/master/doc/logo.png?raw=true" alt="core one" width="512"></a>
   <br>
   skift<b>OS</b>
   <br>
