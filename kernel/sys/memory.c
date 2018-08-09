@@ -7,12 +7,11 @@
 #include "kernel/memory.h"
 #include "kernel/logging.h"
 
-page_directorie_t kernel_page_dir;
-page_table_t kernel_page_tables[256];
+page_directorie_t ALIGNED(kernel_page_dir, PAGE_SIZE);
+page_table_t ALIGNED(kernel_page_tables[256], PAGE_SIZE);
 
 void memory_init(uint kernel_end)
 {
-
     for(size_t i = 0; i < 256; i++)
     {
         page_directorie_entry_t *entry = &kernel_page_dir.entries[i];
