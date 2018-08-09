@@ -16,7 +16,8 @@
 <br><br><br><br><br>
 
 ## Features
- - *none* 😣
+ - Boot with grub
+ - Preemptive multitasking
 
 ## Screenshots
 ![logo](doc/capture.png)
@@ -30,7 +31,7 @@
 
 ### 📂 Milestone 1 - File system
  - [X] ATA pio driver
- - [ ] RAM disk
+ - [X] RAM disk
  - [ ] Virtual file system (WIP)
  
 ### 👦 Milestone 2 - User mode
