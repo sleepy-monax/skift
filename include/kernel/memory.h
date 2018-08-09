@@ -1,9 +1,15 @@
 #pragma once
 #include "types.h"
+#include "utils.h"
+#include "kernel/paging.h"
 
-void mm_setup();
+void memory_init(uint kernel_end);
 
-void * mem_frame_set_used(void * mem);
-void   mem_frame_set_free(void * mem);
-void * mem_frame_alloc();
-void   mem_frame_free(void * mem);
+page_directorie_t * memory_construct_memory_space();
+void memory_detroy_memory_space(page_directorie_t * page_dir);
+
+void* ksbrk(int increment);
+void* kbrk(void *addr);
+
+uint usbrk(page_directorie_t* dir, int increment);
+void* ubrk(page_directorie_t* dir, void *addr);

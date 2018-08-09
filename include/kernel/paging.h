@@ -5,13 +5,8 @@
 #define PAGE_SIZE 0x1000
 #define PAGE_TABLE_ENTRY_COUNT 1024
 #define PAGE_DIRECTORIE_ENTRY_COUNT 1024
-
 #define PAGE_ALIGN(x) (x + PAGE_SIZE - (x % PAGE_SIZE))
 #define IS_PAGE_ALIGN(x) (x % PAGE_SIZE == 0)
-
-#define PAGE_PRESENT 1
-#define PAGE_WRITE   1<<1
-#define PAGE_USER    1<<2
 
 typedef PACKED(union) // page table entry
 {
@@ -68,13 +63,5 @@ extern void paging_enable(void);
 extern void paging_load_directorie(page_directorie_t *directorie);
 extern void paging_invalidate_tlb();
 
-page_directorie_t * paging_new_page_directorie();
-void paging_free_page_directorie(page_directorie_t * page_directorie);
-
 page_table_t * paging_new_page_table();
-void paging_free_page_table(page_table_t * page_table);
-
-void * paging_get_physaddr(page_directorie_t * pd, void * virtualaddr);
-
-void paging_map(page_directorie_t * pd, u32 virtual, u32 physical, bool write, bool user);
-void paging_unmap(page_directorie_t * page_directorie, u32 virtual);
+page_directorie_t * paging_new_page_directorie();

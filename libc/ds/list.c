@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "lib/list.h"
+#include "ds/list.h"
 
 /* --- Private functions ---------------------------------------------------- */
 
@@ -49,7 +49,7 @@ void insert_node(list_t * list, list_node_t * at, list_node_t * node)
 /* --- Public functions ----------------------------------------------------- */
 list_t * list_alloc()
 {
-    list_t * list = NEW(list_t);
+    list_t * list = MALLOC(list_t);
     
     list->count = 0;
     list->head = NULL;
@@ -60,7 +60,7 @@ list_t * list_alloc()
 
 void * list_push(list_t * self, void * value)
 {
-    list_node_t * new_node = NEW(list_node_t);
+    list_node_t * new_node = MALLOC(list_node_t);
     
     new_node->owner = self;
     new_node->value = value;
@@ -86,7 +86,7 @@ void * list_push(list_t * self, void * value)
 
 void * list_push_back(list_t * self, void * value)
 {
-    list_node_t * new_node = NEW(list_node_t);
+    list_node_t * new_node = MALLOC(list_node_t);
     
     new_node->owner = self;
     new_node->value = value;

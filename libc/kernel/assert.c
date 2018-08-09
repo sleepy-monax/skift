@@ -1,4 +1,4 @@
-#ifdef __kernel
+#ifdef __KERNEL
 
 #include <assert.h>
 #include "kernel/logging.h"

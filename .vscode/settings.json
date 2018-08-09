@@ -1,16 +1,17 @@
 {
     "files.exclude": {
         "**/.git": true,
-        "**/*.o": true,
-        "**/*.ko": true,
         "**/*.a": true,
         "**/*.bin": true,
         "**/*.img": true,
+        "**/*.iso": true,
+        "**/*.ko": true,
+        "**/*.o": true,
+        "**/*.tar": true,
         "toolchain/": true,
     },
     "C_Cpp.dimInactiveRegions": false,
     "files.associations": {
-        "version.h": "c",
-        "atomic.h": "c"
-    }
+        "memory.h": "c"
+    },
 }

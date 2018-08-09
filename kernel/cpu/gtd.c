@@ -79,13 +79,13 @@ void gdt_tss_entry(int index, u16 ss0, u32 esp0)
 
 void gdt_dump()
 {
-    print("\n&fGlobal descriptor table dump:\n&7");
+    puts("\n&fGlobal descriptor table dump:\n&7");
     for(u32 i = 0; i < GDT_ENTRY_COUNT; i++)
     {
-        print("\t");
+        puts("\t");
         gdt_entry_dump(i);
     }    
-    print("\n&f");
+    puts("\n&f");
 }
 
 void gdt_entry_dump(int index)

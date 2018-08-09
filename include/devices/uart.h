@@ -11,5 +11,5 @@ typedef unsigned short uart_port_t;
 void uart_setup();
 void uart_open(uart_port_t port);
 void uart_put(uart_port_t port, char a);
-void uart_print(uart_port_t port, string str);
+void uart_puts(uart_port_t port, string str);
 void uart_set_color(uart_port_t port, uchar color);

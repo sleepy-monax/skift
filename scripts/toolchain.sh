@@ -50,10 +50,8 @@ pushd ../build
 
     pushd gcc
         $DIR/tarballs/gcc-$GCC_VERSION/configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-languages=c,c++ --without-headers || exit 1
-        make all-gcc all-target-libgcc
+        make -j4 all-gcc all-target-libgcc
         make install-gcc install-target-libgcc
     popd
 
 popd
-
-

@@ -1,3 +1,7 @@
+/* Copyright (c) 2018 Nicolas Van Bossuyt.                                    */
+/* This code is licensed under the MIT License.                               */
+/* See: LICENSE.md                                                            */
+
 #include <stdio.h>
 #include <string.h>
 
@@ -9,11 +13,14 @@
 #include "kernel/console.h"
 #include "kernel/dumping.h"
 #include "kernel/logging.h"
-#include "kernel/memory.h"
 #include "kernel/multiboot.h"
-#include "kernel/paging.h"
+#include "kernel/physical.h"
+#include "kernel/virtual.h"
+#include "kernel/memory.h"
+#include "kernel/ramdisk.h"
 #include "kernel/tasking.h"
 #include "kernel/time.h"
+#include "kernel/version.h"
 
 #include "sync/atomic.h"
 
@@ -29,7 +36,10 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
 
     memcpy(&mbootinfo, info, sizeof(multiboot_info_t));
     
-    print("\n"); 
+    puts("\n"); 
+
+    multiboot_module_t* module = (multiboot_module_t*)mbootinfo.mods_addr;
+    load_ramdisk((void*)module->mod_start);
 
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC )
     {
@@ -45,7 +55,10 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
     setup(irq);
     
     info("--- Setting up system ---");
-    setup(mm);
+    
+    physical_init((mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
+    memory_init(module->mod_end);
+    //mm_setup(module->mod_end, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
     setup(task);
 
     task_start_named(time_task, "clock");
@@ -53,8 +66,9 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
     atomic_enable();
     sti();
 
-
-    while(true){hlt();};
+    info(KERNEL_UNAME);
+    
+    while(true){ hlt(); };
 
     panic("The end of the main function has been reached.");
 }
