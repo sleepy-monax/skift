@@ -19,7 +19,7 @@
  - *none* 😣
 
 ## Screenshots
-![logo](doc/capture_2018-07-15_10-58-37.png)
+![logo](doc/capture.png)
 
 ## Roadmap
 ### ♥ Milestone 0 - a basic kernel
