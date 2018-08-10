@@ -1,10 +1,11 @@
 #include <stdlib.h>
 
 #include "kernel/console.h"
-#include "sync/lock.h"
-#include "devices/vga.h"
+
 #include "devices/uart.h"
+#include "devices/vga.h"
 #include "lib/ascii.h"
+#include "sync/lock.h"
 
 #define TAB_SIZE 4
 

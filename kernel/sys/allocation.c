@@ -2,37 +2,64 @@
 /* This code is licensed under the MIT License.                               */
 /* See: LICENSE.md                                                            */
 
-// skiftOS memory allocator for userspace and kernel.
+#include <stdlib.h>
+#include <string.h>
 
 #include "utils.h"
 #include "types.h"
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
+#include "kernel/memory.h"
+#include "kernel/paging.h"
+
+typedef PACKED(struct) page_block
+{
+    uint page_count;
+    uint free_memory;
+    void *first_block;
+    uint block_count;
+    struct page_block *next;
+}
+page_block_t;
 
 typedef PACKED(struct) block
 {
     u32 size;
     bool used;
     struct block *next;
-    struct block *prev;
+    struct page_block *page;
 }
 block_t;
 
-void * heap_base = NULL;
-void * heap_top = NULL;
+page_block_t *first_block;
+page_block_t *last_block;
 
-void * internal_malloc(size_t size, bool aligned, uint align)
+void allocator_init()
+{
+}
+
+page_block_t *alloc_new_page_block(uint page_count)
+{
+    page_block_t *pblock = (page_block_t *)memory_alloc(page_count);
+
+    pblock->page_count = page_count;
+    pblock->free_memory = PAGE_SIZE * page_count - sizeof(page_block_t);
+    pblock->block_count = 0;
+    pblock->first_block = NULL;
+    pblock->next = NULL;
+
+    return pblock;
+}
+
+void free_page_block(page_block_t *pblock)
+{
+    memory_free((void *)pblock, pblock->page_count);
+}
+
+void *internal_malloc(size_t size, bool aligned, uint align)
 {
     UNUSED(size);
     UNUSED(aligned);
     UNUSED(align);
-
-    if (heap_base == NULL)
-    {
-        heap_base = sbrk(0);
-    }
 
     return NULL;
 }

@@ -8,8 +8,5 @@ void memory_init(uint kernel_end);
 page_directorie_t * memory_construct_memory_space();
 void memory_detroy_memory_space(page_directorie_t * page_dir);
 
-void* ksbrk(int increment);
-void* kbrk(void *addr);
-
-uint usbrk(page_directorie_t* dir, int increment);
-void* ubrk(page_directorie_t* dir, void *addr);
+void *memory_alloc(size_t count);
+void memory_free(void *p, size_t count);
