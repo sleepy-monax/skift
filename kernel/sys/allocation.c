@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "utils.h"
 #include "types.h"
@@ -17,6 +18,7 @@ typedef PACKED(struct) page_block
     uint free_memory;
     void *first_block;
     uint block_count;
+    struct page_block *prev;
     struct page_block *next;
 }
 page_block_t;
@@ -31,13 +33,8 @@ typedef PACKED(struct) block
 block_t;
 
 page_block_t *first_block;
-page_block_t *last_block;
 
-void allocator_init()
-{
-}
-
-page_block_t *alloc_new_page_block(uint page_count)
+page_block_t *alloc_new_page_block(page_block_t * prev, uint page_count)
 {
     page_block_t *pblock = (page_block_t *)memory_alloc(page_count);
 
@@ -50,30 +47,48 @@ page_block_t *alloc_new_page_block(uint page_count)
     return pblock;
 }
 
-void free_page_block(page_block_t *pblock)
+block_t *alloc_in_page_block(page_block_t* page_block, size_t size)
 {
-    memory_free((void *)pblock, pblock->page_count);
-}
+    if (page_block->free_memory >= size + sizeof(block_t))
+    {
+        for(block_t* b = (block_t*)(page_block + 1); b != NULL; b = b->next)
+        {
+            if (b->size >= size)
+            {
 
-void *internal_malloc(size_t size, bool aligned, uint align)
-{
-    UNUSED(size);
-    UNUSED(aligned);
-    UNUSED(align);
+            }
+        }   
+    }
 
     return NULL;
 }
 
-void internal_free(void *p)
+void free_page_block(page_block_t *pblock)
 {
-    UNUSED(p);
+    memory_free((void *)pblock, pblock->page_count);
 }
 
 /* --- public functions ----------------------------------------------------- */
 
 void *malloc(size_t size)
 {
-    return internal_malloc(size, true, 0);
+    // find a free block
+    for(page_block_t* p = first_block; p != NULL; p = p->next)
+    {
+        if (p->free_memory >= size + sizeof(block_t))
+        {
+            for(block_t* b = p->first_block; b != NULL; b = b->next)
+            {
+                if (!b->used && b->size >= size)
+                {
+                    b->used = true;
+                    return (void*)(b + 1)
+                } 
+            }   
+        }
+    }
+
+    page_block_t * p = alloc_new_page_block( min( size / PAGE_SIZE, 1 ) );
 }
 
 void *amalloc(size_t size, uint align)
@@ -90,19 +105,12 @@ void *realloc(void *p, size_t size)
 
 void *calloc(size_t count, size_t size)
 {
-    void *p = internal_malloc(count * size, false, 0);
-    memset(p, 0, count * size);
-    return p;
-}
-
-void *acalloc(size_t count, size_t size, uint align)
-{
-    void *p = internal_malloc(count * size, true, align);
+    void *p = malloc(count * size);
     memset(p, 0, count * size);
     return p;
 }
 
 void free(void *p)
 {
-    internal_free(p);
+    
 }
