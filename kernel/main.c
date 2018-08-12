@@ -3,6 +3,7 @@
 /* See: LICENSE.md                                                            */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "cpu/gdt.h"
@@ -66,6 +67,10 @@ void main(multiboot_info_t * info, s32 magic)
 
     info(KERNEL_UNAME);
     
+
+    void * p = malloc(128);
+    free(p);
+
     while(true){ hlt(); };
 
     panic("The end of the main function has been reached.");
