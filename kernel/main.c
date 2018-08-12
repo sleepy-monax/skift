@@ -3,6 +3,7 @@
 /* See: LICENSE.md                                                            */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "cpu/gdt.h"
@@ -28,10 +29,8 @@
 multiboot_info_t mbootinfo;
 
 
-void main(multiboot_info_t * info, s32 magic, u32 esp)
+void main(multiboot_info_t * info, s32 magic)
 {
-    UNUSED(esp);
-
     console_setup();
 
     memcpy(&mbootinfo, info, sizeof(multiboot_info_t));
@@ -56,11 +55,11 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
     
     info("--- Setting up system ---");
     
-    physical_init((mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
-    memory_init(module->mod_end);
-    //mm_setup(module->mod_end, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
+    setup(physical, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
+    setup(memory, module->mod_end);
+    
     setup(task);
-
+    
     task_start_named(time_task, "clock");
 
     atomic_enable();
@@ -68,6 +67,10 @@ void main(multiboot_info_t * info, s32 magic, u32 esp)
 
     info(KERNEL_UNAME);
     
+
+    void * p = malloc(128);
+    free(p);
+
     while(true){ hlt(); };
 
     panic("The end of the main function has been reached.");

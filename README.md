@@ -1,7 +1,7 @@
 <br><br><br><br><br>
 <h1 align="center">
   <br>
-  <a href="https://github.com/NicolasVanBossuyt/core-one"><img src="https://github.com/NicolasVanBossuyt/core-one/raw/master/doc/logo_blue.png?raw=true" alt="core one" width="512"></a>
+  <a href="https://github.com/NicolasVanBossuyt/core-one"><img src="https://github.com/NicolasVanBossuyt/core-one/raw/master/doc/logo.png?raw=true" alt="core one" width="512"></a>
   <br>
   skift<b>OS</b>
   <br>
@@ -16,10 +16,11 @@
 <br><br><br><br><br>
 
 ## Features
- - *none* 😣
+ - Boot with grub
+ - Preemptive multitasking
 
 ## Screenshots
-![logo](doc/capture_2018-07-15_10-58-37.png)
+![logo](doc/capture.png)
 
 ## Roadmap
 ### ♥ Milestone 0 - a basic kernel
@@ -30,7 +31,7 @@
 
 ### 📂 Milestone 1 - File system
  - [X] ATA pio driver
- - [ ] RAM disk
+ - [X] RAM disk
  - [ ] Virtual file system (WIP)
  
 ### 👦 Milestone 2 - User mode

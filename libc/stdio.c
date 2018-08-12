@@ -63,6 +63,7 @@ int vsprintf(char *str, const char *format, va_list va)
                     strcat(str, temp);
                     break;
 
+                case 'i':
                 case 'd':
                     {
                         bool isneg = false;
@@ -88,7 +89,6 @@ int vsprintf(char *str, const char *format, va_list va)
                         strcat(str, temp);
                     }
                     break;
-
                 case 'u':
                     itos(va_arg(va, u32), temp, 10);
                     strcat(str, temp);
@@ -106,7 +106,11 @@ int vsprintf(char *str, const char *format, va_list va)
                 case 's':
                     strcat(str, va_arg(va, string));
                     break;
-            
+
+                case '%':
+                    strapd(str, '%');
+                    break;
+
                 default:
                     break;
             }

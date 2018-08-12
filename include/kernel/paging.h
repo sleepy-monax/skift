@@ -63,5 +63,5 @@ extern void paging_enable(void);
 extern void paging_load_directorie(page_directorie_t *directorie);
 extern void paging_invalidate_tlb();
 
-page_table_t * paging_new_page_table();
-page_directorie_t * paging_new_page_directorie();
+page_table_t *paging_new_page_table();
+page_directorie_t *paging_new_page_directorie();

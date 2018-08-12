@@ -1,7 +1,7 @@
 #pragma once
 #include "types.h"
 
-void physical_init(uint total_memory);
+void physical_setup(uint memory);
 
 bool physical_is_used(void *mem);
 void physical_used(void *mem);

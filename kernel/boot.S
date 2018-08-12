@@ -31,7 +31,11 @@ _start:
 	; stack (as it grows downwards on x86 systems).
 	mov esp, stack_top
  
+
+	; backtrace stuff
+	xor ebp, ebp
 	push ebp
+
 	push eax ; Push the multiboot magic
 	push ebx ; Push the multiboot header adress.
 	
