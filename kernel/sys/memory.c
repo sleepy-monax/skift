@@ -10,7 +10,7 @@
 page_directorie_t ALIGNED(kernel_page_dir, PAGE_SIZE);
 page_table_t ALIGNED(kernel_page_tables[256], PAGE_SIZE);
 
-void memory_init(uint kernel_end)
+void memory_setup(uint kernel_end)
 {
     for (size_t i = 0; i < 256; i++)
     {
@@ -27,7 +27,12 @@ void memory_init(uint kernel_end)
         virtual_map(&kernel_page_dir, (uint)(i * PAGE_SIZE), (uint)(i * PAGE_SIZE), false);
     }
 
-    info("Memory: USED=%dk FREE=%dk TOTAL=%dk", physical_get_used() / 1024, physical_get_free() / 1024, physical_get_total() / 1024);
+    info("Memory: USED=%dk FREE=%dk TOTAL=%dk USAGE: %d%%",
+    physical_get_used() / 1024,
+    physical_get_free() / 1024,
+    physical_get_total() / 1024,
+    (physical_get_used() / 1024 * 100) / (physical_get_total() / 1024 * 100));
+
     paging_load_directorie(&kernel_page_dir);
     paging_enable();
     info("Paging is now enabled!");

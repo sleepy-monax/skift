@@ -106,7 +106,11 @@ int vsprintf(char *str, const char *format, va_list va)
                 case 's':
                     strcat(str, va_arg(va, string));
                     break;
-            
+
+                case '%':
+                    strapd(str, '%');
+                    break;
+
                 default:
                     break;
             }

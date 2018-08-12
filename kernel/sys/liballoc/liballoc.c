@@ -17,7 +17,7 @@
 #define USE_CASE4
 #define USE_CASE5
 
-#define DEBUG
+//#define DEBUG
 #define FLUSH()
 //#define atexit(x) x(); panic("LIBALLOC FATAL!")
 

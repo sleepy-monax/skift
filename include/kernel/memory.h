@@ -3,7 +3,7 @@
 #include "utils.h"
 #include "kernel/paging.h"
 
-void memory_init(uint kernel_end);
+void memory_setup(uint kernel_end);
 
 page_directorie_t * memory_construct_memory_space();
 void memory_detroy_memory_space(page_directorie_t * page_dir);

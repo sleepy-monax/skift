@@ -27,7 +27,7 @@ void * get_free_frame()
     return NULL;
 }
 
-void physical_init(uint memory)
+void physical_setup(uint memory)
 {
     MEMORY_TOTAL = memory;
 }
@@ -90,7 +90,7 @@ void *physical_alloc_contiguous(uint count)
                 void * p = (void *)((i + j) * FRAME_SIZE);
                 physical_used(p);
             }
-            
+
             return (void*)(i * FRAME_SIZE);
         }
 

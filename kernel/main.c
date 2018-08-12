@@ -55,11 +55,11 @@ void main(multiboot_info_t * info, s32 magic)
     
     info("--- Setting up system ---");
     
-    physical_init((mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
-    memory_init(module->mod_end);
-    //mm_setup(module->mod_end, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
+    setup(physical, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
+    setup(memory, module->mod_end);
+    
     setup(task);
-
+    
     task_start_named(time_task, "clock");
 
     atomic_enable();
