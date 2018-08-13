@@ -23,11 +23,21 @@
 #include "kernel/time.h"
 #include "kernel/version.h"
 
+#include "devices/vga.h"
+
 #include "sync/atomic.h"
 
 
 multiboot_info_t mbootinfo;
 
+
+void boot_screen(string msg)
+{
+    vga_clear(vga_white, vga_black);
+    vga_text(36, 10, "skift OS", vga_light_yellow, vga_black);
+    vga_text(35, 14, "Booting...", vga_white, vga_black);
+    vga_text(2, 4, msg, vga_white, vga_black);
+}
 
 void main(multiboot_info_t * info, s32 magic)
 {
@@ -60,10 +70,11 @@ void main(multiboot_info_t * info, s32 magic)
     
     setup(task);
     
-    task_start_named(time_task, "clock");
+    //task_start_named(time_task, "clock");
 
     atomic_enable();
     sti();
+
 
     info(KERNEL_UNAME);
     
@@ -71,6 +82,7 @@ void main(multiboot_info_t * info, s32 magic)
     void * p = malloc(128);
     free(p);
 
+    boot_screen("Hello world!");
     while(true){ hlt(); };
 
     panic("The end of the main function has been reached.");

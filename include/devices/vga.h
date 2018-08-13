@@ -33,5 +33,6 @@ void vga_setup();
 void vga_clear(vga_color_t fg, vga_color_t bg);
 void vga_scroll(vga_color_t bg);
 void vga_cell(u32 x, u32 y, vga_entry_t entry);
+void vga_text(u32 x, u32 y, string text, vga_color_t fg, vga_color_t bg);
 void vga_cursor(s32 x, s32 y);
 void vga_hide_cursor();
