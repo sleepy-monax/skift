@@ -1,50 +1,64 @@
-// Single Linked sllist
-
+// Single Linked sllist_t
 #include "ds/sllist.h"
 
-Node * createnode(int data);
+sllist_node_t * createnode(int data)
+{
+    sllist_node_t * newsllist_node_t = malloc(sizeof(sllist_node_t));
 
-Node * createnode(int data){
-  Node * newNode = malloc(sizeof(Node));
-  newNode->data = data;
-  newNode->next = NULL;
-  return newNode;
+    newsllist_node_t->data = data;
+    newsllist_node_t->next = NULL;
+    
+    return newsllist_node_t;
 }
 
-sllist * sllist_new(){
-  sllist * list = malloc(sizeof(sllist));
-  list->head = NULL;
-  return list;
+sllist_t * sll_new()
+{
+    sllist_t * list = malloc(sizeof(sllist_t));
+    list->head = NULL;
+
+    return list;
 }
 
-void sllist_display(sllist * list) {
-  Node * current = list->head;
-  if(list->head == NULL) 
-    return;
-  while(current->next != NULL){
-    printf("%d,", current->data);
-    current = current->next;
-  }
-  printf("%d\n", current->data); 
-}
+void sll_display(sllist_t * list) 
+{
+    sllist_node_t * current = list->head;
+    
+    if(list->head == NULL) 
+      return;
 
-void sllist_add(int data, sllist * list){
-  Node * current = NULL;
-  if(list->head == NULL){
-    list->head = createnode(data);
-  }
-  else {
-    current = list->head; 
-    while (current->next!=NULL){
-      current = current->next;
+    while(current->next != NULL)
+    {
+        printf("%d,", current->data);
+        current = current->next;
     }
-    current->next = createnode(data);
-  }
+
+    printf("%d\n", current->data); 
 }
 
-void sllist_delete(int data, sllist * list){
-  Node * current = list->head;            
-  Node * previous = current;           
+void sll_add(int data, sllist_t * list)
+{
+    sllist_node_t * current = NULL;
+
+    if(list->head == NULL)
+    {
+      list->head = createnode(data);
+    }
+    else
+    {
+        current = list->head; 
+        
+        while (current->next != NULL)
+        {
+          current = current->next;
+        }
+        
+        current->next = createnode(data);
+    }
+}
+
+void sll_delete(int data, sllist_t * list){
+  sllist_node_t * current = list->head;            
+  sllist_node_t * previous = current;           
   while(current != NULL){           
     if(current->data == data){      
       previous->next = current->next;
@@ -58,10 +72,10 @@ void sllist_delete(int data, sllist * list){
   }                                 
 }                                   
 
-void sllist_reverse(sllist * list){
-  Node * reversed = NULL;
-  Node * current = list->head;
-  Node * temp = NULL;
+void sll_reverse(sllist_t * list){
+  sllist_node_t * reversed = NULL;
+  sllist_node_t * current = list->head;
+  sllist_node_t * temp = NULL;
   while(current != NULL){
     temp = current;
     current = current->next;
@@ -71,9 +85,9 @@ void sllist_reverse(sllist * list){
   list->head = reversed;
 }
 
-void sllist_free(sllist * list){
-  Node * current = list->head;
-  Node * next = current;
+void sll_free(sllist_t * list){
+  sllist_node_t * current = list->head;
+  sllist_node_t * next = current;
   while(current != NULL){
     next = current->next;
     free(current);
@@ -82,9 +96,9 @@ void sllist_free(sllist * list){
   free(list);
 }
 
-void sllist_destroy(sllist * list){
-  Node * current = list->head;
-  Node * next = current;
+void sll_destroy(sllist_t * list){
+  sllist_node_t * current = list->head;
+  sllist_node_t * next = current;
   while(current != NULL){
     next = current->next;
     free((void*)current->data);

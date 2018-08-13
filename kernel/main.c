@@ -34,9 +34,8 @@ multiboot_info_t mbootinfo;
 void boot_screen(string msg)
 {
     vga_clear(vga_white, vga_black);
-    vga_text(36, 10, "skift OS", vga_light_yellow, vga_black);
-    vga_text(35, 14, "Booting...", vga_white, vga_black);
-    vga_text(2, 4, msg, vga_white, vga_black);
+    vga_text(36, 10, "skift OS", vga_light_blue, vga_black);
+    vga_text(40 - strlen(msg) / 2, 14, msg, vga_white, vga_black);
 }
 
 void main(multiboot_info_t * info, s32 magic)
