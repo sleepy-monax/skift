@@ -19,7 +19,7 @@ CPPFLAGS  = -D __USER -I ./include -O3 -nostdlib -Wall -Wextra -Werror -ggdb -fn
 LDFLAGS   = -O3
 ASFLAGS   = -felf32
 
-QEMUFLAGS = -m 256M -display sdl -serial mon:stdio -cdrom image.iso -M accel=kvm:tcg
+QEMUFLAGS = -m 256M -serial mon:stdio -cdrom image.iso -M accel=kvm:tcg
 
 # --- Commands --------------------------------------------------------------- #
 
@@ -98,4 +98,4 @@ include scripts/*.mk
 %.cpp.ko: %.cpp
 	$(CC) $(KCPPFLAGS) -c -o $@ $^
 
-.PHONY: all rebuild run run-nox debug clean crosscompiler
+.PHONY: all rebuild run run-nox debug clean toolchain

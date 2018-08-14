@@ -1,3 +1,6 @@
+;; This code is licensed under the MIT License.                               ;;
+;; See: LICENSE.md                                                            ;;
+
 ; Declare constants for the multiboot header.
 MBALIGN  equ  1 << 0            ; align loaded modules on page boundaries
 MEMINFO  equ  1 << 1            ; provide memory map
