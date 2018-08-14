@@ -33,7 +33,7 @@ pushd tarballs
 
 popd
 
-mkdir -p $PREFIX
+mkdir -p "$PREFIX"
 mkdir -p ../build
 mkdir -p ../build/binutils
 mkdir -p ../build/gcc
