@@ -50,6 +50,7 @@ void main(multiboot_info_t * info, s32 magic)
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC ) 
         panic("Invalid multiboot magic number (0x%x)!", magic);
 
+    boot_screen("Setting up CPU...");
     info("--- Setting up cpu tables ---");
     setup(gdt);
     setup(pic);
@@ -57,6 +58,7 @@ void main(multiboot_info_t * info, s32 magic)
     setup(isr);
     setup(irq);
     
+    boot_screen("Setting up system...");
     info("--- Setting up system ---");
     setup(physical, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
     setup(memory, module->mod_end);
@@ -69,7 +71,7 @@ void main(multiboot_info_t * info, s32 magic)
 
 
     info(KERNEL_UNAME);
-    boot_screen("Hello world!");
+    boot_screen("booting...");
     
     while(true){ hlt(); };
 

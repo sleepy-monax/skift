@@ -17,6 +17,34 @@ directory_t * alloc_directorie(string name)
     return dir;
 }
 
+directory_t * dir_getdir(directory_t * dir, string name)
+{
+    if (dir == NULL) return NULL;
+    if (dir->directories->count == 0) return NULL;
+
+    SLL_FOREARCH(i, dir->directories)
+    {
+        directory_t * child = (directory_t*)i->data;
+        if (strcmp(name, child->name) == 0) return child;
+    }
+
+    return NULL;
+}
+
+file_t * dir_getfile(directory_t * dir, string name)
+{
+    if (dir == NULL) return NULL;
+    if (dir->files->count == 0) return NULL;
+
+    SLL_FOREARCH(i, dir->files)
+    {
+        file_t * file = (file_t*)i->data;
+        if (strcmp(name, file->name) == 0) return file;
+    }
+
+    return NULL;
+}
+
 file_t * alloc_files(string name)
 {
     file_t * file = MALLOC(file_t);
