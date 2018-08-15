@@ -1,6 +1,6 @@
-/* Copyright (c) 2018 Nicolas Van Bossuyt.                                    */
-/* This code is licensed under the MIT License.                               */
-/* See: LICENSE.md                                                            */
+// This file is part of "skiftOS" licensed under the MIT License.
+// See: LICENSE.md
+// Project URL: github.com/maker-dev/skift
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,6 +43,8 @@ void main(multiboot_info_t * info, s32 magic)
     memcpy(&mbootinfo, info, sizeof(multiboot_info_t));
     
     puts("\n"); 
+
+    info("Command line: %s", mbootinfo.cmdline);
 
     multiboot_module_t* module = (multiboot_module_t*)mbootinfo.mods_addr;
     load_ramdisk((void*)module->mod_start);

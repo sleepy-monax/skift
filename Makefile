@@ -49,20 +49,22 @@ debug: all
 	@qemu-system-i386 $(QEMUFLAGS) -s -S
 
 clean:
-	@echo "Cleaning up Source tree..."
-	@find -name "*.o" -delete
-	@find -name "*.c.o" -delete
-	@find -name "*.S.o" -delete
-	@find -name "*.cpp.o" -delete
-	@find -name "*.c.ko" -delete
-	@find -name "*.S.ko" -delete
-	@find -name "*.cpp.ko" -delete
-	@find -name "*.bin" -delete
-	@find -name "*.asm" -delete
-	@find -name "*.img" -delete
-	@find -name "*.a" -delete
-	@find -name "*.iso" -delete
-	@find -name "*.tar" -delete
+	@echo ""
+	@echo "Cleaning up project folder..."
+	@echo "-------------------------------------------------------------------------------"
+	find -name "*.o" -delete
+	find -name "*.c.o" -delete
+	find -name "*.S.o" -delete
+	find -name "*.cpp.o" -delete
+	find -name "*.c.ko" -delete
+	find -name "*.S.ko" -delete
+	find -name "*.cpp.ko" -delete
+	find -name "*.bin" -delete
+	find -name "*.asm" -delete
+	find -name "*.img" -delete
+	find -name "*.a" -delete
+	find -name "*.iso" -delete
+	find -name "*.tar" -delete
 
 very-clean: clean
 	rm -rf ./cross

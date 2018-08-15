@@ -2,7 +2,11 @@ KERNEL_OBJS =  $(patsubst %.c,%.c.ko,$(shell find $(SOURCE_FOLDER)/kernel -name 
 KERNEL_OBJS += $(patsubst %.S, %.S.o,$(shell find $(SOURCE_FOLDER)/kernel -name '*.S'))
 KERNEL_OBJS += $(patsubst %.cpp, %.cpp.ko,$(shell find $(SOURCE_FOLDER)/kernel -name '*.cpp'))
 
-kernel.bin: $(KERNEL_OBJS) libk.a
-	@echo "Linking the kernel..."
-	@$(LD) $(LDFLAGS) -T $(SOURCE_FOLDER)/kernel.ld -o $@ $^
+kernel_build_msg:
+	@echo ""
+	@echo "Building the kernel..."
+	@echo "-------------------------------------------------------------------------------"
+
+kernel.bin: kernel_build_msg $(KERNEL_OBJS) libk.a
+	@$(LD) $(LDFLAGS) -T $(SOURCE_FOLDER)/kernel.ld -o $@ $(KERNEL_OBJS) libk.a
 	@$(OBJDUMP) -Mintel -S $@ > kernel.asm
