@@ -1,4 +1,4 @@
 
 ramdisk.tar:
-	@echo -e "\033[1;37mGenerating the ramdisk...\033[0m"
+	@echo "Generating the ramdisk..."
 	@tar -cvf ramdisk.tar -C base $(shell ls base/)

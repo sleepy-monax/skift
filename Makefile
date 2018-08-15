@@ -33,11 +33,11 @@ all: image.iso
 rebuild: clean all
 
 run: all
-	@echo -e "\n\033[1;37m .. Booting qemu.\033[0m\n"
+	@echo "Booting qemu..."
 	@qemu-system-i386 $(QEMUFLAGS)
 
 run-nox: all
-	@echo -e "\n\033[1;37m .. Booting qemu.\033[0m\n"
+	@echo "Booting qemu (nox)..."
 	@qemu-system-i386 $(QEMUFLAGS) -nographic
 
 bochs: all
@@ -45,11 +45,11 @@ bochs: all
 
 
 debug: all
-	@echo -e "\n\033[1;37m .. Booting qemu (debug).\033[0m\n"
+	@echo "Booting qemu (debug)..."
 	@qemu-system-i386 $(QEMUFLAGS) -s -S
 
 clean:
-	@echo -e -n "\n\033[1;37m .. Cleaning up Source tree\033[0m"
+	@echo "Cleaning up Source tree..."
 	@find -name "*.o" -delete
 	@find -name "*.c.o" -delete
 	@find -name "*.S.o" -delete
@@ -63,7 +63,6 @@ clean:
 	@find -name "*.a" -delete
 	@find -name "*.iso" -delete
 	@find -name "*.tar" -delete
-	@echo -e "\r\033[0m ✅\n"
 
 very-clean: clean
 	rm -rf ./cross
@@ -86,26 +85,26 @@ dumpfs: filesystem.img
 include scripts/*.mk
 
 %.S.o: %.S
-	@echo -e "AS $@ -> $^"
+	@echo "AS $@ -> $^"
 	@$(AS) $(ASFLAGS) $^ -o $@
 
 
 %.c.o: %.c
-	@echo -e "CC $@ -> $^"
+	@echo "CC $@ -> $^"
 	@$(CC) $(CFLAGS) -c -o $@ $^
 
 
 %.cpp.o: %.cpp
-	@echo -e "CPP $@ -> $^"
+	@echo "CPP $@ -> $^"
 	@$(CC) $(CPPFLAGS) -c -o $@ $^
 
 # KERNEL OBJECT SPECIFIC RULES
 %.c.ko: %.c
-	@echo -e "CC $@ -> $^"
+	@echo "CC $@ -> $^"
 	@$(CC) $(KCFLAGS) -c -o $@ $^
 
 %.cpp.ko: %.cpp
-	@echo -e "CPP $@ -> $^"
+	@echo "CPP $@ -> $^"
 	$(CC) $(KCPPFLAGS) -c -o $@ $^
 
 .PHONY: all rebuild run run-nox debug clean toolchain
