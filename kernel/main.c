@@ -1,3 +1,4 @@
+/* Copyright (c) 2018 Nicolas Van Bossuyt.                                    */
 /* This code is licensed under the MIT License.                               */
 /* See: LICENSE.md                                                            */
 
@@ -6,7 +7,7 @@
 #include <string.h>
 
 #include "cpu/gdt.h"
-#include "cpu/idt.h"/* Copyright (c) 2018 Nicolas Van Bossuyt.                                    */
+#include "cpu/idt.h"
 #include "cpu/irq.h"
 #include "cpu/isr.h"
 
@@ -68,6 +69,7 @@ void main(multiboot_info_t * info, s32 magic)
 
 
     info(KERNEL_UNAME);
+    boot_screen("Hello world!");
     
     while(true){ hlt(); };
 

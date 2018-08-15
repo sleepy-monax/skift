@@ -6,35 +6,58 @@
 
 directory_t * root;
 
-void fs_init()
+directory_t * alloc_directorie(string name)
 {
+    directory_t * dir = MALLOC(directory_t);
+    
+    strncpy((char*)&dir->name, name, MAX_NAME_SIZE);
+    dir->directories = sll_new();
+    dir->files = sll_new();
 
+    return dir;
 }
 
-directory_t * fs_get_dir(string path)
+file_t * alloc_files(string name)
 {
-    char buffer[min(strlen(path) + 1, MAX_PATH_SIZE)];
-    strncpy(buffer, path, MAX_PATH_SIZE);
-    char current[MAX_NAME_SIZE];
-    memset(current, 0, MAX_PATH_SIZE);
+    file_t * file = MALLOC(file_t);
+    
+    strncpy((char*)&file->name, name, MAX_NAME_SIZE);
 
-    for(size_t i = 0; buffer[i]; i++)
+    return file;
+}
+
+/* --- Public functions ----------------------------------------------------- */
+
+void fs_init()
+{
+    root = alloc_directorie("ROOT");
+}
+
+directory_t * fs_get_dir(string path, directory_t * parent)
+{
+    char* name = (char*)malloc(MAX_NAME_SIZE);
+    name[0] = '\0';
+
+    for(size_t i = 0; path[i] != FS_PATH_SEPARATOR && path[i]; i++)
     {
-        if (buffer[i] == FS_PATH_SEPARATOR)
-        {
+        strapd(name, path[i]);
+    }
 
-        }
-        else
+    SLL_FOREARCH(entry, parent->directories)
+    {
+        directory_t * dir = (directory_t*)entry->data;
+
+        if (strcmp(name, dir->name) == 0)
         {
-            strapd(current, buffer[i]);
+            return fs_get_dir(path + strlen(name), dir);
         }
     }
     
     return NULL;
 }
 
-file_t * fs_get_file(string path)
+file_t * fs_get_file(string path, directory_t * parent)
 {
-    UNUSED(path);
+    UNUSED(path); UNUSED(parent);
     return NULL;
 }

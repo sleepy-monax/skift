@@ -29,13 +29,13 @@ typedef struct file
 } file_t;
 
 void fs_init();
-directory_t * fs_get_dir(string path);
-file_t * fs_get_file(string path);
 
 bool dir_create(string path);
 bool dir_delete(string path);
 bool dir_list_file(string, char* dest, uint index);
 bool dir_list_dir(string, char* dest, uint index);
+
+bool file_create(string path);
 
 file_t* file_open(string path, bool read, bool write, bool create);
 void file_close(file_t * file);

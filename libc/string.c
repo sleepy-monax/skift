@@ -274,22 +274,21 @@ char *strstr(const char *s1, const char *s2)
     return NULL;
 }
 
-char *strtok(char *s, const char *delim)
+char *strtok(char *s, char** state, const char *delim)
 {
-    static char *lasts;
     register int ch;
 
     if (s == 0)
-        s = lasts;
+        s = *state;
     do
     {
         if ((ch = *s++) == '\0')
             return 0;
     } while (strchr(delim, ch));
     --s;
-    lasts = s + strcspn(s, delim);
-    if (*lasts != 0)
-        *lasts++ = 0;
+    *state = s + strcspn(s, delim);
+    if (**state != 0)
+        **state++ = 0;
     return s;
 }
 
