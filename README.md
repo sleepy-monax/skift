@@ -23,10 +23,10 @@
 ![logo](doc/capture.png)
 
 ## Roadmap
-### ♥ Milestone 0 - a basic kernel
+### ♥ Milestone 0 - a basic kernel : DONE
  - [X] IDT, GDT, IRQ and ISR
- - [ ] Pagging (WIP)
- - [ ] Memory managment (WIP)
+ - [x] Pagging
+ - [x] Memory managment
  - [X] Tasking
 
 ### 📂 Milestone 1 - File system

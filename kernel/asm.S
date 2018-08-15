@@ -1,3 +1,6 @@
+;; This code is licensed under the MIT License.                               ;;
+;; See: LICENSE.md                                                            ;;
+
 section .text
 
 global paging_enable

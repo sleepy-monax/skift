@@ -1,3 +1,6 @@
+;; This code is licensed under the MIT License.                               ;;
+;; See: LICENSE.md                                                            ;;
+
 extern isr_handler
 
 %macro ISR_NAME 1

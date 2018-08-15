@@ -1,3 +1,6 @@
+;; This code is licensed under the MIT License.                               ;;
+;; See: LICENSE.md                                                            ;;
+
 extern irq_handler
 
 %macro IRQ_NAME 1
