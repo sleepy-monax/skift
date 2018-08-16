@@ -28,7 +28,7 @@ typedef struct file
     struct directory * parent;
 } file_t;
 
-void fs_init();
+void filesystem_setup();
 
 bool dir_create(string path);
 bool dir_delete(string path);

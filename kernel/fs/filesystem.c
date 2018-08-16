@@ -54,9 +54,10 @@ file_t * alloc_files(string name)
     return file;
 }
 
+
 /* --- Public functions ----------------------------------------------------- */
 
-void fs_init()
+void filesystem_setup()
 {
     root = alloc_directorie("ROOT");
 }
@@ -88,4 +89,15 @@ file_t * fs_get_file(string path, directory_t * parent)
 {
     UNUSED(path); UNUSED(parent);
     return NULL;
+}
+
+
+bool dir_create(string path)
+{
+
+}
+
+bool file_create(string path)
+{
+
 }

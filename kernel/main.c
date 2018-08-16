@@ -23,6 +23,8 @@
 #include "kernel/time.h"
 #include "kernel/version.h"
 
+#include "kernel/filesystem.h"
+
 #include "devices/vga.h"
 
 #include "sync/atomic.h"
@@ -52,7 +54,7 @@ void main(multiboot_info_t * info, s32 magic)
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC ) 
         panic("Invalid multiboot magic number (0x%x)!", magic);
 
-    boot_screen("Setting up CPU...");
+    //boot_screen("Setting up CPU...");
     info("--- Setting up cpu tables ---");
     setup(gdt);
     setup(pic);
@@ -60,7 +62,7 @@ void main(multiboot_info_t * info, s32 magic)
     setup(isr);
     setup(irq);
     
-    boot_screen("Setting up system...");
+    //boot_screen("Setting up system...");
     info("--- Setting up system ---");
     setup(physical, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
     setup(memory, module->mod_end);
@@ -72,8 +74,10 @@ void main(multiboot_info_t * info, s32 magic)
     sti();
 
 
+    setup(filesystem);
+
     info(KERNEL_UNAME);
-    boot_screen("booting...");
+    //boot_screen("booting...");
     
     while(true){ hlt(); };
 
