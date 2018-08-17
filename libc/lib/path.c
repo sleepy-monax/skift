@@ -4,6 +4,7 @@
 int path_read(const char * path, int index, char * buffer)
 {
     int current_index = 0;
+    buffer[0] = '\0';
     
     if (path[0] == '/') path++;
 
@@ -30,7 +31,7 @@ int path_read(const char * path, int index, char * buffer)
         }
     }
     
-    return strlen(buffer) ? 1 : 0;
+    return (current_index == index && strlen(buffer)) ? 1 : 0;
 }
 
 int path_len(const char * path)

@@ -28,9 +28,10 @@ typedef struct file
     struct directory * parent;
 } file_t;
 
-void fs_setup();
+void filesystem_setup();
 void fs_dump(directory_t * root);
 
 directory_t * fs_get_dir(const char * path, directory_t * parent);
 file_t * fs_get_file(const char * path, directory_t * parent);
 int dir_create(const char * path, directory_t * relative);
+int file_create(const char * path, directory_t * relative);
