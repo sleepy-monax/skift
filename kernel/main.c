@@ -21,7 +21,7 @@
 #include "kernel/ramdisk.h"
 #include "kernel/tasking.h"
 #include "kernel/time.h"
-#include "kernel/version.h"
+#include "kernel/modules.h"
 
 #include "kernel/filesystem.h"
 
@@ -45,11 +45,6 @@ void main(multiboot_info_t * info, s32 magic)
     memcpy(&mbootinfo, info, sizeof(multiboot_info_t));
     
     puts("\n"); 
-
-    info("Command line: %s", mbootinfo.cmdline);
-
-    multiboot_module_t* module = (multiboot_module_t*)mbootinfo.mods_addr;
-    load_ramdisk((void*)module->mod_start);
 
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC ) 
         panic("Invalid multiboot magic number (0x%x)!", magic);
@@ -75,6 +70,7 @@ void main(multiboot_info_t * info, s32 magic)
 
 
     setup(filesystem);
+    setup(modules, &mbootinfo);
 
     info(KERNEL_UNAME);
     //boot_screen("booting...");
