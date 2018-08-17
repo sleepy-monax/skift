@@ -28,6 +28,8 @@ typedef struct file
     struct directory * parent;
 } file_t;
 
+extern directory_t * root;
+
 void filesystem_setup();
 void fs_dump(directory_t * root);
 

@@ -32,12 +32,12 @@ void virtual_map(page_directorie_t *dir, u32 virt, u32 phys, bool user)
 {
     if (!IS_PAGE_ALIGN(phys) || !IS_PAGE_ALIGN(virt))
     {
-        panic("Cannot page map %x to %x, because it's not page aligned!", virt, phys);
+        panic("Cannot page map 0x%x to 0x%x, because it's not page aligned!", virt, phys);
     }
 
     u32 pdindex = (u32)virt >> 22;
     u32 ptindex = (u32)virt >> 12 & 0x03FF;
-    // debug("Mapping %x(%d; %d) to %x.", virtual, pdindex, ptindex, physical);
+    // debug("Mapping 0x%x(%d; %d) to 0x%x.", virtual, pdindex, ptindex, physical);
 
     page_directorie_entry_t *pd_entry = &dir->entries[pdindex];
     page_table_t *pt = (page_table_t *)(pd_entry->PageFrameNumber * PAGE_SIZE);

@@ -12,6 +12,7 @@ directory_t * alloc_directorie(const char * name)
 {
     directory_t * dir = MALLOC(directory_t);
     
+    dir->name[0] = '\0';
     strncpy((char*)&dir->name, name, MAX_NAME_SIZE);
     dir->directories = sll_new();
     dir->files = sll_new();
@@ -130,21 +131,6 @@ void filesystem_setup()
 {
     info("Allocating root directorie.");
     root = alloc_directorie("ROOT");
-
-    info("DONE");
-
-    dir_create("bin", root);
-    dir_create("dev", root);
-    file_create("dev/random", root);
-    file_create("dev/zero", root);
-    file_create("dev/null", root);
-    dir_create("usr", root);
-    dir_create("usr/share", root);
-    dir_create("usr/local", root);
-    dir_create("usr/root", root);
-    dir_create("cfg", root);
-
-    fs_dump(root);
 }
 
 int dir_create(const char * path, directory_t * relative)

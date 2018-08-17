@@ -44,7 +44,7 @@ void *memory_alloc(size_t count)
 
     for (size_t i = 0; i < count; i++)
     {
-        virtual_map(&kernel_page_dir, (uint)mem, (uint)mem, false);
+        virtual_map(&kernel_page_dir, (uint)mem + PAGE_SIZE * i, (uint)mem + PAGE_SIZE * i, false);
     }
 
     return mem;
@@ -54,8 +54,8 @@ void memory_free(void *p, size_t count)
 {
     for (size_t i = 0; i < count; i++)
     {
-        physical_free(p + i * PAGE_SIZE);
-        virtual_unmap(&kernel_page_dir, (uint)p + i * PAGE_SIZE);
+        physical_free(p + PAGE_SIZE * i);
+        virtual_unmap(&kernel_page_dir, (uint)p + PAGE_SIZE * i);
     }
 }
 
