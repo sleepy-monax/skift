@@ -1,3 +1,3 @@
 #pragma once
-
-void load_ramdisk(void *addr);
+#include "kernel/multiboot.h"
+void ramdisk_load(multiboot_module_t *module);

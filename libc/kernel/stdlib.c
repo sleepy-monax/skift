@@ -1,4 +1,0 @@
-#ifdef __KERNEL
-
-
-#endif

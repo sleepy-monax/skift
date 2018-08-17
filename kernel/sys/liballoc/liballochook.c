@@ -18,13 +18,13 @@ int liballoc_unlock()
 void* liballoc_alloc(size_t size)
 {
     void* p = memory_alloc(size);
-    debug("Liballoc hook alloc size: %d at %x.", size, p);
+    debug("Liballoc hook alloc size: %d at 0x%x.", size, p);
     return p;
 }
 
 int liballoc_free(void* p,size_t size)
 {
-    debug("Liballoc alloc free: %d at %x.", size, p);
+    debug("Liballoc alloc free: %d at 0x%x.", size, p);
     memory_free(p, size);
     return 0;
 }
