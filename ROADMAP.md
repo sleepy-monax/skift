@@ -11,8 +11,8 @@
  - [ ] Virtual file system (WIP)
  
 ## 👦 Milestone 2 - User mode
- - [ ] Jump to user mode
  - [ ] ELF loader
+ - [ ] Jump to user mode
  - [ ] hellowolrd.c
 
 ## 🤙 Milestoone 3 - System calls

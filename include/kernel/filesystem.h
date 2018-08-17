@@ -22,23 +22,15 @@ typedef struct directory
 
 typedef struct file
 {
-    bool is_open;
     char name[MAX_NAME_SIZE];
+    bool is_open;
 
     struct directory * parent;
 } file_t;
 
-void filesystem_setup();
+void fs_setup();
+void fs_dump(directory_t * root);
 
-bool dir_create(string path);
-bool dir_delete(string path);
-bool dir_list_file(string, char* dest, uint index);
-bool dir_list_dir(string, char* dest, uint index);
-
-bool file_create(string path);
-
-file_t* file_open(string path, bool read, bool write, bool create);
-void file_close(file_t * file);
-uint file_read(file_t * file, uint offset, char * buffer, size_t size);
-uint file_write(file_t * file, uint offset, char * buffer, size_t size);
-bool file_delete(string path);
+directory_t * fs_get_dir(const char * path, directory_t * parent);
+file_t * fs_get_file(const char * path, directory_t * parent);
+int dir_create(const char * path, directory_t * relative);

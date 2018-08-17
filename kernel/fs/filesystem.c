@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "lib/path.h"
 #include "kernel/filesystem.h"
 
 directory_t * root;
 
-directory_t * alloc_directorie(string name)
+directory_t * alloc_directorie(const char * name)
 {
     directory_t * dir = MALLOC(directory_t);
     
@@ -17,7 +18,7 @@ directory_t * alloc_directorie(string name)
     return dir;
 }
 
-directory_t * dir_getdir(directory_t * dir, string name)
+directory_t * dir_getdir(directory_t * dir, const char * name)
 {
     if (dir == NULL) return NULL;
     if (dir->directories->count == 0) return NULL;
@@ -31,7 +32,7 @@ directory_t * dir_getdir(directory_t * dir, string name)
     return NULL;
 }
 
-file_t * dir_getfile(directory_t * dir, string name)
+file_t * dir_getfile(directory_t * dir, const char * name)
 {
     if (dir == NULL) return NULL;
     if (dir->files->count == 0) return NULL;
@@ -45,7 +46,27 @@ file_t * dir_getfile(directory_t * dir, string name)
     return NULL;
 }
 
-file_t * alloc_files(string name)
+directory_t * dir_read_dir(directory_t * dir, int index)
+{
+    SLL_FOREARCH(i, dir->directories)
+    {
+        if (index == 0)
+        {
+            return (directory_t*)i->data;
+        }
+
+        index--;
+    }
+
+    return NULL;
+}
+
+file_t * dir_read_file(directory_t * dir, int index)
+{
+    
+}
+
+file_t * alloc_files(const char * name)
 {
     file_t * file = MALLOC(file_t);
     
@@ -54,50 +75,86 @@ file_t * alloc_files(string name)
     return file;
 }
 
+directory_t * fs_get_dir(const char * path, directory_t * parent)
+{
+
+    char buffer[128];
+    
+    directory_t * current = parent;
+
+    for (int i = 0; path_read(path, i, buffer); i++) 
+    {
+        if (strcmp(buffer, "..") == 0)
+        {
+            current = current->parent;
+        }
+        else
+        {
+            current = dir_getdir(current, buffer);
+        }
+    }
+    
+    return current;
+}
+
+file_t * fs_get_file(const char * path, directory_t * parent)
+{
+    char* dir_name = malloc(strlen(path));
+    char file_name[128];
+    file_t * file = NULL;
+
+    if (path_split(path, dir_name, file_name))
+    {
+        directory_t * dir = fs_get_dir(dir_name, parent);
+        file = dir_getfile(dir, file_name);
+    }
+
+    free(dir_name);
+    return file;
+}
 
 /* --- Public functions ----------------------------------------------------- */
 
 void filesystem_setup()
 {
     root = alloc_directorie("ROOT");
+    dir_create("bin", root);
+    dir_create("dev", root);
+    dir_create("usr", root);
+    dir_create("usr/share", root);
+    dir_create("usr/local", root);
+    dir_create("usr/root", root);
+    dir_create("cfg", root);
+
+    fs_dump(root);
 }
 
-directory_t * fs_get_dir(string path, directory_t * parent)
+int dir_create(const char * path, directory_t * relative)
 {
-    char* name = (char*)malloc(MAX_NAME_SIZE);
-    name[0] = '\0';
+    char* dir_path = malloc(strlen(path));
+    char dir_name[128];
+    directory_t * dir = NULL;
 
-    for(size_t i = 0; path[i] != FS_PATH_SEPARATOR && path[i]; i++)
+    if (path_split(path, dir_path, dir_name))
     {
-        strapd(name, path[i]);
+        directory_t * parent = fs_get_dir(dir_path, relative);
+        dir = alloc_directorie(dir_name);
+        dir->parent = parent;
+        sll_add((u32)dir, parent->directories);
     }
 
-    SLL_FOREARCH(entry, parent->directories)
-    {
-        directory_t * dir = (directory_t*)entry->data;
-
-        if (strcmp(name, dir->name) == 0)
-        {
-            return fs_get_dir(path + strlen(name), dir);
-        }
-    }
-    
-    return NULL;
+    free(dir_path);
+    return dir == NULL ? 0 : 1;
 }
 
-file_t * fs_get_file(string path, directory_t * parent)
-{
-    UNUSED(path); UNUSED(parent);
-    return NULL;
-}
-
-
-bool dir_create(string path)
+void fs_dump(directory_t * root)
 {
 
 }
 
-bool file_create(string path)
+void dump_directorie(directory_t * directorie)
 {
-
+    SLL_FOREARCH
 }
+
+void fs_dump()
