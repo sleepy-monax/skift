@@ -42,16 +42,46 @@ int directory_move(directory_t *relative_s, const char *source, directory_t *rel
 
 directory_t *directory_open(directory_t *relative, const char *path)
 {
+    return filesystem_get_directory(relative, path);
 }
 
 void directory_close(directory_t *directory)
 {
+    UNUSED(directory);
 }
 
 int directory_get_files(directory_t *directory, char *name, int index)
 {
+    name[0] = '\n';
+
+    SLL_FOREARCH(i, directory->files)
+    {
+        if (index == 0)
+        {
+            strcpy(name, ((file_t *)i->data)->name);
+            return 1;
+        }
+
+        index--;
+    }
+
+    return 0;
 }
 
 int directory_get_directories(directory_t *directory, char *name, int index)
 {
+    name[0] = '\n';
+
+    SLL_FOREARCH(i, directory->directories)
+    {
+        if (index == 0)
+        {
+            strcpy(name, ((directory_t *)i->data)->name);
+            return 1;
+        }
+
+        index--;
+    }
+
+    return 0;
 }

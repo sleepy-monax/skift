@@ -8,39 +8,6 @@
 directory_t *root;
 
 
-directory_t *dir_getdir(directory_t *dir, const char *name)
-{
-    if (dir == NULL)
-        return NULL;
-    if (dir->directories->count == 0)
-        return NULL;
-
-    SLL_FOREARCH(i, dir->directories)
-    {
-        directory_t *child = (directory_t *)i->data;
-        if (strcmp(name, child->name) == 0)
-            return child;
-    }
-
-    return NULL;
-}
-
-file_t *dir_getfile(directory_t *dir, const char *name)
-{
-    if (dir == NULL)
-        return NULL;
-    if (dir->files->count == 0)
-        return NULL;
-
-    SLL_FOREARCH(i, dir->files)
-    {
-        file_t *file = (file_t *)i->data;
-        if (strcmp(name, file->name) == 0)
-            return file;
-    }
-
-    return NULL;
-}
 
 directory_t *dir_read_dir(directory_t *dir, int index)
 {
@@ -72,35 +39,9 @@ file_t *dir_read_file(directory_t *dir, int index)
     return NULL;
 }
 
-directory_t *fs_get_dir(const char *path, directory_t *parent)
-{
 
-
-}
-
-file_t *fs_get_file(const char *path, directory_t *parent)
-{
-    char *dir_name = malloc(strlen(path));
-    char file_name[128];
-    file_t *file = NULL;
-
-    if (path_split(path, dir_name, file_name))
-    {
-        directory_t *dir = fs_get_dir(dir_name, parent);
-        file = dir_getfile(dir, file_name);
-    }
-
-    free(dir_name);
-    return file;
-}
 
 /* --- Public functions ----------------------------------------------------- */
-
-void filesystem_setup()
-{
-    info("Allocating root directorie.");
-    root = alloc_directorie("ROOT");
-}
 
 int dir_create(const char *path, directory_t *relative)
 {
