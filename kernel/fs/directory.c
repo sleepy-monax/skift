@@ -18,6 +18,20 @@ directory_t *alloc_directorie(const char *name)
 
 int directory_create(directory_t *relative, const char *path, int flags)
 {
+    char *dir_path = malloc(strlen(path));
+    char dir_name[128];
+    directory_t *dir = NULL;
+
+    if (path_split(path, dir_path, dir_name))
+    {
+        directory_t *parent = fs_get_dir(dir_path, relative);
+        dir = alloc_directorie(dir_name);
+        dir->parent = parent;
+        sll_add((u32)dir, parent->directories);
+    }
+
+    free(dir_path);
+    return dir == NULL ? 0 : 1;
 }
 
 int directory_delete(directory_t *relative, const char *path, bool recursive)
@@ -52,7 +66,7 @@ void directory_close(directory_t *directory)
 
 int directory_get_files(directory_t *directory, char *name, int index)
 {
-    name[0] = '\n';
+    name[0] = '\0';
 
     SLL_FOREARCH(i, directory->files)
     {
@@ -70,7 +84,7 @@ int directory_get_files(directory_t *directory, char *name, int index)
 
 int directory_get_directories(directory_t *directory, char *name, int index)
 {
-    name[0] = '\n';
+    name[0] = '\0';
 
     SLL_FOREARCH(i, directory->directories)
     {

@@ -31,9 +31,9 @@ typedef struct file
 } file_t;
 
 void filesystem_setup();
-void fs_dump(directory_t *root);
+void filesystem_dump(directory_t *relative, const char *path); 
 
-file_t *filesystem_get_file(directory_t *relative, const char *path);
+file_t      *filesystem_get_file(directory_t *relative, const char *path);
 directory_t *filesystem_get_directory(directory_t *relative, const char *path);
 
 /* --- Files Operation ------------------------------------------------------ */

@@ -13,6 +13,20 @@ file_t *alloc_file(const char *name)
 
 int file_create(directory_t *relative, const char *path, int flags)
 {
+    char *dir_path = malloc(strlen(path));
+    char file_name[128];
+    file_t *file = NULL;
+
+    if (path_split(path, dir_path, file_name))
+    {
+        directory_t *parent = fs_get_dir(dir_path, relative);
+        file = alloc_file(file_name);
+        file->parent = parent;
+        sll_add((u32)file, parent->files);
+    }
+
+    free(dir_path);
+    return file == NULL ? 0 : 1;
 }
 
 int file_delete(directory_t *relative, const char *path)
