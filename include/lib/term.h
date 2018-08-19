@@ -1,12 +1,15 @@
 #pragma once
 #include "types.h"
+#include "sync/lock.h"
 
 typedef enum
 {
     TERMATTR_NONE = 0,
     TERMATTR_BOLD = 1,
-    TERMATTR_UNDERSCORE = 2,
-    TERMATTR_BLINK = 3,
+    TERMATTR_DIM = 2,
+    TERMATTR_ITALIC = 3,
+    TERMATTR_UNDERSCORE = 4,
+    TERMATTR_BLINK = 5,
     TERMATTR_REVERSE = 7,
     TERMATTR_CONCEALED = 8
 } termattr_t;
@@ -49,6 +52,8 @@ typedef struct
     termattr_t attr;
     termcolor_t text;
     termcolor_t background;
+
+    lock_t lock;
 } term_t;
 
 term_t *term_alloc(uint width, uint height);

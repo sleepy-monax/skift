@@ -1,11 +1,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include "lib/term.h"
+#include "lib/ansi.h"
 #include "utils.h"
 
 term_t *term_alloc(uint width, uint height)
 {
     term_t *term = MALLOC(term_t);
+
+    lock_init(&term->lock, "term");
 
     term->cursor.line = 0;
     term->cursor.column = 0;
@@ -59,7 +62,95 @@ void term_cell(term_t *term, uint line, uint column, char c, termattr_t attr, te
     }
 }
 
+void term_clear(term_t * term)
+{
+    term->cursor.line = 0;
+    term->cursor.column = 0;
+
+    for(size_t i = 0; i < term->height; i++)
+    {
+        memset(term->screen[i], 0, sizeof(termcell_t) * term->width);
+    }   
+}
+
+void term_clear_line(term_t * term, uint line, uint column)
+{
+    if (line < term->height && column < term->width)
+    {
+        memset(term->screen[line] + column, 0, sizeof(termcell_t) * (term->width - column));
+    }
+}
+
+void read_ansi_attr(term_t * term, uint attr)
+{
+    if ( attr < 10)
+    {
+        term->attr = (termattr_t) attr;
+    }
+    else if (attr >= 30 && attr <= 37)
+    {
+        term->attr = (termattr_t) attr - 30;
+    }
+    else if (attr >= 40 && attr <= 47)
+    {
+        term->attr = (termattr_t) attr - 40;
+    }
+}
+
 void term_print(term_t * term, const char * msg)
 {
-    STUB(term, msg);
+    for(size_t i = 0; msg[i]; i++)
+    {
+        if (msg[i] == ANSI_ESC)
+        {
+            const char * esc = &msg[i];
+            ansitype_t type = ansi_get_type(esc);
+            int value_count = ansi_value_count(esc);
+
+            if (type != ANSI_UNKNOW)
+            {
+                switch (type)
+                {
+                    case ANSI_CLEAR:
+                        term_clear(term);
+                        break;
+                
+                    case ANSI_CLEAR_LINE:
+                        term_clear_line(term, term->cursor.line, term->cursor.column);
+                        break;
+
+                    case ANSI_SET_MODE:
+                        
+                        for(int j = 0; j < value_count; i++)
+                        {
+                            read_ansi_attr(term, ansi_value(esc, j));
+                        }
+                        
+                        break;
+
+                    default:
+                        break;
+                }
+
+                i += ansi_len(&msg[i]);
+            }
+        }
+        else
+        {
+            term_cell(term, term->cursor.line, term->cursor.column, msg[i], term->attr, term->text, term->background);
+            term->cursor.column++;
+        }
+
+        if (term->cursor.column >= term->width)
+        {
+            term->cursor.column -= term->width;
+            term->cursor.line++;
+        }
+
+        if (term->cursor.line >= term->height)
+        {
+            term->cursor.line--;
+            term_scroll(term);
+        }
+    } 
 }

@@ -3,6 +3,9 @@
 #include <string.h>
 #include "lib/ansi.h"
 
+// http://www.termsys.demon.co.uk/vtansi.htm
+// http://ascii-table.com/ansi-escape-sequences.php
+
 int ansi_len(const char *esc)
 {
     int i = 0;
@@ -105,14 +108,14 @@ int ansi_value_count(const char *esc)
 
 int ansi_value(const char *esc, int index)
 {
-        char buffer[12];
+    char buffer[12];
     buffer[0] = '\0';
 
     if (esc[0] == ANSI_ESC && esc[1] == '[')
     {
         esc += 2;
 
-        for(size_t i = 0; isdigit(esc[i]) || esc[i] == ';'; i++)
+        for (size_t i = 0; isdigit(esc[i]) || esc[i] == ';'; i++)
         {
             char c = esc[i];
 
@@ -125,7 +128,7 @@ int ansi_value(const char *esc, int index)
                 strapd(buffer, c);
             }
         }
-        
+
         return stoi(buffer, 10);
     }
 
