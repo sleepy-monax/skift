@@ -1,32 +1,10 @@
-#ifndef _LIBALLOC_H
-#define _LIBALLOC_H
+#pragma once
 
 #include <stddef.h>
 #include "types.h"
 
-/** \defgroup ALLOCHOOKS liballoc hooks 
- *
- * These are the OS specific functions which need to 
- * be implemented on any platform that the library
- * is expected to work on.
- */
-
-/** @{ */
-
-
-
-// If we are told to not define our own size_t, then we skip the define.
-//#define _HAVE_UINTPTR_T
-//typedef	unsigned long	uintptr_t;
-
 //This lets you prefix malloc and friends
 #define PREFIX(func) func
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
 
 /** This function is supposed to lock the memory data structures. It
  * could be as simple as disabling interrupts or acquiring a spinlock.
@@ -52,7 +30,7 @@ int liballoc_unlock();
  * \return NULL if the pages were not allocated.
  * \return A pointer to the allocated memory.
  */
-void* liballoc_alloc(size_t);
+void *liballoc_alloc(size_t);
 
 /** This frees previously allocated memory. The void* parameter passed
  * to the function is the exact same value returned from a previous
@@ -62,23 +40,9 @@ void* liballoc_alloc(size_t);
  *
  * \return 0 if the memory was successfully freed.
  */
-int liballoc_free(void*,size_t);
+int liballoc_free(void *, size_t);
 
-
-       
-
-extern void    *PREFIX(malloc)(size_t);				///< The standard function.
-extern void    *PREFIX(realloc)(void *, size_t);		///< The standard function.
-extern void    *PREFIX(calloc)(size_t, size_t);		///< The standard function.
-extern void     PREFIX(free)(void *);					///< The standard function.
-
-
-#ifdef __cplusplus
-}
-#endif
-
-
-/** @} */
-
-#endif
-
+extern void *PREFIX(malloc)(size_t);          ///< The standard function.
+extern void *PREFIX(realloc)(void *, size_t); ///< The standard function.
+extern void *PREFIX(calloc)(size_t, size_t);  ///< The standard function.
+extern void PREFIX(free)(void *);             ///< The standard function.

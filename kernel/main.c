@@ -2,11 +2,18 @@
 // See: LICENSE.md
 // Project URL: github.com/maker-dev/skift
 
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "cpu/gdt.h"
 #include "cpu/idt.h"
 #include "cpu/irq.h"
 #include "cpu/isr.h"
+
 #include "devices/vga.h"
+
 #include "kernel/console.h"
 #include "kernel/dumping.h"
 #include "kernel/filesystem.h"
@@ -20,11 +27,8 @@
 #include "kernel/time.h"
 #include "kernel/version.h"
 #include "kernel/virtual.h"
+
 #include "sync/atomic.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 multiboot_info_t mbootinfo;
 
@@ -50,7 +54,6 @@ void main(multiboot_info_t * info, s32 magic)
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC ) 
         panic("Invalid multiboot magic number (0x%x)!", magic);
 
-    //boot_screen("Setting up CPU...");
     info("--- Setting up cpu tables ---");
     setup(gdt);
     setup(pic);
@@ -58,7 +61,6 @@ void main(multiboot_info_t * info, s32 magic)
     setup(isr);
     setup(irq);
     
-    //boot_screen("Setting up system...");
     info("--- Setting up system ---");
     setup(physical, (mbootinfo.mem_lower + mbootinfo.mem_upper) * 1024);
     setup(memory, get_kernel_end(&mbootinfo));
@@ -71,11 +73,7 @@ void main(multiboot_info_t * info, s32 magic)
 
     task_start_named(time_task, "clock");
     info(KERNEL_UNAME);
-    
-    printf("\n");
-
-    //boot_screen("booting...");
-    
+        
     while(true){ hlt(); };
 
     panic("The end of the main function has been reached.");
