@@ -18,13 +18,15 @@ directory_t *alloc_directorie(const char *name)
 
 int directory_create(directory_t *relative, const char *path, int flags)
 {
+    UNUSED(flags);
+
     char *dir_path = malloc(strlen(path));
     char dir_name[128];
     directory_t *dir = NULL;
 
     if (path_split(path, dir_path, dir_name))
     {
-        directory_t *parent = fs_get_dir(dir_path, relative);
+        directory_t *parent = filesystem_get_directory(relative, dir_path);
         dir = alloc_directorie(dir_name);
         dir->parent = parent;
         sll_add((u32)dir, parent->directories);
@@ -36,20 +38,34 @@ int directory_create(directory_t *relative, const char *path, int flags)
 
 int directory_delete(directory_t *relative, const char *path, bool recursive)
 {
+    STUB(relative, path, recursive);
+    return 1;
 }
 
 int directory_existe(directory_t *relative, const char *path)
 {
+    if (filesystem_get_directory(relative, path) != NULL)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /* --- Move/Copy ------------------------------------------------------------ */
 
 int directory_copy(directory_t *relative_s, const char *source, directory_t *relative_d, const char *destination)
 {
+    STUB(relative_s, source, relative_d, destination);
+    return 1;
 }
 
 int directory_move(directory_t *relative_s, const char *source, directory_t *relative_d, const char *destination)
 {
+    STUB(relative_s, source, relative_d, destination);
+    return 1;
 }
 
 /* --- Open/Close/Read/Write ------------------------------------------------ */

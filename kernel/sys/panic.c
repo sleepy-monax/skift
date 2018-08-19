@@ -17,6 +17,11 @@ const char * const witty_comments[] =
     "Excuse Me Sir, \n\t// Do You Have a Moment to Talk About Jesus Christ?",
     "DON'T PANIC!",
     "...",
+
+    "Greenpeace free'd the mallocs \\o/",
+    "Typo in the code.",
+    "System consumed all the paper for paging!",
+    "Suspicious pointer corrupted the machine."
 };
 
 void __panic(const string file, const string function, const int line, context_t* context, string message, ...)
@@ -29,7 +34,7 @@ void __panic(const string file, const string function, const int line, context_t
     
     printf("\n&8--- &4!!!&8 ------------------------------------------------------------------------&f\n");
     
-    printf("\n\t&4KERNEL PANIC\n\t&8//%s\n\n\t&f", witty_comments[timer_get_ticks() % 9]); 
+    printf("\n\t&4KERNEL PANIC\n\t&8//%s\n\n\t&f", witty_comments[timer_get_ticks() % (9 + 4)]); 
     
     vprintf(message, va);
     printf("\n\t&7at %s &e%s&f() &7ln%d", file, function, line); 

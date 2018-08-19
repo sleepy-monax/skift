@@ -8,7 +8,6 @@ void * realloc(void * p, size_t size);
 void * calloc (size_t , size_t);
 void   free   (void *);
 
-
 /* !!! NOT STANDART --------------------------------------------------------- */
 
 // string to uint

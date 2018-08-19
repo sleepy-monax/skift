@@ -71,6 +71,9 @@ void main(multiboot_info_t * info, s32 magic)
 
     task_start_named(time_task, "clock");
     info(KERNEL_UNAME);
+    
+    printf("\n");
+
     //boot_screen("booting...");
     
     while(true){ hlt(); };

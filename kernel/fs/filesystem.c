@@ -2,7 +2,7 @@
 #include "kernel/filesystem.h"
 #include "kernel/logging.h"
 
-directory_t *root;
+directory_t *root = NULL;
 
 directory_t *alloc_directorie(const char *name);
 
@@ -30,7 +30,7 @@ directory_t *filesystem_get_directory(directory_t *relative, const char *path)
         }
         else
         {
-            SLL_FOREARCH(i, relative->directories)
+            SLL_FOREARCH(i, current->directories)
             {
                 directory_t *d = (directory_t *)i->data;
                 if (strcmp(buffer, d->name) == 0)
@@ -74,7 +74,7 @@ void dump_directorie(directory_t *current, int depth, char * buffer)
         printf("\t");
     }
 
-    printf("&a|-%s\n&7", current->name);
+    printf("&f%s/\n&7", current->name);
 
     for (size_t i = 0; directory_get_directories(current, buffer, i); i++)
     {
@@ -88,7 +88,7 @@ void dump_directorie(directory_t *current, int depth, char * buffer)
             printf("\t");
         }
 
-        printf("- %s\n", buffer);
+        printf("&7%s\n", buffer);
     }
 }
 
