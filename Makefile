@@ -2,13 +2,7 @@ export PATH := $(shell scripts/activate.sh)
 
 SOURCE_FOLDER = .
 
-
-ifndef TOOLS_PREFIX
-	TOOLS_PREFIX = i686-elf-
-else
-	KCFLAGS = -m32
-	KCPPFLAGS = -m32
-endif
+TOOLS_PREFIX = i686-elf-
 
 AS = nasm
 CC = $(TOOLS_PREFIX)gcc
@@ -17,18 +11,13 @@ LD = $(TOOLS_PREFIX)ld
 OBJDUMP = $(TOOLS_PREFIX)objdump
 O = -O3
 
-KCFLAGS   += -D __KERNEL -I ./include -ffreestanding $(O) -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
-KCPPFLAGS += -D __KERNEL -I ./include -ffreestanding $(O) -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
+KCFLAGS   += -D __KERNEL -I ./include -ffreestanding -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
+CFLAGS    += -D __USER -I ./include -O3 -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
 
-CFLAGS    += -D __USER -I ./include $(O) -nostdlib -std=gnu11 -Wall -Wextra -Werror -ggdb -nostdinc
-CPPFLAGS  += -D __USER -I ./include $(O) -nostdlib -Wall -Wextra -Werror -ggdb -fno-exceptions -fno-rtti
-
-LDFLAGS   += $(O)
+LDFLAGS   += -O3
 ASFLAGS   += -felf32
 
 QEMUFLAGS += -m 256M -serial mon:stdio -cdrom image.iso -M accel=kvm:tcg
-
-include config.mk
 
 # --- Commands --------------------------------------------------------------- #
 
@@ -93,21 +82,10 @@ include scripts/*.mk
 	@echo "AS $@ -> $^"
 	@$(AS) $(ASFLAGS) $^ -o $@
 
-
 %.c.o: %.c
 	@echo "CC $@ -> $^"
 	@$(CC) $(CFLAGS) -c -o $@ $^
 
-
-%.cpp.o: %.cpp
-	@echo "CPP $@ -> $^"
-	@$(CC) $(CPPFLAGS) -c -o $@ $^
-
-# KERNEL OBJECT SPECIFIC RULES
 %.c.ko: %.c
 	@echo "CC $@ -> $^"
 	@$(CC) $(KCFLAGS) -c -o $@ $^
-
-%.cpp.ko: %.cpp
-	@echo "CPP $@ -> $^"
-	$(CC) $(KCPPFLAGS) -c -o $@ $^
