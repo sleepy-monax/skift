@@ -74,7 +74,7 @@ file_t *file_open(directory_t *relative, const char *path)
 {
     file_t * file = filesystem_get_file(relative, path);
 
-    if (file != NULL)
+    if (file != NULL && (file->open == NULL || file->open(file)))
     {
         return file;
     }
@@ -86,17 +86,28 @@ file_t *file_open(directory_t *relative, const char *path)
 
 void file_close(file_t *file)
 {
-    STUB(file);
+    if (file != NULL && file->close != NULL)
+    {
+        file->close(file);
+    }
 }
 
-int file_write(file_t *file, void *buffer, int n)
+int file_read(file_t *file, uint offset, void *buffer, uint n)
 {
-    STUB(file, buffer, n);
+    if (file != NULL && file->read !=NULL)
+    {
+        return file->read(file, offset, buffer, n);
+    }
+
     return 0;
 }
 
-int file_read(file_t *file, void *buffer, int n)
+int file_write(file_t *file, uint offset, void *buffer, uint n)
 {
-    STUB(file, buffer, n);
+    if (file != NULL && file->write !=NULL)
+    {
+        return file->write(file, offset, buffer, n);
+    }
+
     return 0;
 }
