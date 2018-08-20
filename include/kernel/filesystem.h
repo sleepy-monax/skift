@@ -11,8 +11,8 @@ struct directory;
 
 typedef int (* file_open_t)(struct file * file);
 typedef void(* file_close_t)(struct file * file);
-typedef int (* file_write_t)(file_t *file, uint offset, void *buffer, uint n);
-typedef int (* file_read_t)(file_t *file, uint offset, void *buffer, uint n);
+typedef int (* file_write_t)(struct file *file, uint offset, void *buffer, uint n);
+typedef int (* file_read_t)(struct file *file, uint offset, void *buffer, uint n);
 
 typedef struct
 {
