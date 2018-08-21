@@ -1,3 +1,7 @@
+// This file is part of "skiftOS" licensed under the MIT License.
+// See: LICENSE.md
+// Project URL: github.com/maker-dev/skift
+
 #include <string.h>
 #include "kernel/modules.h"
 #include "kernel/multiboot.h"

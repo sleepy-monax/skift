@@ -1,5 +1,6 @@
-;; This code is licensed under the MIT License.                               ;;
-;; See: LICENSE.md                                                            ;;
+; This file is part of "skiftOS" licensed under the MIT License.
+; See: LICENSE.md
+; Project URL: github.com/maker-dev/skift
 
 ; Declare constants for the multiboot header.
 MBALIGN  equ  1 << 0            ; align loaded modules on page boundaries
@@ -21,11 +22,7 @@ align 16
 stack_bottom:
 resb 16384 ; 16 KiB
 stack_top:
- 
-; The linker script specifies _start as the entry point to the kernel and the
-; bootloader will jump to this position once the kernel has been loaded. It
-; doesn't make sense to return from this function as the bootloader is gone.
-; Declare _start as a function symbol with the given symbol size.
+
 section .text
 global _start:function (_start.end - _start)
 _start:
@@ -34,11 +31,6 @@ _start:
 	; stack (as it grows downwards on x86 systems).
 	mov esp, stack_top
  
-
-	; backtrace stuff
-	xor ebp, ebp
-	push ebp
-
 	push eax ; Push the multiboot magic
 	push ebx ; Push the multiboot header adress.
 	

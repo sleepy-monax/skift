@@ -1,3 +1,7 @@
+// This file is part of "skiftOS" licensed under the MIT License.
+// See: LICENSE.md
+// Project URL: github.com/maker-dev/skift
+
 #include "devices/vga.h"
 #include "cpu/cpu.h"
 
@@ -51,12 +55,12 @@ void vga_cell(u32 x, u32 y, vga_entry_t entry)
 
 void vga_text(u32 x, u32 y, string text, vga_color_t fg, vga_color_t bg)
 {
-    
+
     for(size_t i = 0; text[i]; i++)
     {
         vga_cell(x + i, y, vga_entry(text[i], fg, bg));
     }
-    
+
 }
 
 void vga_cursor(s32 x, s32 y)

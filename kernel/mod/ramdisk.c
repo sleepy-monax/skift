@@ -1,3 +1,7 @@
+// This file is part of "skiftOS" licensed under the MIT License.
+// See: LICENSE.md
+// Project URL: github.com/maker-dev/skift
+
 #include <string.h>
 
 #include "kernel/filesystem.h"
@@ -7,23 +11,22 @@
 
 void ramdisk_load(multiboot_module_t *module)
 {
+    info("Loading ramdisk at 0x%x...", module->mod_start);
     tar_block_t block;
-
-    info("Root folder at 0x%x.", root);
 
     for(size_t i = 0; tar_read((void*)module->mod_start, &block, i); i++)
     {
         if (block.name[strlen(block.name) - 1] == '/')
         {
-            //info("folder: %s at 0x%x.", block.name, block.data);
-            dir_create(block.name, root);
+            debug("Found folder: %s at 0x%x.", block.name, block.data);
+            directory_create(NULL, block.name, 0);
         }
         else
         {
-            //info("file: %s at 0x%x.", block.name, block.data);
-            file_create(block.name, root);
+            debug("Found file: %s at 0x%x.", block.name, block.data);
+            file_create(NULL, block.name, 0);
         }
     }
 
-    //fs_dump(root);
+    filesystem_dump(NULL, "");
 }

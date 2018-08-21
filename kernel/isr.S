@@ -1,5 +1,6 @@
-;; This code is licensed under the MIT License.                               ;;
-;; See: LICENSE.md                                                            ;;
+; This file is part of "skiftOS" licensed under the MIT License.
+; See: LICENSE.md
+; Project URL: github.com/maker-dev/skift
 
 extern isr_handler
 

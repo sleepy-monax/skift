@@ -112,6 +112,8 @@ int vsprintf(char *str, const char *format, va_list va)
                     break;
 
                 default:
+                    strapd(str, '%');
+                    strapd(str, c);
                     break;
             }
 

@@ -1,131 +1,14 @@
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+// This file is part of "skiftOS" licensed under the MIT License.
+// See: LICENSE.md
+// Project URL: github.com/maker-dev/skift
 
-#include "lib/path.h"
+#include <string.h>
 #include "kernel/filesystem.h"
 #include "kernel/logging.h"
 
-directory_t * root;
+directory_t *root = NULL;
 
-directory_t * alloc_directorie(const char * name)
-{
-    directory_t * dir = MALLOC(directory_t);
-    
-    dir->name[0] = '\0';
-    strncpy((char*)&dir->name, name, MAX_NAME_SIZE);
-    dir->directories = sll_new();
-    dir->files = sll_new();
-
-    return dir;
-}
-
-directory_t * dir_getdir(directory_t * dir, const char * name)
-{
-    if (dir == NULL) return NULL;
-    if (dir->directories->count == 0) return NULL;
-
-    SLL_FOREARCH(i, dir->directories)
-    {
-        directory_t * child = (directory_t*)i->data;
-        if (strcmp(name, child->name) == 0) return child;
-    }
-
-    return NULL;
-}
-
-file_t * dir_getfile(directory_t * dir, const char * name)
-{
-    if (dir == NULL) return NULL;
-    if (dir->files->count == 0) return NULL;
-
-    SLL_FOREARCH(i, dir->files)
-    {
-        file_t * file = (file_t*)i->data;
-        if (strcmp(name, file->name) == 0) return file;
-    }
-
-    return NULL;
-}
-
-directory_t * dir_read_dir(directory_t * dir, int index)
-{
-    SLL_FOREARCH(i, dir->directories)
-    {
-        if (index == 0)
-        {
-            return (directory_t*)i->data;
-        }
-
-        index--;
-    }
-
-    return NULL;
-}
-
-file_t * dir_read_file(directory_t * dir, int index)
-{
-    SLL_FOREARCH(i, dir->files)
-    {
-        if (index == 0)
-        {
-            return (file_t*)i->data;
-        }
-
-        index--;
-    }
-
-    return NULL;
-}
-
-file_t * alloc_file(const char * name)
-{
-    file_t * file = MALLOC(file_t);
-    
-    strncpy((char*)&file->name, name, MAX_NAME_SIZE);
-
-    return file;
-}
-
-directory_t * fs_get_dir(const char * path, directory_t * parent)
-{
-
-    char buffer[128];
-    
-    directory_t * current = parent;
-
-    for (int i = 0; path_read(path, i, buffer); i++) 
-    {
-        if (strcmp(buffer, "..") == 0)
-        {
-            current = current->parent;
-        }
-        else
-        {
-            current = dir_getdir(current, buffer);
-        }
-    }
-    
-    return current;
-}
-
-file_t * fs_get_file(const char * path, directory_t * parent)
-{
-    char* dir_name = malloc(strlen(path));
-    char file_name[128];
-    file_t * file = NULL;
-
-    if (path_split(path, dir_name, file_name))
-    {
-        directory_t * dir = fs_get_dir(dir_name, parent);
-        file = dir_getfile(dir, file_name);
-    }
-
-    free(dir_name);
-    return file;
-}
-
-/* --- Public functions ----------------------------------------------------- */
+directory_t *alloc_directorie(const char *name);
 
 void filesystem_setup()
 {
@@ -133,74 +16,90 @@ void filesystem_setup()
     root = alloc_directorie("ROOT");
 }
 
-int dir_create(const char * path, directory_t * relative)
+directory_t *filesystem_get_directory(directory_t *relative, const char *path)
 {
-    char* dir_path = malloc(strlen(path));
-    char dir_name[128];
-    directory_t * dir = NULL;
-
-    if (path_split(path, dir_path, dir_name))
-    {
-        directory_t * parent = fs_get_dir(dir_path, relative);
-        dir = alloc_directorie(dir_name);
-        dir->parent = parent;
-        sll_add((u32)dir, parent->directories);
-    }
-
-    free(dir_path);
-    return dir == NULL ? 0 : 1;
-}
-
-int file_create(const char * path, directory_t * relative)
-{
-    char* dir_path = malloc(strlen(path));
-    char file_name[128];
-    file_t * file = NULL;
-
-    if (path_split(path, dir_path, file_name))
-    {
-        directory_t * parent = fs_get_dir(dir_path, relative);
-        file = alloc_file(file_name);
-        file->parent = parent;
-        sll_add((u32)file, parent->files);
-    }
-
-    free(dir_path);
-    return file == NULL ? 0 : 1;
-}
-
-void dump_directorie(directory_t * current, int depth)
-{
+    char buffer[128];
     
-    for(int i = 0; i < depth; i++)
+    directory_t * current = relative ? relative : root;
+
+    for (int i = 0; path_read(path, i, buffer); i++) 
+    {
+        if (strcmp(buffer, "..") == 0)
+        {
+            current = current->parent;
+        }
+        else if (strcmp(buffer, ".") == 0)
+        {
+            current = current;
+        }
+        else
+        {
+            SLL_FOREARCH(i, current->directories)
+            {
+                directory_t *d = (directory_t *)i->data;
+                if (strcmp(buffer, d->name) == 0)
+                    current = d;
+            }
+        }
+    }
+    
+    return current;
+}
+
+file_t *filesystem_get_file(directory_t *relative, const char *path)
+{
+    char *dir_name = malloc(strlen(path));
+    char file_name[128];
+    file_t *file = NULL;
+
+    if (path_split(path, dir_name, file_name))
+    {
+        directory_t *dir = filesystem_get_directory(relative, dir_name);
+
+        SLL_FOREARCH(i, dir->files)
+        {
+            file_t* f = (file_t *)i->data;
+            if (strcmp(file_name, f->name) == 0)
+                file = f;
+        }
+    }
+
+    free(dir_name);
+    return file;
+}
+
+/* --- Dump ---------------------------------------------------------------- */
+
+void dump_directorie(directory_t *current, int depth, char * buffer)
+{
+   
+    for (int i = 0; i < depth; i++)
     {
         printf("\t");
     }
 
-    printf("&a|-%s\n&7", current->name);
-    
-    directory_t * child = NULL;
-    for(size_t i = 0; (child = dir_read_dir(current, i)) ; i++)
+    printf("&f%s/\n&7", current->name);
+
+    for (size_t i = 0; directory_get_directories(current, buffer, i); i++)
     {
-        dump_directorie(child, depth+1);
+        dump_directorie(filesystem_get_directory(current, buffer), depth + 1, buffer);
     }
 
-    file_t * file = NULL;
-    for(size_t i = 0; (file = dir_read_file(current, i)) ; i++)
+    for (size_t i = 0; (directory_get_files(current, buffer, i)); i++)
     {
-        for(int y = 0; y < depth + 1; y++)
+        for (int y = 0; y < depth + 1; y++)
         {
             printf("\t");
         }
 
-        printf("|-%s\n", file->name);
+        printf("&7%s\n", buffer);
     }
 }
 
-void fs_dump(directory_t * root)
+void filesystem_dump(directory_t *relative, const char *path)
 {
-    printf("&fFiles System Dump:&7\n");
-    dump_directorie(root, 1);
+    char * buffer = malloc(PATH_FILE_NAME_SIZE);
+    dump_directorie(filesystem_get_directory(relative, path), 0, buffer);
+    free(buffer);
 }
-
 
